@@ -1,0 +1,24 @@
+{
+    "name": "@scom/demo-spviewer",
+    "version": "0.1.0",
+    "engines": {
+        "node": ">=18.0.0"
+    },
+    "dependencies": {
+        "@ijstech/components": "^0.1.35",
+        "@ijstech/eth-contract": "^0.1.10",
+        "@ijstech/eth-wallet": "^0.1.35"
+    },
+    "devDependencies": {
+        "@ijstech/cli": "^0.1.28",
+        "@ijstech/compiler": "^0.1.22",
+        "@scom/dapp": "^0.1.9",
+        "@scom/secure-page-viewer": "file:./ref"
+    },
+    "scripts": {
+        "cp:viewer": "rm -r ref && mkdir ref && cp ../package.json ref/package.json && cp -r ../dist ref/dist && cp -r ../types ref/types",
+        "build": "npm run cp:viewer && rm -rf dist && npx @ijstech/compiler",
+        "serve": "npx @ijstech/cli serve 8080",
+        "test": "npm run build && npm run serve"
+    }
+}

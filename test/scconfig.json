@@ -1,0 +1,43 @@
+{
+  "env": "testnet",
+  "main": "@scom/dapp",
+  "assets": "@modules/assets",
+  "moduleDir": "modules",
+  "modules": {
+    "@modules/assets": {
+      "path": "assets"
+    },
+    "@modules/module1": {
+      "path": "module1"
+    }
+  },
+  "dependencies": {
+    "@scom/secure-page-viewer": "*"
+  },
+  "menus": [
+    {
+      "caption": "Module 1",
+      "url": "/module1",
+      "module": "@modules/module1"
+    },
+    {
+      "caption": "Viewer",
+      "url": "/viewer",
+      "module": "@scom/secure-page-viewer",
+      "params": {
+        "cid": "bafkreie5psuzubsizjhinwqmbidpvtsvxg2cjjbw4kwj3d4agtzf3vhpku"
+      }
+    }
+  ],
+  "routes": [
+    {
+      "url": "/module1",
+      "module": "@modules/module1",
+      "default": true
+    }
+  ],
+  "networks": "*",
+  "wallets": [
+    "metamask"
+  ]
+}
