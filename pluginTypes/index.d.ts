@@ -197,6 +197,10 @@ declare module "@scom/secure-page-viewer/sidebar.tsx" {
         render(): any;
     }
 }
+/// <amd-module name="@scom/secure-page-viewer/row.css.ts" />
+declare module "@scom/secure-page-viewer/row.css.ts" {
+    export const containerStyle: string;
+}
 /// <amd-module name="@scom/secure-page-viewer/row.tsx" />
 declare module "@scom/secure-page-viewer/row.tsx" {
     import { Module, ControlElement } from '@ijstech/components';

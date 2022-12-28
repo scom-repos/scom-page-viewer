@@ -5,6 +5,7 @@ import {
   GridLayout
 } from '@ijstech/components';
 import { IRowData } from './interface';
+import { containerStyle } from './row.css';
 
 declare global {
   namespace JSX {
@@ -43,7 +44,7 @@ export class ViewrRow extends Module {
 
   render() {
     return (
-      <i-grid-layout id="gridSections" verticalAlignment='center'></i-grid-layout>
+      <i-grid-layout id="gridSections" class={containerStyle} verticalAlignment='center'></i-grid-layout>
     )
   }
 }
