@@ -20,6 +20,13 @@ declare module "@scom/secure-page-viewer/interface.ts" {
         height?: string;
         width?: string;
         columns?: number;
+        columnsSettings?: {
+            width?: string;
+            size?: {
+                width?: string;
+                height?: string;
+            };
+        }[];
     }
     interface ISectionData {
         module: IPageBlockData | null;
@@ -213,7 +220,7 @@ declare module "@scom/secure-page-viewer/row.tsx" {
         }
     }
     export class ViewrRow extends Module {
-        private gridSections;
+        private pnlSections;
         private rowData;
         setData(rowData: IRowData): Promise<void>;
         render(): any;
@@ -226,13 +233,30 @@ declare module "@scom/secure-page-viewer/section.tsx" {
     global {
         namespace JSX {
             interface IntrinsicElements {
-                ['scpage-viewer-section']: ControlElement;
+                ['scpage-viewer-section']: SectionElement;
             }
         }
     }
+    interface SectionElement extends ControlElement {
+        containerSize?: {
+            width?: string;
+            height?: string;
+        };
+    }
     export class ViewrSection extends Module {
         private pnlModule;
+        private _size;
+        get size(): {
+            width?: string;
+            height?: string;
+        };
+        set size(value: {
+            width?: string;
+            height?: string;
+        });
         clear(): void;
+        init(): Promise<void>;
+        updateContainerSize(): void;
         setData(sectionData: ISectionData): Promise<void>;
         loadModule(ipfsCid: string): Promise<any>;
         render(): any;

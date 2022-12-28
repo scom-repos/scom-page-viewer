@@ -18,9 +18,16 @@ interface IRowData {
 }
 
 interface IRowSettings {
-    height?: string;
+  height?: string;
+  width?: string;
+  columns?: number;
+  columnsSettings?: {
     width?: string;
-    columns?: number;
+    size?: {
+      width?: string;
+      height?: string;
+    }
+  }[];
 }
 
 interface ISectionData {

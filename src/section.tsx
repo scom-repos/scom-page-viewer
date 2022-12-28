@@ -2,21 +2,54 @@ import { application, ControlElement, customElements, Module, Panel } from "@ijs
 import { ICodeInfoFileContent, ISectionData } from "./interface";
 import { fetchFileContentByCid, getSCConfigByCodeCid, IPFS_SCOM_URL } from "./utils";
 
-
 declare global {
   namespace JSX {
     interface IntrinsicElements {
-      ['scpage-viewer-section']: ControlElement;
+      ['scpage-viewer-section']: SectionElement;
     }
+  }
+}
+
+interface SectionElement extends ControlElement {
+  containerSize?: {
+    width?: string;
+    height?: string;
   }
 }
 
 @customElements('scpage-viewer-section')
 export class ViewrSection extends Module {
   private pnlModule: Panel;
+  private _size: {
+    width?: string;
+    height?: string;
+  }
+
+  get size() {
+    return this._size || {};
+  }
+
+  set size(value: { width?: string; height?: string }) {
+    this._size = value;
+    this.updateContainerSize();
+  }
 
   clear() {
     this.pnlModule.clearInnerHTML();
+  }
+
+  async init() {
+    super.init();
+    this.size = this.getAttribute('containerSize', true, {});
+  }
+
+  updateContainerSize() {
+    const sizeWidth = this.size.width || 'none';
+    const sizeHeight = this.size.height || 'none';
+    if (this.pnlModule) {
+      this.pnlModule.maxWidth = sizeWidth;
+      this.pnlModule.maxHeight = sizeHeight;
+    }
   }
 
   async setData(sectionData: ISectionData) {

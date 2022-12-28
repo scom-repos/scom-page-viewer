@@ -2,7 +2,7 @@ import {
   Module,
   customElements,
   ControlElement,
-  GridLayout
+  HStack
 } from '@ijstech/components';
 import { IRowData } from './interface';
 import { containerStyle } from './row.css';
@@ -17,11 +17,11 @@ declare global {
 
 @customElements('scpage-viewer-row')
 export class ViewrRow extends Module {
-  private gridSections: GridLayout;
+  private pnlSections: HStack;
   private rowData: IRowData;
 
   async setData(rowData: IRowData) {
-    this.gridSections.clearInnerHTML();
+    this.pnlSections.clearInnerHTML();
     this.rowData = rowData;
     if (this.rowData.config.width) {
       this.width = this.rowData.config.width;
@@ -31,12 +31,13 @@ export class ViewrRow extends Module {
       // when the markdown editor is in edit mode
       this.minHeight = this.rowData.config.height;
     }
-    this.gridSections.templateColumns = Array(this.rowData.sections?.length || 0).fill("1fr")
+    const columnsSettings = this.rowData.config.columnsSettings || {};
     if (this.rowData.sections && this.rowData.sections.length > 0) {
       for (let i = 0; i < this.rowData.sections.length; i++) {
+        const colSettings = columnsSettings[i];
         const sectionData = this.rowData.sections[i];
-        const pageSection = (<scpage-viewer-section></scpage-viewer-section>);
-        this.gridSections.append(pageSection);
+        const pageSection = (<scpage-viewer-section maxWidth={colSettings?.width || ''} containerSize={colSettings?.size || {}}></scpage-viewer-section>);
+        this.pnlSections.append(pageSection);
         await pageSection.setData(sectionData);
       }
     }
@@ -44,7 +45,7 @@ export class ViewrRow extends Module {
 
   render() {
     return (
-      <i-grid-layout id="gridSections" class={containerStyle} verticalAlignment='center'></i-grid-layout>
+      <i-hstack id="pnlSections" class={containerStyle} verticalAlignment='center'></i-hstack>
     )
   }
 }

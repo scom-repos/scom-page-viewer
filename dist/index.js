@@ -339,8 +339,7 @@ define("@scom/secure-page-viewer/row.tsx", ["require", "exports", "@ijstech/comp
     exports.ViewrRow = void 0;
     let ViewrRow = class ViewrRow extends components_8.Module {
         async setData(rowData) {
-            var _a;
-            this.gridSections.clearInnerHTML();
+            this.pnlSections.clearInnerHTML();
             this.rowData = rowData;
             if (this.rowData.config.width) {
                 this.width = this.rowData.config.width;
@@ -350,18 +349,19 @@ define("@scom/secure-page-viewer/row.tsx", ["require", "exports", "@ijstech/comp
                 // when the markdown editor is in edit mode
                 this.minHeight = this.rowData.config.height;
             }
-            this.gridSections.templateColumns = Array(((_a = this.rowData.sections) === null || _a === void 0 ? void 0 : _a.length) || 0).fill("1fr");
+            const columnsSettings = this.rowData.config.columnsSettings || {};
             if (this.rowData.sections && this.rowData.sections.length > 0) {
                 for (let i = 0; i < this.rowData.sections.length; i++) {
+                    const colSettings = columnsSettings[i];
                     const sectionData = this.rowData.sections[i];
-                    const pageSection = (this.$render("scpage-viewer-section", null));
-                    this.gridSections.append(pageSection);
+                    const pageSection = (this.$render("scpage-viewer-section", { maxWidth: (colSettings === null || colSettings === void 0 ? void 0 : colSettings.width) || '', containerSize: (colSettings === null || colSettings === void 0 ? void 0 : colSettings.size) || {} }));
+                    this.pnlSections.append(pageSection);
                     await pageSection.setData(sectionData);
                 }
             }
         }
         render() {
-            return (this.$render("i-grid-layout", { id: "gridSections", class: row_css_1.containerStyle, verticalAlignment: 'center' }));
+            return (this.$render("i-hstack", { id: "pnlSections", class: row_css_1.containerStyle, verticalAlignment: 'center' }));
         }
     };
     ViewrRow = __decorate([
@@ -374,8 +374,27 @@ define("@scom/secure-page-viewer/section.tsx", ["require", "exports", "@ijstech/
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.ViewrSection = void 0;
     let ViewrSection = class ViewrSection extends components_9.Module {
+        get size() {
+            return this._size || {};
+        }
+        set size(value) {
+            this._size = value;
+            this.updateContainerSize();
+        }
         clear() {
             this.pnlModule.clearInnerHTML();
+        }
+        async init() {
+            super.init();
+            this.size = this.getAttribute('containerSize', true, {});
+        }
+        updateContainerSize() {
+            const sizeWidth = this.size.width || 'none';
+            const sizeHeight = this.size.height || 'none';
+            if (this.pnlModule) {
+                this.pnlModule.maxWidth = sizeWidth;
+                this.pnlModule.maxHeight = sizeHeight;
+            }
         }
         async setData(sectionData) {
             if (sectionData.module) {
