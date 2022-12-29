@@ -102,7 +102,7 @@ export default class Viewer extends Module {
 
   render() {
     return (
-      <i-vstack class={styleClass} width="100%" height="100%" background={{ color: Theme.background.main }}>
+      <i-vstack class={`scpage-viewer-container ${styleClass}`} width="100%" height="100%" background={{ color: Theme.background.main }}>
         <i-panel stack={{ grow: "1" }} overflow="hidden">
           <i-vstack
             id="pnlLoading"

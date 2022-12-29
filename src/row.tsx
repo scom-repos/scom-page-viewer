@@ -5,7 +5,6 @@ import {
   HStack
 } from '@ijstech/components';
 import { IRowData } from './interface';
-import { containerStyle } from './row.css';
 
 declare global {
   namespace JSX {
@@ -45,7 +44,7 @@ export class ViewrRow extends Module {
 
   render() {
     return (
-      <i-hstack id="pnlSections" class={containerStyle} verticalAlignment='center'></i-hstack>
+      <i-hstack id="pnlSections" verticalAlignment='center'></i-hstack>
     )
   }
 }

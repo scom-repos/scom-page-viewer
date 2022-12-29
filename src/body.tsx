@@ -2,7 +2,7 @@ import {
   ControlElement,
   customElements,
   Module,
-  Panel
+  VStack
 } from "@ijstech/components";
 import { IPageData, IRowData } from "./interface";
 import { ViewerPaging } from "./paging";
@@ -24,7 +24,7 @@ declare global {
 @customElements('scpage-viewer-body')
 export class ViewrBody extends Module {
   private rows: IRowData[];
-  private pnlRows: Panel;
+  private pnlRows: VStack;
   private viewerPaging: ViewerPaging;
   public onUpdatePage: pageChangeCallback;
 
@@ -67,7 +67,7 @@ export class ViewrBody extends Module {
   render() {
     return (
       <i-panel height={'100%'}>
-        <i-panel id={'pnlRows'} padding={{ top: 12, bottom: 50 }}></i-panel>
+        <i-vstack id={'pnlRows'} alignItems="center" padding={{ top: 12, bottom: 50 }}></i-vstack>
         <scpage-viewer-paging id="viewerPaging" visible={false} onPrevPage={this.onUpdatePage.bind(this)} onNextPage={this.onUpdatePage.bind(this)}></scpage-viewer-paging>
       </i-panel>
     );
