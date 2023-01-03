@@ -11,8 +11,7 @@
         "declaration": false,        
         "baseUrl": ".",
         "paths": {
-            "@modules/*":["modules/*"],
-            "@scom/secure-page-viewer": ["./j"]
+            "@modules/*":["modules/*"]
         }
     },
     "include": ["modules/**/*.ts","modules/**/*.tsx"],
