@@ -16,7 +16,7 @@
         "@scom/secure-page-viewer": "file:./ref"
     },
     "scripts": {
-        "cp:viewer": "rm -r ref && mkdir ref && cp ../package.json ref/package.json && cp -r ../dist ref/dist && cp -r ../types ref/types && cp -r ../pluginTypes ref/pluginTypes",
+        "cp:viewer": "rm -rf ref && mkdir ref && cp ../package.json ref/package.json && cp -r ../dist ref/dist && cp -r ../types ref/types && cp -r ../pluginTypes ref/pluginTypes",
         "build": "npm run cp:viewer && rm -rf dist && npx @ijstech/compiler",
         "serve": "npx @ijstech/cli serve 8080",
         "test": "npm run build && npm run serve"
