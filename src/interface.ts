@@ -28,6 +28,7 @@ interface IRowSettings {
       height?: string;
     }
   }[];
+  anchorName?: string;
 }
 
 interface ISectionData {
