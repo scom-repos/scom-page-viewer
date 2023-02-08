@@ -27,6 +27,7 @@ declare module "@scom/secure-page-viewer/interface.ts" {
                 height?: string;
             };
         }[];
+        anchorName?: string;
     }
     interface ISectionData {
         module: IPageBlockData | null;
@@ -144,6 +145,11 @@ declare module "@scom/secure-page-viewer/paging.tsx" {
         render(): any;
     }
 }
+/// <amd-module name="@scom/secure-page-viewer/body.css.ts" />
+declare module "@scom/secure-page-viewer/body.css.ts" {
+    const _default_2: string;
+    export default _default_2;
+}
 /// <amd-module name="@scom/secure-page-viewer/body.tsx" />
 declare module "@scom/secure-page-viewer/body.tsx" {
     import { ControlElement, Module } from "@ijstech/components";
@@ -163,9 +169,13 @@ declare module "@scom/secure-page-viewer/body.tsx" {
         private rows;
         private pnlRows;
         private viewerPaging;
+        private archorElm;
         onUpdatePage: pageChangeCallback;
         setRows(rows: IRowData[]): Promise<void>;
         renderRows(): Promise<void>;
+        private updateAnchors;
+        private onScrollListener;
+        private onScrollToRow;
         clearRows(): void;
         setPaging(pages: IPageData[], currPage: IPageData): Promise<void>;
         setPagingVisibility(pagingVisible: boolean): void;
@@ -174,8 +184,8 @@ declare module "@scom/secure-page-viewer/body.tsx" {
 }
 /// <amd-module name="@scom/secure-page-viewer/sidebar.css.ts" />
 declare module "@scom/secure-page-viewer/sidebar.css.ts" {
-    const _default_2: string;
-    export default _default_2;
+    const _default_3: string;
+    export default _default_3;
 }
 /// <amd-module name="@scom/secure-page-viewer/sidebar.tsx" />
 declare module "@scom/secure-page-viewer/sidebar.tsx" {
