@@ -74,7 +74,7 @@ export class ViewrSection extends Module {
     let module: any;
     if (main.startsWith("@")) {
       scConfig.rootDir = `${IPFS_SCOM_URL}/${codeCID}/dist`;
-      module = await application.newModule(main, scConfig, true);
+      module = await application.newModule(main, scConfig);
     } else {
       const root = `${IPFS_SCOM_URL}/${codeCID}/dist`;
       const mainScriptPath = main.replace('{root}', root);

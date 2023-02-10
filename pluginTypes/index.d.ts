@@ -92,13 +92,6 @@ declare module "@scom/secure-page-viewer/interface.ts" {
     }
     export { IViewerData, IPageData, IRowData, ISectionData, ICodeInfoFileContent };
 }
-/// <amd-module name="@scom/secure-page-viewer/utils.ts" />
-declare module "@scom/secure-page-viewer/utils.ts" {
-    const IPFS_SCOM_URL = "https://ipfs.scom.dev/ipfs";
-    function fetchFileContentByCid(ipfsCid: string): Promise<Response | undefined>;
-    function getSCConfigByCodeCid(codeCid: string): Promise<any>;
-    export { IPFS_SCOM_URL, fetchFileContentByCid, getSCConfigByCodeCid };
-}
 /// <amd-module name="@scom/secure-page-viewer/index.css.ts" />
 declare module "@scom/secure-page-viewer/index.css.ts" {
     const _default: string;
@@ -232,6 +225,13 @@ declare module "@scom/secure-page-viewer/row.tsx" {
         render(): any;
     }
 }
+/// <amd-module name="@scom/secure-page-viewer/utils.ts" />
+declare module "@scom/secure-page-viewer/utils.ts" {
+    const IPFS_SCOM_URL = "https://ipfs.scom.dev/ipfs";
+    function fetchFileContentByCid(ipfsCid: string): Promise<Response | undefined>;
+    function getSCConfigByCodeCid(codeCid: string): Promise<any>;
+    export { IPFS_SCOM_URL, fetchFileContentByCid, getSCConfigByCodeCid };
+}
 /// <amd-module name="@scom/secure-page-viewer/section.tsx" />
 declare module "@scom/secure-page-viewer/section.tsx" {
     import { ControlElement, Module } from "@ijstech/components";
@@ -290,7 +290,6 @@ declare module "@scom/secure-page-viewer" {
         setData(): Promise<void>;
         renderPageByConfig(): Promise<void>;
         renderPage(page: IPageData): Promise<void>;
-        private autoRetryGetIPFSContent;
         render(): any;
     }
 }

@@ -8,38 +8,6 @@ define("@scom/secure-page-viewer/interface.ts", ["require", "exports"], function
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
 });
-define("@scom/secure-page-viewer/utils.ts", ["require", "exports"], function (require, exports) {
-    "use strict";
-    Object.defineProperty(exports, "__esModule", { value: true });
-    exports.getSCConfigByCodeCid = exports.fetchFileContentByCid = exports.IPFS_SCOM_URL = void 0;
-    ///<amd-module name='@scom/secure-page-viewer/utils.ts'/> 
-    const IPFS_SCOM_URL = "https://ipfs.scom.dev/ipfs";
-    exports.IPFS_SCOM_URL = IPFS_SCOM_URL;
-    async function fetchFileContentByCid(ipfsCid) {
-        let response;
-        try {
-            response = await fetch(`${IPFS_SCOM_URL}/${ipfsCid}`);
-        }
-        catch (err) {
-            const IPFS_Gateway = 'https://ipfs.io/ipfs/{CID}';
-            response = await fetch(IPFS_Gateway.replace('{CID}', ipfsCid));
-        }
-        return response;
-    }
-    exports.fetchFileContentByCid = fetchFileContentByCid;
-    ;
-    async function getSCConfigByCodeCid(codeCid) {
-        let scConfig;
-        try {
-            let scConfigRes = await fetchFileContentByCid(`${codeCid}/dist/scconfig.json`);
-            if (scConfigRes)
-                scConfig = await scConfigRes.json();
-        }
-        catch (err) { }
-        return scConfig;
-    }
-    exports.getSCConfigByCodeCid = getSCConfigByCodeCid;
-});
 define("@scom/secure-page-viewer/index.css.ts", ["require", "exports", "@ijstech/components"], function (require, exports, components_1) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
@@ -426,6 +394,38 @@ define("@scom/secure-page-viewer/row.tsx", ["require", "exports", "@ijstech/comp
     ], ViewrRow);
     exports.ViewrRow = ViewrRow;
 });
+define("@scom/secure-page-viewer/utils.ts", ["require", "exports"], function (require, exports) {
+    "use strict";
+    Object.defineProperty(exports, "__esModule", { value: true });
+    exports.getSCConfigByCodeCid = exports.fetchFileContentByCid = exports.IPFS_SCOM_URL = void 0;
+    ///<amd-module name='@scom/secure-page-viewer/utils.ts'/> 
+    const IPFS_SCOM_URL = "https://ipfs.scom.dev/ipfs";
+    exports.IPFS_SCOM_URL = IPFS_SCOM_URL;
+    async function fetchFileContentByCid(ipfsCid) {
+        let response;
+        try {
+            response = await fetch(`${IPFS_SCOM_URL}/${ipfsCid}`);
+        }
+        catch (err) {
+            const IPFS_Gateway = 'https://ipfs.io/ipfs/{CID}';
+            response = await fetch(IPFS_Gateway.replace('{CID}', ipfsCid));
+        }
+        return response;
+    }
+    exports.fetchFileContentByCid = fetchFileContentByCid;
+    ;
+    async function getSCConfigByCodeCid(codeCid) {
+        let scConfig;
+        try {
+            let scConfigRes = await fetchFileContentByCid(`${codeCid}/dist/scconfig.json`);
+            if (scConfigRes)
+                scConfig = await scConfigRes.json();
+        }
+        catch (err) { }
+        return scConfig;
+    }
+    exports.getSCConfigByCodeCid = getSCConfigByCodeCid;
+});
 define("@scom/secure-page-viewer/section.tsx", ["require", "exports", "@ijstech/components", "@scom/secure-page-viewer/utils.ts"], function (require, exports, components_9, utils_1) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
@@ -477,7 +477,7 @@ define("@scom/secure-page-viewer/section.tsx", ["require", "exports", "@ijstech/
             let module;
             if (main.startsWith("@")) {
                 scConfig.rootDir = `${utils_1.IPFS_SCOM_URL}/${codeCID}/dist`;
-                module = await components_9.application.newModule(main, scConfig, true);
+                module = await components_9.application.newModule(main, scConfig);
             }
             else {
                 const root = `${utils_1.IPFS_SCOM_URL}/${codeCID}/dist`;
@@ -502,7 +502,7 @@ define("@scom/secure-page-viewer/section.tsx", ["require", "exports", "@ijstech/
     ], ViewrSection);
     exports.ViewrSection = ViewrSection;
 });
-define("@scom/secure-page-viewer", ["require", "exports", "@ijstech/components", "@scom/secure-page-viewer/utils.ts", "@scom/secure-page-viewer/index.css.ts", "@scom/secure-page-viewer/body.tsx", "@scom/secure-page-viewer/row.tsx", "@scom/secure-page-viewer/section.tsx", "@scom/secure-page-viewer/sidebar.tsx", "@scom/secure-page-viewer/paging.tsx"], function (require, exports, components_10, utils_2, index_css_1, body_1, row_1, section_1, sidebar_1, paging_1) {
+define("@scom/secure-page-viewer", ["require", "exports", "@ijstech/components", "@scom/secure-page-viewer/index.css.ts", "@scom/secure-page-viewer/body.tsx", "@scom/secure-page-viewer/row.tsx", "@scom/secure-page-viewer/section.tsx", "@scom/secure-page-viewer/sidebar.tsx", "@scom/secure-page-viewer/paging.tsx"], function (require, exports, components_10, index_css_1, body_1, row_1, section_1, sidebar_1, paging_1) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.ViewerPaging = exports.ViewerSidebar = exports.ViewrSection = exports.ViewrRow = exports.ViewrBody = void 0;
@@ -523,12 +523,7 @@ define("@scom/secure-page-viewer", ["require", "exports", "@ijstech/components",
             if (!this.isLoaded) {
                 this.gridMain.templateColumns = ["1fr"];
                 this.viewerSidebar.visible = false;
-                if (options === null || options === void 0 ? void 0 : options.cid) {
-                    this._data = await this.autoRetryGetIPFSContent(options.cid);
-                }
-                else {
-                    this._data = undefined;
-                }
+                this._data = options;
                 if (options) {
                     this.params = options.params;
                 }
@@ -574,27 +569,6 @@ define("@scom/secure-page-viewer", ["require", "exports", "@ijstech/components",
             await this.viewerBody.setRows(page.rows);
             await this.viewerBody.setPaging(this._data.pages, page);
             this.viewerBody.setPagingVisibility(this.pagingVisible);
-        }
-        async autoRetryGetIPFSContent(cid) {
-            return new Promise((resolve, reject) => {
-                const load = async (counter) => {
-                    try {
-                        if (counter >= 10)
-                            return reject();
-                        const response = await fetch(`${utils_2.IPFS_SCOM_URL}/${cid}`);
-                        if (response.ok) {
-                            resolve(response.json());
-                        }
-                        else {
-                            return load(++counter);
-                        }
-                    }
-                    catch (err) {
-                        return load(++counter);
-                    }
-                };
-                load(0);
-            });
         }
         render() {
             return (this.$render("i-vstack", { class: `scpage-viewer-container ${index_css_1.default}`, width: "100%", height: "100%", background: { color: Theme.background.main } },

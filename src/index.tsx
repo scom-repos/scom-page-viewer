@@ -1,6 +1,5 @@
 import { customModule, GridLayout, Module, Panel, Styles } from "@ijstech/components";
 import { IViewerData, IPageData } from "./interface";
-import { IPFS_SCOM_URL } from "./utils";
 import styleClass from './index.css';
 import { ViewrBody } from './body';
 import { ViewerSidebar } from "./sidebar";
@@ -31,11 +30,7 @@ export default class Viewer extends Module {
     if (!this.isLoaded) {
       this.gridMain.templateColumns = ["1fr"];
       this.viewerSidebar.visible = false;
-      if (options?.cid) {
-        this._data = await this.autoRetryGetIPFSContent(options.cid);
-      } else {
-        this._data = undefined;
-      }
+      this._data = options;
       if (options) {
         this.params = options.params;
       }
@@ -79,25 +74,6 @@ export default class Viewer extends Module {
     await this.viewerBody.setRows(page.rows);
     await this.viewerBody.setPaging(this._data.pages, page)
     this.viewerBody.setPagingVisibility(this.pagingVisible);
-  }
-
-  private async autoRetryGetIPFSContent(cid: string): Promise<IViewerData> {
-    return new Promise((resolve, reject) => {
-      const load = async (counter: number): Promise<any> => {
-        try {
-          if (counter >= 10) return reject();
-          const response = await fetch(`${IPFS_SCOM_URL}/${cid}`);
-          if (response.ok) {
-            resolve(response.json());
-          } else {
-            return load(++counter);
-          }
-        } catch (err) {
-          return load(++counter);
-        }
-      };
-      load(0);
-    });
   }
 
   render() {
