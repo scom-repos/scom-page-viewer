@@ -6,7 +6,7 @@ import {
   VStack,
   HStack
 } from "@ijstech/components";
-import { IPageData, IRowData } from "./interface";
+import { IPageData, IPageSection } from "./interface";
 import { ViewerPaging } from "./paging";
 import styleClass from "./body.css";
 const Theme = Styles.Theme.ThemeVars;
@@ -27,46 +27,54 @@ declare global {
 
 @customElements('scpage-viewer-body')
 export class ViewrBody extends Module {
-  private rows: IRowData[];
-  private pnlRows: VStack;
+  private sections: IPageSection[];
+  private pnlSections: VStack;
   private viewerPaging: ViewerPaging;
   private archorElm: HStack;
   public onUpdatePage: pageChangeCallback;
 
-  async setRows(rows: IRowData[]) {
-    this.rows = rows;
-    await this.renderRows();
+  generateUUID() {
+    return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+      var r = Math.random() * 16 | 0, v = c == 'x' ? r : (r & 0x3 | 0x8);
+      return v.toString(16);
+    });
   }
 
-  async renderRows() {
-    this.clearRows();
-    if ((!this.rows || (this.rows && this.rows.length == 0))) {
-      this.rows = [{
-        config: {
-          width: '100%',
-          height: '100%',
-          columns: 1,
-        },
-        sections: []
-      }]
+  async setSections(sections: IPageSection[]) {
+    this.sections = sections;
+    if (this.pnlSections) this.pnlSections.clearInnerHTML();
+    await this.renderSections();
+  }
+
+  async renderSections() {
+    this.clearSections();
+    if ((!this.sections || (this.sections && this.sections.length == 0))) {
+      this.sections = [
+        {
+          id: this.generateUUID(),
+          row: 0,
+          elements: []
+        }
+      ]
     }
-    let anchors: { name: string, rowElm: any }[] = [];
-    for (const rowData of this.rows) {
-      const pageRow = (<scpage-viewer-row></scpage-viewer-row>);
-      this.pnlRows.append(pageRow);
-      await pageRow.setData(rowData);
-      const anchorName = rowData?.config?.anchorName;
+    let anchors: { name: string, sectionElm: any }[] = [];
+    for (const section of this.sections) {
+      const { image, backgroundColor } = section;
+      const pageSection = (<scpage-viewer-section id={section.id} background={{ image, color: backgroundColor }}></scpage-viewer-section>);
+      this.pnlSections.append(pageSection);
+      await pageSection.setData(section.elements);
+      const anchorName = section.anchorName;
       if (anchorName) {
         anchors.push({
           name: anchorName,
-          rowElm: pageRow
+          sectionElm: pageSection
         });
       }
     }
     this.updateAnchors(anchors);
   }
 
-  private updateAnchors(anchors: { name: string, rowElm: any }[]) {
+  private updateAnchors(anchors: { name: string, sectionElm: any }[]) {
     this.archorElm.clearInnerHTML();
     if (anchors && anchors.length) {
       for (let i = 0; i < anchors.length; i++) {
@@ -74,14 +82,14 @@ export class ViewrBody extends Module {
         if (i > 0) {
           this.archorElm.appendChild(<i-panel width={1} height={16} display="block" background={{ color: Theme.divider }} />);
         }
-        this.archorElm.appendChild(<i-label caption={anchor.name} class="pointer anchor-item" onClick={() => this.onScrollToRow(anchor.rowElm)} />);
+        this.archorElm.appendChild(<i-label caption={anchor.name} class="pointer anchor-item" onClick={() => this.onScrollToRow(anchor.sectionElm)} />);
       }
       this.archorElm.visible = true;
       this.archorElm.display = 'flex';
-      this.pnlRows.padding.top = (this.archorElm.clientHeight > 45 ? this.archorElm.clientHeight : 45) + 12;
+      this.pnlSections.padding.top = (this.archorElm.clientHeight > 45 ? this.archorElm.clientHeight : 45) + 12;
       window.addEventListener("scroll", this.onScrollListener);
     } else {
-      this.pnlRows.padding.top = 12;
+      this.pnlSections.padding.top = 12;
       this.archorElm.visible = false;
       window.removeEventListener("scroll", this.onScrollListener);
     }
@@ -105,8 +113,8 @@ export class ViewrBody extends Module {
     }
   }
 
-  clearRows() {
-    this.pnlRows.clearInnerHTML();
+  clearSections() {
+    this.pnlSections.clearInnerHTML();
   }
 
   async setPaging(pages: IPageData[], currPage: IPageData) {
@@ -121,7 +129,7 @@ export class ViewrBody extends Module {
     return (
       <i-panel class={styleClass} height={'100%'}>
         <i-hstack id={'archorElm'} display="flex" background={{ color: Theme.background.default }} zIndex={9999} gap={10} verticalAlignment="center" horizontalAlignment="center" wrap="wrap" position="fixed" width="100%" padding={{ left: 50, right: 50, top: 10, bottom: 10 }}></i-hstack>
-        <i-vstack id={'pnlRows'} alignItems="center" padding={{ top: 12, bottom: 50 }}></i-vstack>
+        <i-vstack id={'pnlSections'} alignItems="center" padding={{ top: 12, bottom: 50 }}></i-vstack>
         <scpage-viewer-paging id="viewerPaging" visible={false} onPrevPage={this.onUpdatePage.bind(this)} onNextPage={this.onUpdatePage.bind(this)}></scpage-viewer-paging>
       </i-panel>
     );

@@ -10,7 +10,6 @@ import { assets } from '@modules/assets';
 import { Header } from './header';
 import { Footer } from './footer';
 import { IMenu, IRoute, ISCConfig, ITheme } from './interface';
-Styles.Theme.applyTheme(Styles.Theme.darkTheme);
 
 @customModule
 export default class MainLauncher extends Module {
@@ -19,7 +18,7 @@ export default class MainLauncher extends Module {
   private _options: ISCConfig;
   private currentModule: Module;
   private headerElm: Header;
-  private footerElm: Footer;
+  // private footerElm: Footer;
   private pnlScrollable: Panel;
 
   constructor(parent?: Container, options?: any) {
@@ -136,13 +135,13 @@ export default class MainLauncher extends Module {
     const header = this._options.header || {};
     const footer = this._options.footer || {};
     this.headerElm.visible = header.visible ?? true;
-    this.footerElm.visible = footer.visible ?? true;
+    // this.footerElm.visible = footer.visible ?? true;
     if (header.fixed && footer.fixed) {
       this.pnlMain.overflow.y = 'auto';
     } else {
       if (header.fixed) {
         this.pnlScrollable.append(this.pnlMain);
-        this.pnlScrollable.append(this.footerElm);
+        // this.pnlScrollable.append(this.footerElm);
         this.pnlScrollable.visible = true;
       } else if (footer.fixed) {
         this.pnlScrollable.append(this.headerElm);
@@ -158,7 +157,7 @@ export default class MainLauncher extends Module {
         <main-header id="headerElm" menuItems={this.menuItems} height="auto" width="100%"></main-header>
         <i-vstack id="pnlScrollable" visible={false} stack={{ grow: "1" }} overflow={{ y: 'auto' }}></i-vstack>
         <i-panel id="pnlMain" stack={{ grow: "1" }} ></i-panel>
-        <main-footer
+        {/* <main-footer
           id="footerElm"
           stack={{ shrink: '0' }}
           class='footer'
@@ -166,7 +165,7 @@ export default class MainLauncher extends Module {
           width="100%"
           copyrightInfo={this._options.copyrightInfo}
           version={this._options.version}
-        ></main-footer>
+        ></main-footer> */}
       </i-vstack>
     )
   };

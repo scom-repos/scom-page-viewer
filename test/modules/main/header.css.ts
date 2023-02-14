@@ -79,6 +79,9 @@ export default Styles.style({
     '.os-menu i-link': {
       color: Theme.colors.primary.contrastText
     },
+    '& > i-hstack': {
+      background: Theme.colors.primary.main
+    },
     '.header-logo > img': {
       maxHeight: 'unset',
       maxWidth: 'unset'
