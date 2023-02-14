@@ -1,12 +1,10 @@
 import {
   Module,
   customElements,
-  Label,
   ControlElement,
-  Styles,
-  application
+  Panel,
 } from '@ijstech/components';
-import Assets from './assets';
+import { IPageFooter } from './interface';
 
 declare global {
   namespace JSX {
@@ -16,12 +14,10 @@ declare global {
   }
 }
 
-const Theme = Styles.Theme.ThemeVars;
-
 @customElements('scpage-viewer-footer')
 export class ViewerFooter extends Module {
-  private _footer: string;
-  private lblFooter: Label;
+  private _data: IPageFooter;
+  private pnlFooter: Panel;
 
   constructor(parent?: any) {
     super(parent);
@@ -31,29 +27,30 @@ export class ViewerFooter extends Module {
     super.init();
   }
 
-  get footer() {
-    return this._footer;
+  get data() {
+    return this._data;
   }
 
-  set footer(value: string) {
-    this._footer = value;
-    this.lblFooter.caption = value;
+  set data(value: IPageFooter) {
+    this._data = value;
+    this.renderFooter();
+  }
+
+  private async renderFooter() {
+    if (!this.data || !this.pnlFooter) return;
+    this.pnlFooter.clearInnerHTML();
+    const { image, elements } = this.data;    
+    this.pnlFooter.background = { image: image };
+    for (const element of elements) {
+      const pageElement = (<scpage-viewer-page-element></scpage-viewer-page-element>);
+      this.pnlFooter.append(pageElement);
+      await pageElement.setData(element);
+    }
   }
 
   render() {
     return (
-      <i-hstack
-        class="footer"
-        height={50}
-        horizontalAlignment="start"
-        verticalAlignment="center"
-        padding={{ left: 20, right: 20, top: 10, bottom: 10 }}
-        border={{ width: 1, style: 'solid', color: Theme.divider }}
-        gap={10}
-      >
-        <i-image height={30} width={30} url={Assets.logo}></i-image>
-        <i-label id="lblFooter" font={{ color: Theme.text.primary }}></i-label>
-      </i-hstack>
+      <i-panel id="pnlFooter" position="relative" width="100%"></i-panel>
     );
   }
 }

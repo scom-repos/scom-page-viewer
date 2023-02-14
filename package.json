@@ -6,7 +6,7 @@
     "pluginTypes": "pluginTypes/index.d.ts",
     "types": "types/index.d.ts",
     "dependencies": {
-        "@ijstech/components": "^0.1.35",
+        "@ijstech/components": "^0.1.39",
         "@ijstech/eth-wallet": "^0.1.35"
     },
     "devDependencies": {
@@ -15,6 +15,8 @@
     },
     "scripts": {
         "build": "rm -rf dist && npx @ijstech/compiler",
+        "build:dev": "rm -rf dist && npx @ijstech/compiler && npm run cp:pageblocksdev",
+        "cp:pageblocksdev": "cp -r modules/pageblocks dist/pageblocks",
         "test": "cd test && npm run test && cd .."
     }
 }

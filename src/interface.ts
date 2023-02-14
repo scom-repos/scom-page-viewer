@@ -5,11 +5,15 @@ interface IViewerData {
 
 interface IPageData {
   cid?: string;
+  title?: string;
   name: string;
   path: string;
   url: string;
   visible: boolean;
-  rows: IRowData[];
+
+  header: IPageHeader;
+  sections: IPageSection[];
+  footer: IPageFooter;
 }
 
 interface IRowData {
@@ -71,7 +75,7 @@ interface IContainerSettings {
 interface IPageBlockData {
   name: string;
   description: string;
-  ipfscid: string;
+  ipfscid?: string;
   imgUrl: string;
   category: {
     icon: string;
@@ -96,6 +100,45 @@ interface ISemanticVersion {
   major: number;
   minor: number;
   patch: number;
+}
+
+export interface IPageElement {
+  id: string; // uuid
+  column: number;
+  columnSpan: number;
+  type: 'primitive' | 'composite',
+  properties: any;
+  module?: IPageBlockData; // follow the standard defined in secure page, if type === 'primitive'
+  elements?: IPageElement[]; // type === 'composite'
+
+  visibleOn?: string;
+  invisibleOn?: string;
+}
+
+export enum HeaderType {
+  'COVER' = 'cover',
+  'LARGE' = 'largeBanner',
+  'NORMAL' = 'banner',
+  'TITLE' = 'titleOnly'
+};
+export interface IPageHeader {
+  headerType: HeaderType;
+  image: string;
+  elements: IPageElement[];
+}
+
+export interface IPageSection {
+  id: string; // uuid
+  row: number;
+  anchorName?: string;
+  image?: string;
+  backgroundColor?: string;
+  elements: IPageElement[];
+}
+
+export interface IPageFooter {
+  image: string;
+  elements: IPageElement[];
 }
 
 export {

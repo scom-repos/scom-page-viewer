@@ -5,7 +5,7 @@
         "node": ">=18.0.0"
     },
     "dependencies": {
-        "@ijstech/components": "^0.1.35",
+        "@ijstech/components": "^0.1.39",
         "@ijstech/eth-contract": "^0.1.10",
         "@ijstech/eth-wallet": "^0.1.35"
     },
@@ -17,7 +17,8 @@
     },
     "scripts": {
         "cp:viewer": "rm -rf ref && mkdir ref && cp ../package.json ref/package.json && cp -r ../dist ref/dist && cp -r ../types ref/types && cp -r ../pluginTypes ref/pluginTypes",
-        "build": "npm run cp:viewer && rm -rf dist && npx @ijstech/compiler",
+        "cp:local-pageblock": "if [ -d ref/dist/pageblocks ] ; then cp -r ref/dist/pageblocks dist/modules/pageblocks ; fi",
+        "build": "npm run cp:viewer && rm -rf dist && npx @ijstech/compiler && npm run cp:local-pageblock",
         "serve": "npx @ijstech/cli serve 8080",
         "test": "npm run build && npm run serve"
     }
