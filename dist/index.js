@@ -422,7 +422,7 @@ define("@scom/secure-page-viewer/pageElement.tsx", ["require", "exports", "@ijst
                 if (module) {
                     if (module.confirm)
                         module.confirm();
-                    module.setData(properties);
+                    await module.setData(properties);
                 }
             }
             else {
@@ -640,7 +640,7 @@ define("@scom/secure-page-viewer", ["require", "exports", "@ijstech/components",
                 await this.setData();
             }
             else if (this.data) {
-                this.renderPage(this.data);
+                await this.renderPage(this.data);
             }
             this.pnlLoading.visible = false;
             this.gridMain.visible = true;
@@ -648,7 +648,7 @@ define("@scom/secure-page-viewer", ["require", "exports", "@ijstech/components",
         async setData() {
             if (!this.data)
                 return;
-            this.renderPage(this.data);
+            await this.renderPage(this.data);
             this.isLoaded = true;
         }
         async renderPage(page) {

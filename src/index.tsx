@@ -28,7 +28,7 @@ export default class Viewer extends Module {
       this.data = options;
       await this.setData();
     } else if (this.data) {
-      this.renderPage(this.data);
+      await this.renderPage(this.data);
     }
     this.pnlLoading.visible = false;
     this.gridMain.visible = true;
@@ -36,7 +36,7 @@ export default class Viewer extends Module {
 
   async setData() {
     if (!this.data) return;
-    this.renderPage(this.data);
+    await this.renderPage(this.data);
     this.isLoaded = true;
   }
 
