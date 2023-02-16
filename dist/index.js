@@ -58,7 +58,7 @@ define("@scom/secure-page-viewer/header.tsx", ["require", "exports", "@ijstech/c
                     break;
             }
             for (const element of elements) {
-                const pageElement = (this.$render("scpage-viewer-page-element", null));
+                const pageElement = (this.$render("sc-page-viewer-page-element", null));
                 this.pnlHeader.append(pageElement);
                 await pageElement.setData(element);
             }
@@ -249,7 +249,7 @@ define("@scom/secure-page-viewer/body.tsx", ["require", "exports", "@ijstech/com
             let anchors = [];
             for (const section of this.sections) {
                 const { image, backgroundColor } = section;
-                const pageSection = (this.$render("scpage-viewer-section", { id: section.id, background: { image, color: backgroundColor } }));
+                const pageSection = (this.$render("sc-page-viewer-section", { id: section.id, background: { image, color: backgroundColor } }));
                 this.pnlSections.append(pageSection);
                 await pageSection.setData(section.elements);
                 const anchorName = section.anchorName;
@@ -302,7 +302,7 @@ define("@scom/secure-page-viewer/body.tsx", ["require", "exports", "@ijstech/com
             return (this.$render("i-panel", { class: body_css_1.default, height: '100%' },
                 this.$render("i-hstack", { id: 'archorElm', display: "flex", background: { color: Theme.background.default }, zIndex: 9999, gap: 10, verticalAlignment: "center", horizontalAlignment: "center", wrap: "wrap", position: "fixed", width: "100%", padding: { left: 50, right: 50, top: 10, bottom: 10 } }),
                 this.$render("i-vstack", { id: 'pnlSections', alignItems: "center", padding: { top: 12, bottom: 50 } }),
-                this.$render("scpage-viewer-paging", { id: "viewerPaging", visible: false, onPrevPage: this.onUpdatePage.bind(this), onNextPage: this.onUpdatePage.bind(this) })));
+                this.$render("sc-page-viewer-paging", { id: "viewerPaging", visible: false, onPrevPage: this.onUpdatePage.bind(this), onNextPage: this.onUpdatePage.bind(this) })));
         }
     };
     ViewrBody = __decorate([
@@ -335,7 +335,7 @@ define("@scom/secure-page-viewer/footer.tsx", ["require", "exports", "@ijstech/c
             const { image, elements } = this.data;
             this.pnlFooter.background = { image: image };
             for (const element of elements) {
-                const pageElement = (this.$render("scpage-viewer-page-element", null));
+                const pageElement = (this.$render("sc-page-viewer-page-element", null));
                 this.pnlFooter.append(pageElement);
                 await pageElement.setData(element);
             }
@@ -427,7 +427,7 @@ define("@scom/secure-page-viewer/pageElement.tsx", ["require", "exports", "@ijst
             }
             else {
                 for (const element of elements) {
-                    const pnlElm = (this.$render("scpage-viewer-page-element", null));
+                    const pnlElm = (this.$render("sc-page-viewer-page-element", null));
                     this.pnlElement.append(pnlElm);
                     await pnlElm.setData(element);
                 }
@@ -508,7 +508,7 @@ define("@scom/secure-page-viewer/section.tsx", ["require", "exports", "@ijstech/
         }
         async setData(listPageElm) {
             for (const pageElm of listPageElm) {
-                const pageElement = (this.$render("scpage-viewer-page-element", null));
+                const pageElement = (this.$render("sc-page-viewer-page-element", null));
                 this.pnlSection.append(pageElement);
                 await pageElement.setData(pageElm);
             }
@@ -661,14 +661,14 @@ define("@scom/secure-page-viewer", ["require", "exports", "@ijstech/components",
             await this.viewerBody.setSections(sections);
         }
         render() {
-            return (this.$render("i-vstack", { class: `scpage-viewer-container ${index_css_1.default}`, width: "100%", height: "100%" },
+            return (this.$render("i-vstack", { class: `sc-page-viewer-container ${index_css_1.default}`, width: "100%", height: "100%" },
                 this.$render("i-panel", { stack: { grow: "1" }, overflow: "hidden" },
                     this.$render("i-vstack", { id: "pnlLoading", height: "100%", horizontalAlignment: "center", verticalAlignment: "center", padding: { top: "1rem", bottom: "1rem", left: "1rem", right: "1rem" }, visible: false },
                         this.$render("i-panel", { class: 'spinner' })),
-                    this.$render("scpage-viewer-header", { id: "viewerHeader", visible: false }),
+                    this.$render("sc-page-viewer-header", { id: "viewerHeader", visible: false }),
                     this.$render("i-grid-layout", { id: "gridMain", height: "100%", templateColumns: ["1fr"] },
-                        this.$render("scpage-viewer-body", { id: "viewerBody", overflow: "auto", onUpdatePage: this.renderPage.bind(this) })),
-                    this.$render("scpage-viewer-footer", { id: "viewerFooter", visible: false }))));
+                        this.$render("sc-page-viewer-body", { id: "viewerBody", overflow: "auto", onUpdatePage: this.renderPage.bind(this) })),
+                    this.$render("sc-page-viewer-footer", { id: "viewerFooter", visible: false }))));
         }
     };
     Viewer = __decorate([

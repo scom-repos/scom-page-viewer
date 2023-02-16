@@ -9,7 +9,7 @@ import { IRowData } from './interface';
 declare global {
   namespace JSX {
     interface IntrinsicElements {
-      ['scpage-viewer-row']: ControlElement;
+      ['sc-page-viewer-row']: ControlElement;
     }
   }
 }
@@ -35,7 +35,7 @@ export class ViewrRow extends Module {
       for (let i = 0; i < this.rowData.sections.length; i++) {
         const colSettings = columnsSettings[i];
         const sectionData = this.rowData.sections[i];
-        const pageSection = (<scpage-viewer-section maxWidth={colSettings?.width || ''} containerSize={colSettings?.size || {}}></scpage-viewer-section>);
+        const pageSection = (<sc-page-viewer-section maxWidth={colSettings?.width || ''} containerSize={colSettings?.size || {}}></sc-page-viewer-section>);
         this.pnlSections.append(pageSection);
         await pageSection.setData(sectionData);
       }

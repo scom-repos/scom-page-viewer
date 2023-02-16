@@ -9,7 +9,7 @@ import { HeaderType, IPageHeader } from './interface';
 declare global {
   namespace JSX {
     interface IntrinsicElements {
-      ['scpage-viewer-header']: ControlElement;
+      ['sc-page-viewer-header']: ControlElement;
     }
   }
 }
@@ -58,7 +58,7 @@ export class ViewerHeader extends Module {
         break;
     }
     for (const element of elements) {
-      const pageElement = (<scpage-viewer-page-element></scpage-viewer-page-element>);
+      const pageElement = (<sc-page-viewer-page-element></sc-page-viewer-page-element>);
       this.pnlHeader.append(pageElement);
       await pageElement.setData(element);
     }

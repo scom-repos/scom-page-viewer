@@ -20,7 +20,7 @@ interface ViewerBodyElement extends ControlElement {
 declare global {
   namespace JSX {
     interface IntrinsicElements {
-      ['scpage-viewer-body']: ViewerBodyElement;
+      ['sc-page-viewer-body']: ViewerBodyElement;
     }
   }
 }
@@ -60,7 +60,7 @@ export class ViewrBody extends Module {
     let anchors: { name: string, sectionElm: any }[] = [];
     for (const section of this.sections) {
       const { image, backgroundColor } = section;
-      const pageSection = (<scpage-viewer-section id={section.id} background={{ image, color: backgroundColor }}></scpage-viewer-section>);
+      const pageSection = (<sc-page-viewer-section id={section.id} background={{ image, color: backgroundColor }}></sc-page-viewer-section>);
       this.pnlSections.append(pageSection);
       await pageSection.setData(section.elements);
       const anchorName = section.anchorName;
@@ -130,7 +130,7 @@ export class ViewrBody extends Module {
       <i-panel class={styleClass} height={'100%'}>
         <i-hstack id={'archorElm'} display="flex" background={{ color: Theme.background.default }} zIndex={9999} gap={10} verticalAlignment="center" horizontalAlignment="center" wrap="wrap" position="fixed" width="100%" padding={{ left: 50, right: 50, top: 10, bottom: 10 }}></i-hstack>
         <i-vstack id={'pnlSections'} alignItems="center" padding={{ top: 12, bottom: 50 }}></i-vstack>
-        <scpage-viewer-paging id="viewerPaging" visible={false} onPrevPage={this.onUpdatePage.bind(this)} onNextPage={this.onUpdatePage.bind(this)}></scpage-viewer-paging>
+        <sc-page-viewer-paging id="viewerPaging" visible={false} onPrevPage={this.onUpdatePage.bind(this)} onNextPage={this.onUpdatePage.bind(this)}></sc-page-viewer-paging>
       </i-panel>
     );
   }

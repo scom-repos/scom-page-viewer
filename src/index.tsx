@@ -51,7 +51,7 @@ export default class Viewer extends Module {
 
   render() {
     return (
-      <i-vstack class={`scpage-viewer-container ${styleClass}`} width="100%" height="100%">
+      <i-vstack class={`sc-page-viewer-container ${styleClass}`} width="100%" height="100%">
         <i-panel stack={{ grow: "1" }} overflow="hidden">
           <i-vstack
             id="pnlLoading"
@@ -63,11 +63,11 @@ export default class Viewer extends Module {
           >
             <i-panel class={'spinner'}></i-panel>
           </i-vstack>
-          <scpage-viewer-header id="viewerHeader" visible={false}></scpage-viewer-header>
+          <sc-page-viewer-header id="viewerHeader" visible={false}></sc-page-viewer-header>
           <i-grid-layout id="gridMain" height="100%" templateColumns={["1fr"]}>
-            <scpage-viewer-body id="viewerBody" overflow="auto" onUpdatePage={this.renderPage.bind(this)}></scpage-viewer-body>
+            <sc-page-viewer-body id="viewerBody" overflow="auto" onUpdatePage={this.renderPage.bind(this)}></sc-page-viewer-body>
           </i-grid-layout>
-          <scpage-viewer-footer id="viewerFooter" visible={false}></scpage-viewer-footer>
+          <sc-page-viewer-footer id="viewerFooter" visible={false}></sc-page-viewer-footer>
         </i-panel>
       </i-vstack>
     )

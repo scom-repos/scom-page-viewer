@@ -9,7 +9,7 @@ import { IPageFooter } from './interface';
 declare global {
   namespace JSX {
     interface IntrinsicElements {
-      ['scpage-viewer-footer']: ControlElement;
+      ['sc-page-viewer-footer']: ControlElement;
     }
   }
 }
@@ -42,7 +42,7 @@ export class ViewerFooter extends Module {
     const { image, elements } = this.data;    
     this.pnlFooter.background = { image: image };
     for (const element of elements) {
-      const pageElement = (<scpage-viewer-page-element></scpage-viewer-page-element>);
+      const pageElement = (<sc-page-viewer-page-element></sc-page-viewer-page-element>);
       this.pnlFooter.append(pageElement);
       await pageElement.setData(element);
     }

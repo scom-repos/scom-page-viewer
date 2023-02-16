@@ -103,7 +103,7 @@ declare module "@scom/secure-page-viewer/body.tsx" {
     global {
         namespace JSX {
             interface IntrinsicElements {
-                ['scpage-viewer-body']: ControlElement;
+                ['sc-page-viewer-body']: ControlElement;
             }
         }
     }
@@ -132,7 +132,7 @@ declare module "@scom/secure-page-viewer/sidebar.tsx" {
     global {
         namespace JSX {
             interface IntrinsicElements {
-                ['scpage-viewer-sidebar']: SidebarElement;
+                ['sc-page-viewer-sidebar']: SidebarElement;
             }
         }
     }
@@ -154,7 +154,7 @@ declare module "@scom/secure-page-viewer/row.tsx" {
     global {
         namespace JSX {
             interface IntrinsicElements {
-                ['scpage-viewer-row']: ControlElement;
+                ['sc-page-viewer-row']: ControlElement;
             }
         }
     }
@@ -172,7 +172,7 @@ declare module "@scom/secure-page-viewer/section.tsx" {
     global {
         namespace JSX {
             interface IntrinsicElements {
-                ['scpage-viewer-section']: ControlElement;
+                ['sc-page-viewer-section']: ControlElement;
             }
         }
     }

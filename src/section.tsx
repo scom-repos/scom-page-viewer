@@ -4,7 +4,7 @@ import { IPageElement } from "./interface";
 declare global {
   namespace JSX {
     interface IntrinsicElements {
-      ['scpage-viewer-section']: SectionElement;
+      ['sc-page-viewer-section']: SectionElement;
     }
   }
 }
@@ -53,7 +53,7 @@ export class ViewrSection extends Module {
 
   async setData(listPageElm: IPageElement[]) {
     for (const pageElm of listPageElm) {
-      const pageElement = (<scpage-viewer-page-element></scpage-viewer-page-element>);
+      const pageElement = (<sc-page-viewer-page-element></sc-page-viewer-page-element>);
       this.pnlSection.append(pageElement);
       await pageElement.setData(pageElm);
     }

@@ -21,7 +21,7 @@ interface SidebarElement extends ControlElement {
 declare global {
   namespace JSX {
     interface IntrinsicElements {
-      ['scpage-viewer-sidebar']: SidebarElement;
+      ['sc-page-viewer-sidebar']: SidebarElement;
     }
   }
 }

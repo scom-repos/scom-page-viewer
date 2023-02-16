@@ -12,7 +12,7 @@ interface PagingElement extends ControlElement {
 declare global {
   namespace JSX {
     interface IntrinsicElements {
-      ['scpage-viewer-paging']: PagingElement;
+      ['sc-page-viewer-paging']: PagingElement;
     }
   }
 }

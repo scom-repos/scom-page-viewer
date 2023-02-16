@@ -136,7 +136,7 @@ declare module "@scom/secure-page-viewer/header.tsx" {
     global {
         namespace JSX {
             interface IntrinsicElements {
-                ['scpage-viewer-header']: ControlElement;
+                ['sc-page-viewer-header']: ControlElement;
             }
         }
     }
@@ -168,7 +168,7 @@ declare module "@scom/secure-page-viewer/paging.tsx" {
     global {
         namespace JSX {
             interface IntrinsicElements {
-                ['scpage-viewer-paging']: PagingElement;
+                ['sc-page-viewer-paging']: PagingElement;
             }
         }
     }
@@ -208,7 +208,7 @@ declare module "@scom/secure-page-viewer/body.tsx" {
     global {
         namespace JSX {
             interface IntrinsicElements {
-                ['scpage-viewer-body']: ViewerBodyElement;
+                ['sc-page-viewer-body']: ViewerBodyElement;
             }
         }
     }
@@ -237,7 +237,7 @@ declare module "@scom/secure-page-viewer/footer.tsx" {
     global {
         namespace JSX {
             interface IntrinsicElements {
-                ['scpage-viewer-footer']: ControlElement;
+                ['sc-page-viewer-footer']: ControlElement;
             }
         }
     }
@@ -271,7 +271,7 @@ declare module "@scom/secure-page-viewer/pageElement.tsx" {
     global {
         namespace JSX {
             interface IntrinsicElements {
-                ['scpage-viewer-page-element']: ControlElement;
+                ['sc-page-viewer-page-element']: ControlElement;
             }
         }
     }
@@ -293,7 +293,7 @@ declare module "@scom/secure-page-viewer/section.tsx" {
     global {
         namespace JSX {
             interface IntrinsicElements {
-                ['scpage-viewer-section']: SectionElement;
+                ['sc-page-viewer-section']: SectionElement;
             }
         }
     }
@@ -337,7 +337,7 @@ declare module "@scom/secure-page-viewer/sidebar.tsx" {
     global {
         namespace JSX {
             interface IntrinsicElements {
-                ['scpage-viewer-sidebar']: SidebarElement;
+                ['sc-page-viewer-sidebar']: SidebarElement;
             }
         }
     }

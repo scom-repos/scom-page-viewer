@@ -11,7 +11,7 @@ import { fetchFileContentByCid, getSCConfigByCodeCid, IPFS_SCOM_URL } from './ut
 declare global {
   namespace JSX {
     interface IntrinsicElements {
-      ['scpage-viewer-page-element']: ControlElement;
+      ['sc-page-viewer-page-element']: ControlElement;
     }
   }
 }
@@ -36,7 +36,7 @@ export class ViewrPageElement extends Module {
       }
     } else {
       for (const element of elements) {
-        const pnlElm = (<scpage-viewer-page-element></scpage-viewer-page-element>);
+        const pnlElm = (<sc-page-viewer-page-element></sc-page-viewer-page-element>);
         this.pnlElement.append(pnlElm);
         await pnlElm.setData(element);
       }
