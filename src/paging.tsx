@@ -17,7 +17,7 @@ declare global {
   }
 }
 
-@customElements('scpage-viewer-paging')
+@customElements('sc-page-viewer-paging')
 export class ViewerPaging extends Module {
   private _visiblePagesData: IPageData[] = [];
   private _currentPageData: IPageData;

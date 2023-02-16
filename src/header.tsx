@@ -14,7 +14,7 @@ declare global {
   }
 }
 
-@customElements('scpage-viewer-header')
+@customElements('sc-page-viewer-header')
 export class ViewerHeader extends Module {
   private _data: IPageHeader;
   private pnlHeader: Panel;

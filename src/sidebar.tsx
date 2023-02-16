@@ -26,7 +26,7 @@ declare global {
   }
 }
 
-@customElements('scpage-viewer-sidebar')
+@customElements('sc-page-viewer-sidebar')
 export class ViewerSidebar extends Module {
   private tvMenu: TreeView;
   private _treeData: IPageData[] = [];

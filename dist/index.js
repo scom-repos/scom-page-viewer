@@ -68,7 +68,7 @@ define("@scom/secure-page-viewer/header.tsx", ["require", "exports", "@ijstech/c
         }
     };
     ViewerHeader = __decorate([
-        components_1.customElements('scpage-viewer-header')
+        components_1.customElements('sc-page-viewer-header')
     ], ViewerHeader);
     exports.ViewerHeader = ViewerHeader;
 });
@@ -183,7 +183,7 @@ define("@scom/secure-page-viewer/paging.tsx", ["require", "exports", "@ijstech/c
         }
     };
     ViewerPaging = __decorate([
-        components_3.customElements('scpage-viewer-paging')
+        components_3.customElements('sc-page-viewer-paging')
     ], ViewerPaging);
     exports.ViewerPaging = ViewerPaging;
 });
@@ -306,7 +306,7 @@ define("@scom/secure-page-viewer/body.tsx", ["require", "exports", "@ijstech/com
         }
     };
     ViewrBody = __decorate([
-        components_5.customElements('scpage-viewer-body')
+        components_5.customElements('sc-page-viewer-body')
     ], ViewrBody);
     exports.ViewrBody = ViewrBody;
 });
@@ -345,7 +345,7 @@ define("@scom/secure-page-viewer/footer.tsx", ["require", "exports", "@ijstech/c
         }
     };
     ViewerFooter = __decorate([
-        components_6.customElements('scpage-viewer-footer')
+        components_6.customElements('sc-page-viewer-footer')
     ], ViewerFooter);
     exports.ViewerFooter = ViewerFooter;
 });
@@ -475,7 +475,7 @@ define("@scom/secure-page-viewer/pageElement.tsx", ["require", "exports", "@ijst
         }
     };
     ViewrPageElement = __decorate([
-        components_8.customElements('scpage-viewer-page-element')
+        components_8.customElements('sc-page-viewer-page-element')
     ], ViewrPageElement);
     exports.ViewrPageElement = ViewrPageElement;
 });
@@ -518,7 +518,7 @@ define("@scom/secure-page-viewer/section.tsx", ["require", "exports", "@ijstech/
         }
     };
     ViewrSection = __decorate([
-        components_9.customElements('scpage-viewer-section')
+        components_9.customElements('sc-page-viewer-section')
     ], ViewrSection);
     exports.ViewrSection = ViewrSection;
 });
@@ -613,7 +613,7 @@ define("@scom/secure-page-viewer/sidebar.tsx", ["require", "exports", "@ijstech/
         }
     };
     ViewerSidebar = __decorate([
-        components_11.customElements('scpage-viewer-sidebar')
+        components_11.customElements('sc-page-viewer-sidebar')
     ], ViewerSidebar);
     exports.ViewerSidebar = ViewerSidebar;
 });

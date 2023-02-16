@@ -25,7 +25,7 @@ declare global {
   }
 }
 
-@customElements('scpage-viewer-body')
+@customElements('sc-page-viewer-body')
 export class ViewrBody extends Module {
   private sections: IPageSection[];
   private pnlSections: VStack;

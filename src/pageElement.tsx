@@ -16,7 +16,7 @@ declare global {
   }
 }
 
-@customElements('scpage-viewer-page-element')
+@customElements('sc-page-viewer-page-element')
 export class ViewrPageElement extends Module {
   private pnlElement: Panel;
   private data: IPageElement;

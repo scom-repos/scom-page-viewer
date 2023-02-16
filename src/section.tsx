@@ -16,7 +16,7 @@ interface SectionElement extends ControlElement {
   }
 }
 
-@customElements('scpage-viewer-section')
+@customElements('sc-page-viewer-section')
 export class ViewrSection extends Module {
   private pnlSection: Panel;
   private _size: {

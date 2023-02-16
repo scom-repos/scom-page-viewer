@@ -14,7 +14,7 @@ declare global {
   }
 }
 
-@customElements('scpage-viewer-footer')
+@customElements('sc-page-viewer-footer')
 export class ViewerFooter extends Module {
   private _data: IPageFooter;
   private pnlFooter: Panel;

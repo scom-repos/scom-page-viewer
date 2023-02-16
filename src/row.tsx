@@ -14,7 +14,7 @@ declare global {
   }
 }
 
-@customElements('scpage-viewer-row')
+@customElements('sc-page-viewer-row')
 export class ViewrRow extends Module {
   private pnlSections: HStack;
   private rowData: IRowData;
