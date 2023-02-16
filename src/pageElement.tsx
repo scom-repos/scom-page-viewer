@@ -32,7 +32,7 @@ export class ViewrPageElement extends Module {
       let module = await this.loadModule({ ipfscid, localPath });
       if (module) {
         if (module.confirm) module.confirm();
-        module.setData(properties);
+        await module.setData(properties);
       }
     } else {
       for (const element of elements) {
