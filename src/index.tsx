@@ -20,12 +20,12 @@ export default class Viewer extends Module {
   private data: IPageData | undefined;
   private isLoaded: boolean = false;
 
-  async onShow(options: IPageData) {
+  async onShow(options: any) {
     this.pnlLoading.visible = true;
     this.gridMain.visible = false;
     if (!this.isLoaded) {
       this.gridMain.templateColumns = ["1fr"];
-      this.data = options;
+      this.data = options?._data??options;
       await this.setData();
     } else if (this.data) {
       this.renderPage(this.data);

@@ -632,11 +632,12 @@ define("@scom/secure-page-viewer", ["require", "exports", "@ijstech/components",
             this.isLoaded = false;
         }
         async onShow(options) {
+            var _a;
             this.pnlLoading.visible = true;
             this.gridMain.visible = false;
             if (!this.isLoaded) {
                 this.gridMain.templateColumns = ["1fr"];
-                this.data = options;
+                this.data = (_a = options === null || options === void 0 ? void 0 : options._data) !== null && _a !== void 0 ? _a : options;
                 await this.setData();
             }
             else if (this.data) {
