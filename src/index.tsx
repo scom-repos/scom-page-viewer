@@ -3,6 +3,7 @@ import { IPageData } from './interface';
 import { ViewerHeader } from './header';
 import { ViewrBody } from './body';
 import { ViewerFooter } from './footer';
+import { setRootDir } from './store/index';
 import styleClass from './index.css';
 export { ViewrBody } from './body';
 export { ViewrPageElement } from './pageElement';
@@ -26,6 +27,7 @@ export default class Viewer extends Module {
     if (!this.isLoaded) {
       this.gridMain.templateColumns = ["1fr"];
       this.data = options?._data??options;
+      setRootDir(options?.rootDir);
       await this.setData();
     } else if (this.data) {
       await this.renderPage(this.data);

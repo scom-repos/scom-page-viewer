@@ -7,6 +7,7 @@ import {
 } from '@ijstech/components';
 import { ICodeInfoFileContent, IPageElement } from './interface';
 import { fetchFileContentByCid, getSCConfigByCodeCid, IPFS_SCOM_URL } from './utils';
+import { getRootDir } from './store/index';
 
 declare global {
   namespace JSX {
@@ -27,11 +28,13 @@ export class ViewrPageElement extends Module {
     const { column, columnSpan, id, type, properties, elements, tag } = this.data;
     // this.pnlElement.grid = { column, columnSpan };
     this.pnlElement.id = id;
+    const rootDir = getRootDir();
     if (type === 'primitive') {
       const { ipfscid, localPath } = this.data.module;
-      let module = await this.loadModule({ ipfscid, localPath });
+      let module = await this.loadModule(rootDir, { ipfscid, localPath });
       if (module) {
         if (module.confirm) module.confirm();
+        if (module.setRootDir) module.setRootDir(rootDir);
         await module.setData(properties);
         if (tag) await module.setTag(tag);
       }
@@ -44,12 +47,13 @@ export class ViewrPageElement extends Module {
     }
   }
 
-  async loadModule(options: { ipfscid?: string, localPath?: string }) {
+  async loadModule(rootDir: string, options: { ipfscid?: string, localPath?: string }) {
     let module: any;
     if (options.localPath) {
-      const scconfigRes = await fetch(`${options.localPath}/scconfig.json`);
+      const localRootPath = rootDir ? `${rootDir}/${options.localPath}` : options.localPath;
+      const scconfigRes = await fetch(`${localRootPath}/scconfig.json`);
       const scconfig = await scconfigRes.json();
-      scconfig.rootDir = options.localPath;
+      scconfig.rootDir = localRootPath;
       module = await application.newModule(scconfig.main, scconfig);
     } else {
       const response = await fetchFileContentByCid(options.ipfscid);
