@@ -358,6 +358,23 @@ define("@scom/secure-page-viewer/footer.tsx", ["require", "exports", "@ijstech/c
     ], ViewerFooter);
     exports.ViewerFooter = ViewerFooter;
 });
+define("@scom/secure-page-viewer/store/index.ts", ["require", "exports"], function (require, exports) {
+    "use strict";
+    Object.defineProperty(exports, "__esModule", { value: true });
+    exports.getRootDir = exports.setRootDir = exports.state = void 0;
+    ///<amd-module name='@scom/secure-page-viewer/store/index.ts'/> 
+    exports.state = {
+        rootDir: ''
+    };
+    const setRootDir = (value) => {
+        exports.state.rootDir = value || '';
+    };
+    exports.setRootDir = setRootDir;
+    const getRootDir = () => {
+        return exports.state.rootDir;
+    };
+    exports.getRootDir = getRootDir;
+});
 define("@scom/secure-page-viewer/index.css.ts", ["require", "exports", "@ijstech/components"], function (require, exports, components_8) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
@@ -414,7 +431,7 @@ define("@scom/secure-page-viewer/utils.ts", ["require", "exports"], function (re
     }
     exports.getSCConfigByCodeCid = getSCConfigByCodeCid;
 });
-define("@scom/secure-page-viewer/pageElement.tsx", ["require", "exports", "@ijstech/components", "@scom/secure-page-viewer/utils.ts"], function (require, exports, components_9, utils_1) {
+define("@scom/secure-page-viewer/pageElement.tsx", ["require", "exports", "@ijstech/components", "@scom/secure-page-viewer/utils.ts", "@scom/secure-page-viewer/store/index.ts"], function (require, exports, components_9, utils_1, index_1) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.ViewrPageElement = void 0;
@@ -425,12 +442,15 @@ define("@scom/secure-page-viewer/pageElement.tsx", ["require", "exports", "@ijst
             const { column, columnSpan, id, type, properties, elements, tag } = this.data;
             // this.pnlElement.grid = { column, columnSpan };
             this.pnlElement.id = id;
+            const rootDir = index_1.getRootDir();
             if (type === 'primitive') {
                 const { ipfscid, localPath } = this.data.module;
-                let module = await this.loadModule({ ipfscid, localPath });
+                let module = await this.loadModule(rootDir, { ipfscid, localPath });
                 if (module) {
                     if (module.confirm)
                         module.confirm();
+                    if (module.setRootDir)
+                        module.setRootDir(rootDir);
                     await module.setData(properties);
                     if (tag)
                         await module.setTag(tag);
@@ -444,12 +464,13 @@ define("@scom/secure-page-viewer/pageElement.tsx", ["require", "exports", "@ijst
                 }
             }
         }
-        async loadModule(options) {
+        async loadModule(rootDir, options) {
             let module;
             if (options.localPath) {
-                const scconfigRes = await fetch(`${options.localPath}/scconfig.json`);
+                const localRootPath = rootDir ? `${rootDir}/${options.localPath}` : options.localPath;
+                const scconfigRes = await fetch(`${localRootPath}/scconfig.json`);
                 const scconfig = await scconfigRes.json();
-                scconfig.rootDir = options.localPath;
+                scconfig.rootDir = localRootPath;
                 module = await components_9.application.newModule(scconfig.main, scconfig);
             }
             else {
@@ -633,7 +654,7 @@ define("@scom/secure-page-viewer/sidebar.tsx", ["require", "exports", "@ijstech/
     ], ViewerSidebar);
     exports.ViewerSidebar = ViewerSidebar;
 });
-define("@scom/secure-page-viewer", ["require", "exports", "@ijstech/components", "@scom/secure-page-viewer/index.css.ts", "@scom/secure-page-viewer/body.tsx", "@scom/secure-page-viewer/pageElement.tsx", "@scom/secure-page-viewer/section.tsx", "@scom/secure-page-viewer/sidebar.tsx", "@scom/secure-page-viewer/paging.tsx"], function (require, exports, components_13, index_css_1, body_1, pageElement_1, section_1, sidebar_1, paging_1) {
+define("@scom/secure-page-viewer", ["require", "exports", "@ijstech/components", "@scom/secure-page-viewer/store/index.ts", "@scom/secure-page-viewer/index.css.ts", "@scom/secure-page-viewer/body.tsx", "@scom/secure-page-viewer/pageElement.tsx", "@scom/secure-page-viewer/section.tsx", "@scom/secure-page-viewer/sidebar.tsx", "@scom/secure-page-viewer/paging.tsx"], function (require, exports, components_13, index_2, index_css_1, body_1, pageElement_1, section_1, sidebar_1, paging_1) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.ViewerPaging = exports.ViewerSidebar = exports.ViewrSection = exports.ViewrPageElement = exports.ViewrBody = void 0;
@@ -654,6 +675,7 @@ define("@scom/secure-page-viewer", ["require", "exports", "@ijstech/components",
             if (!this.isLoaded) {
                 this.gridMain.templateColumns = ["1fr"];
                 this.data = (_a = options === null || options === void 0 ? void 0 : options._data) !== null && _a !== void 0 ? _a : options;
+                index_2.setRootDir(options === null || options === void 0 ? void 0 : options.rootDir);
                 await this.setData();
             }
             else if (this.data) {

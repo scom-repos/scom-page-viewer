@@ -256,6 +256,14 @@ declare module "@scom/secure-page-viewer/footer.tsx" {
         render(): any;
     }
 }
+/// <amd-module name="@scom/secure-page-viewer/store/index.ts" />
+declare module "@scom/secure-page-viewer/store/index.ts" {
+    export const state: {
+        rootDir: string;
+    };
+    export const setRootDir: (value: string) => void;
+    export const getRootDir: () => string;
+}
 /// <amd-module name="@scom/secure-page-viewer/index.css.ts" />
 declare module "@scom/secure-page-viewer/index.css.ts" {
     const _default_2: string;
@@ -283,7 +291,7 @@ declare module "@scom/secure-page-viewer/pageElement.tsx" {
         private pnlElement;
         private data;
         setData(pageElement: IPageElement): Promise<void>;
-        loadModule(options: {
+        loadModule(rootDir: string, options: {
             ipfscid?: string;
             localPath?: string;
         }): Promise<any>;
