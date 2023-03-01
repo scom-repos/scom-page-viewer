@@ -1,4 +1,4 @@
-import { ControlElement, customElements, Module, Panel } from "@ijstech/components";
+import { Control, ControlElement, customElements, GridLayout, Module } from "@ijstech/components";
 import { IPageElement } from "./interface";
 
 declare global {
@@ -18,7 +18,7 @@ interface SectionElement extends ControlElement {
 
 @customElements('sc-page-viewer-section')
 export class ViewrSection extends Module {
-  private pnlSection: Panel;
+  private pnlSection: GridLayout;
   private _size: {
     width?: string;
     height?: string;
@@ -52,8 +52,13 @@ export class ViewrSection extends Module {
   }
 
   async setData(listPageElm: IPageElement[]) {
+    this.width = '100%';
+    this.padding = {left: '3rem', right: '3rem'};
     for (const pageElm of listPageElm) {
-      const pageElement = (<sc-page-viewer-page-element></sc-page-viewer-page-element>);
+      const { column, columnSpan } = pageElm;
+      const pageElement = (<sc-page-viewer-page-element></sc-page-viewer-page-element>) as any;
+      pageElement.grid = { column, columnSpan };
+      pageElement.style.gridRow = '1';
       this.pnlSection.append(pageElement);
       await pageElement.setData(pageElm);
     }
@@ -61,7 +66,17 @@ export class ViewrSection extends Module {
 
   render() {
     return (
-      <i-panel id="pnlSection"></i-panel>
+      <i-grid-layout
+        id="pnlSection"
+        width="100%"
+        height="100%"
+        maxWidth="100%"
+        maxHeight="100%"
+        position="relative"
+        gap={{column: 15}}
+        columnsPerRow={12}
+        padding={{top: '1.5rem', bottom: '1.5rem'}}
+    ></i-grid-layout>
     )
   }
 }

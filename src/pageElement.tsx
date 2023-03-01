@@ -24,8 +24,8 @@ export class ViewrPageElement extends Module {
   async setData(pageElement: IPageElement) {
     this.pnlElement.clearInnerHTML();
     this.data = pageElement;
-    const { column, columnSpan, id, type, properties, elements } = this.data;
-    this.pnlElement.grid = { column, columnSpan };
+    const { column, columnSpan, id, type, properties, elements, tag } = this.data;
+    // this.pnlElement.grid = { column, columnSpan };
     this.pnlElement.id = id;
     if (type === 'primitive') {
       const { ipfscid, localPath } = this.data.module;
@@ -33,6 +33,7 @@ export class ViewrPageElement extends Module {
       if (module) {
         if (module.confirm) module.confirm();
         await module.setData(properties);
+        if (tag) await module.setTag(tag);
       }
     } else {
       for (const element of elements) {

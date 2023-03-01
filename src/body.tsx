@@ -129,7 +129,7 @@ export class ViewrBody extends Module {
     return (
       <i-panel class={styleClass} height={'100%'}>
         <i-hstack id={'archorElm'} display="flex" background={{ color: Theme.background.default }} zIndex={9999} gap={10} verticalAlignment="center" horizontalAlignment="center" wrap="wrap" position="fixed" width="100%" padding={{ left: 50, right: 50, top: 10, bottom: 10 }}></i-hstack>
-        <i-vstack id={'pnlSections'} alignItems="center" padding={{ top: 12, bottom: 50 }}></i-vstack>
+        <i-vstack id={'pnlSections'} alignItems="center" padding={{ bottom: 50 }}></i-vstack>
         <sc-page-viewer-paging id="viewerPaging" visible={false} onPrevPage={this.onUpdatePage.bind(this)} onNextPage={this.onUpdatePage.bind(this)}></sc-page-viewer-paging>
       </i-panel>
     );
