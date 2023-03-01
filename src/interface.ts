@@ -108,6 +108,7 @@ export interface IPageElement {
   columnSpan: number;
   type: 'primitive' | 'composite',
   properties: any;
+  tag?: any;
   module?: IPageBlockData; // follow the standard defined in secure page, if type === 'primitive'
   elements?: IPageElement[]; // type === 'composite'
 

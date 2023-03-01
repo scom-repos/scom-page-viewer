@@ -99,6 +99,7 @@ declare module "@scom/secure-page-viewer/interface.ts" {
         columnSpan: number;
         type: 'primitive' | 'composite';
         properties: any;
+        tag?: any;
         module?: IPageBlockData;
         elements?: IPageElement[];
         visibleOn?: string;
@@ -129,10 +130,13 @@ declare module "@scom/secure-page-viewer/interface.ts" {
     }
     export { IViewerData, IPageData, IRowData, ISectionData, ICodeInfoFileContent };
 }
+/// <amd-module name="@scom/secure-page-viewer/header.css.ts" />
+declare module "@scom/secure-page-viewer/header.css.ts" { }
 /// <amd-module name="@scom/secure-page-viewer/header.tsx" />
 declare module "@scom/secure-page-viewer/header.tsx" {
     import { Module, ControlElement } from '@ijstech/components';
     import { IPageHeader } from "@scom/secure-page-viewer/interface.ts";
+    import "@scom/secure-page-viewer/header.css.ts";
     global {
         namespace JSX {
             interface IntrinsicElements {

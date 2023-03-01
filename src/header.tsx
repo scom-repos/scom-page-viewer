@@ -5,6 +5,7 @@ import {
   Panel,
 } from '@ijstech/components';
 import { HeaderType, IPageHeader } from './interface';
+import './header.css';
 
 declare global {
   namespace JSX {
@@ -66,7 +67,7 @@ export class ViewerHeader extends Module {
 
   render() {
     return (
-      <i-panel id="pnlHeader" position="relative" width="100%"></i-panel>
+      <i-panel id="pnlHeader" position="relative" width="100%" class="header"></i-panel>
     );
   }
 }
