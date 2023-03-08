@@ -380,10 +380,9 @@ declare module "@scom/secure-page-viewer" {
         private viewerFooter;
         private gridMain;
         private viewerBody;
-        private data;
         private isLoaded;
         onShow(options: any): Promise<void>;
-        setData(): Promise<void>;
+        setData(data: IPageData): Promise<void>;
         renderPage(page: IPageData): Promise<void>;
         render(): any;
     }

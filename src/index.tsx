@@ -18,7 +18,6 @@ export default class Viewer extends Module {
   private viewerFooter: ViewerFooter;
   private gridMain: GridLayout;
   private viewerBody: ViewrBody;
-  private data: IPageData | undefined;
   private isLoaded: boolean = false;
 
   async onShow(options: any) {
@@ -26,19 +25,17 @@ export default class Viewer extends Module {
     this.gridMain.visible = false;
     if (!this.isLoaded) {
       this.gridMain.templateColumns = ["1fr"];
-      this.data = options?._data??options;
       setRootDir(options?.rootDir);
-      await this.setData();
-    } else if (this.data) {
-      await this.renderPage(this.data);
+      await this.setData(options?._data??options);
+    } else if (options?._data??options) {
+      await this.renderPage(options?._data??options);
     }
     this.pnlLoading.visible = false;
     this.gridMain.visible = true;
   }
 
-  async setData() {
-    if (!this.data) return;
-    await this.renderPage(this.data);
+  async setData(data: IPageData) {
+    await this.renderPage(data);
     this.isLoaded = true;
   }
 

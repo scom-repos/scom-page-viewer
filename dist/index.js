@@ -669,25 +669,22 @@ define("@scom/secure-page-viewer", ["require", "exports", "@ijstech/components",
             this.isLoaded = false;
         }
         async onShow(options) {
-            var _a;
+            var _a, _b, _c;
             this.pnlLoading.visible = true;
             this.gridMain.visible = false;
             if (!this.isLoaded) {
                 this.gridMain.templateColumns = ["1fr"];
-                this.data = (_a = options === null || options === void 0 ? void 0 : options._data) !== null && _a !== void 0 ? _a : options;
                 index_2.setRootDir(options === null || options === void 0 ? void 0 : options.rootDir);
-                await this.setData();
+                await this.setData((_a = options === null || options === void 0 ? void 0 : options._data) !== null && _a !== void 0 ? _a : options);
             }
-            else if (this.data) {
-                await this.renderPage(this.data);
+            else if ((_b = options === null || options === void 0 ? void 0 : options._data) !== null && _b !== void 0 ? _b : options) {
+                await this.renderPage((_c = options === null || options === void 0 ? void 0 : options._data) !== null && _c !== void 0 ? _c : options);
             }
             this.pnlLoading.visible = false;
             this.gridMain.visible = true;
         }
-        async setData() {
-            if (!this.data)
-                return;
-            await this.renderPage(this.data);
+        async setData(data) {
+            await this.renderPage(data);
             this.isLoaded = true;
         }
         async renderPage(page) {
