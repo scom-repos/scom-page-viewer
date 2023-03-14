@@ -707,7 +707,8 @@ define("@scom/secure-page-viewer", ["require", "exports", "@ijstech/components",
         }
     };
     Viewer = __decorate([
-        components_13.customModule
+        components_13.customModule,
+        components_13.customElements('i-scom-page-viewer')
     ], Viewer);
     exports.default = Viewer;
 });

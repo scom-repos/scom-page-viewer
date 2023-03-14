@@ -1,4 +1,4 @@
-import { customModule, GridLayout, Module, Panel } from "@ijstech/components";
+import { ControlElement, customElements, customModule, GridLayout, Module, Panel } from "@ijstech/components";
 import { IPageData } from './interface';
 import { ViewerHeader } from './header';
 import { ViewrBody } from './body';
@@ -11,7 +11,16 @@ export { ViewrSection } from './section';
 export { ViewerSidebar } from './sidebar';
 export { ViewerPaging } from './paging';
 
+declare global {
+  namespace JSX {
+      interface IntrinsicElements {
+          ['i-scom-page-viewer']: ControlElement;
+      }
+  }
+}
+
 @customModule
+@customElements('i-scom-page-viewer')
 export default class Viewer extends Module {
   private pnlLoading: Panel;
   private viewerHeader: ViewerHeader;

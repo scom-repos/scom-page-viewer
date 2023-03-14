@@ -367,13 +367,20 @@ declare module "@scom/secure-page-viewer/sidebar.tsx" {
 }
 /// <amd-module name="@scom/secure-page-viewer" />
 declare module "@scom/secure-page-viewer" {
-    import { Module } from "@ijstech/components";
+    import { ControlElement, Module } from "@ijstech/components";
     import { IPageData } from "@scom/secure-page-viewer/interface.ts";
     export { ViewrBody } from "@scom/secure-page-viewer/body.tsx";
     export { ViewrPageElement } from "@scom/secure-page-viewer/pageElement.tsx";
     export { ViewrSection } from "@scom/secure-page-viewer/section.tsx";
     export { ViewerSidebar } from "@scom/secure-page-viewer/sidebar.tsx";
     export { ViewerPaging } from "@scom/secure-page-viewer/paging.tsx";
+    global {
+        namespace JSX {
+            interface IntrinsicElements {
+                ['i-scom-page-viewer']: ControlElement;
+            }
+        }
+    }
     export default class Viewer extends Module {
         private pnlLoading;
         private viewerHeader;

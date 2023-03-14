@@ -4,7 +4,7 @@
     "main": "dist/index.js",
     "plugin": "dist/index.js",
     "pluginTypes": "pluginTypes/index.d.ts",
-    "types": "types/index.d.ts",
+    "types": "pluginTypes/index.d.ts",
     "dependencies": {
         "@ijstech/components": "^0.1.39",
         "@ijstech/eth-wallet": "^0.1.35"
