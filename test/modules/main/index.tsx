@@ -1,172 +1,94 @@
-import { Module, Styles, Container, customModule, application, Panel } from '@ijstech/components';
-import { } from '@ijstech/eth-contract';
-import styleClass from './index.css';
-import { updateNetworks } from './network';
-import { updateWallets } from './wallet';
-export { Header } from './header';
-export { Footer } from './footer';
-import { match, MatchFunction, compile } from './pathToRegexp'
-import { assets } from '@modules/assets';
-import { Header } from './header';
-import { Footer } from './footer';
-import { IMenu, IRoute, ISCConfig, ITheme } from './interface';
+import { Module, customModule } from '@ijstech/components';
+import Viewer from '@scom/secure-page-viewer';
+
+const data = {
+  "_data": {
+    "header": {
+      "elements": [],
+      "headerType": "banner",
+      "image": "https://ssl.gstatic.com/atari/images/simple-header-blended-small.png"
+    },
+    "sections": [
+      {
+        "id": "0e03efc4-3ceb-4fa5-b8fa-20a37606f7bd",
+        "row": 1,
+        "elements": [
+          {
+            "id": "3878138a-0768-4901-9c4d-ec9657233914",
+            "column": 1,
+            "columnSpan": 12,
+            "type": "primitive",
+            "module": {
+              "description": "Textbox (dev)",
+              "localPath": "https://ipfs.scom.dev/ipfs/bafybeicxnno34otrha5cjc3amk6drnm2b6pi753h2uxvzcbr7frqmtnc4u",
+              "name": "Textbox",
+              "local": true
+            },
+            "properties": {
+              "content": "<span class='frame' style='box-sizing: border-box; margin: 0px; padding: 0px; border: 0px; font: inherit; vertical-align: top; backface-visibility: hidden; transform: translate3d(0px, 0px, 0px); display: inline-block; max-width: 100%; overflow: hidden; width: 7rem; border-radius: 100%; transition: none 0s ease 0s;'>![](https://8614b9d4b51242cf.demo.carrd.co/assets/images/image01.jpg?v=40c6bc31)</span>\n\n# Cayce Pollard\n\nHi there, my name is Cayce Pollard and I'm a full-time video creator. My focus is on creating educational content about science and technology with the goal of making complex topics accessible and interesting to everyone. I've been creating videos for over five years now, and it's been an incredible journey so far. I'm deeply passionate about all things science and technology, and I take great joy in sharing my knowledge and experiences with others.</span>"
+            }
+          }
+        ]
+      },
+      {
+        "id": "48bcbd8f-d9a6-4db3-8926-bbfdaf1a7f7e",
+        "row": 2,
+        "elements": [
+          {
+            "id": "bfeb6932-6192-4ca3-b20c-7e43a7014e20",
+            "column": 1,
+            "columnSpan": 12,
+            "type": "primitive",
+            "module": {
+              "name": "@PageBlock/NFT Minter",
+              "description": "Donation / NFT Minter Micro-DApp",
+              "local": true,
+              "localPath": "https://ipfs.scom.dev/ipfs/bafybeibavy5bzhyry5eon7wck7hlxp6xelja7bn2y53icrwafwoyqh6tjm"
+            },
+            "properties": {
+              "name": "Donation Dapp",
+              "chainId": 43113,
+              "productType": "DonateToEveryone",
+              "description": "#### Donate for rainforest conservation!\n\nPlease support our work and that of our partners on the ground. Your donation is vital to our fight to preserve and protect tropical forests.",
+              "link": "https://www.rainforest-rescue.org",
+              "logo": "ipfs://bafkreiabdmajj5vftou33ljsahb36ii6t6xugez7l2zgw72jvjjddtwobq",
+              "maxOrderQty": 1,
+              "maxPrice": "0",
+              "price": "0",
+              "qty": 999999999,
+              "token": {
+                "name": "OpenSwap",
+                "address": "0x78d9D80E67bC80A11efbf84B7c8A65Da51a8EF3C",
+                "symbol": "OSWAP",
+                "decimals": 18,
+                "isCommon": true
+              },
+              "productId": 1,
+              "donateTo": "0xb15E094957c31D6b0d08714015fF85Bec7842635"
+            }
+          }
+        ]
+      }
+    ],
+    "footer": {
+      "elements": []
+    }
+  }
+};
 
 @customModule
-export default class MainLauncher extends Module {
-  private pnlMain: Panel;
-  private menuItems: any[];
-  private _options: ISCConfig;
-  private currentModule: Module;
-  private headerElm: Header;
-  // private footerElm: Footer;
-  private pnlScrollable: Panel;
+export default class Main extends Module {
+  private viewer: Viewer;
 
-  constructor(parent?: Container, options?: any) {
-    super(parent, options);
-    this.classList.add(styleClass);
-    this._options = options;
-    let defaultRoute: IRoute | undefined = this._options?.routes?.find(route => route.default);
-    if (defaultRoute && (!location.hash || location.hash === '#/')) {
-      const toPath = compile(defaultRoute.url, { encode: encodeURIComponent });
-      location.hash = toPath();
-    } else {
-      this.handleHashChange();
-    }
-  }
-
-  async init() {
-    window.onhashchange = this.handleHashChange.bind(this);
-    this.menuItems = this.options.menus || [];
-    assets.breakpoints = this.options.breakpoints;
-    updateNetworks(this.options);
-    updateWallets(this.options);
-    this.updateThemes(this.options.themes)
+  init() {
     super.init();
-    this.updateLayout();
+    this.viewer.onShow(data);
+    // this.viewer.setData(data._data as any);
   }
 
-  hideCurrentModule() {
-    if (this.currentModule) {
-      this.currentModule.style.display = 'none';
-      this.currentModule.onHide();
-    }
+  render() {
+    return <i-panel>
+      <i-scom-page-viewer id="viewer"></i-scom-page-viewer>
+    </i-panel>
   }
-
-  async getModuleByPath(path: string): Promise<{
-    module: Module,
-    data?: any
-  }> {
-    let menu: IMenu | IRoute;
-    let data: any;
-    let list: Array<IMenu | IRoute> = [...this._options.routes || [], ...this._options.menus || []];
-    for (let i = 0; i < list.length; i++) {
-      let item = list[i];
-      if (item.url == path) {
-        menu = item;
-        if ("data" in menu)
-          data = menu.data;
-        break;
-      }
-      else {
-        if (!item.regex)
-          item.regex = match(item.url, { decode: decodeURIComponent })
-
-        let _match = item.regex(path);
-        if (_match !== false) {
-          menu = item;
-          data = "data" in menu ? Object.assign({ ...menu.data }, _match.params) : _match.params;
-          break;
-        };
-      };
-    };
-    if (menu) {
-      let menuObj: any = menu;
-      if (!menuObj.moduleObject) {
-        menuObj.moduleObject = await application.loadModule(menu.module, this._options);
-        if (menuObj.moduleObject) menuObj.moduleObject.onLoad();
-      }
-      return {
-        module: menuObj.moduleObject,
-        data: data
-      };
-    }
-  }
-
-  async handleHashChange() {
-    let path = location.hash.split("?")[0];
-    if (path.startsWith('#/'))
-      path = path.substring(1);
-    let module = await this.getModuleByPath(path);
-    if (module?.module != this.currentModule)
-      this.hideCurrentModule();
-    this.currentModule = module?.module;
-    if (module) {
-      if (this.pnlMain.contains(module.module))
-        module.module.style.display = 'initial';
-      else
-        this.pnlMain.append(module.module);
-      module.module.onShow(module.data);
-    };
-  }
-
-  mergeTheme = (target: Styles.Theme.ITheme, theme: Styles.Theme.ITheme) => {
-    for (const key of Object.keys(theme)) {
-      if (theme[key] instanceof Object) {
-        Object.assign(theme[key], this.mergeTheme(target[key], theme[key]))
-      }
-    }
-    Object.assign(target || {}, theme)
-    return target
-  }
-
-  updateThemes(themes?: ITheme) {
-    if (!themes) return;
-    if (themes.dark) {
-      this.mergeTheme(Styles.Theme.darkTheme, themes.dark);
-    }
-    if (themes.light) {
-      this.mergeTheme(Styles.Theme.defaultTheme, themes.light);
-    }
-    const theme = themes.default === 'light' ? Styles.Theme.defaultTheme : Styles.Theme.darkTheme;
-    Styles.Theme.applyTheme(theme);
-  }
-
-  updateLayout() {
-    const header = this._options.header || {};
-    const footer = this._options.footer || {};
-    this.headerElm.visible = header.visible ?? true;
-    // this.footerElm.visible = footer.visible ?? true;
-    if (header.fixed && footer.fixed) {
-      this.pnlMain.overflow.y = 'auto';
-    } else {
-      if (header.fixed) {
-        this.pnlScrollable.append(this.pnlMain);
-        // this.pnlScrollable.append(this.footerElm);
-        this.pnlScrollable.visible = true;
-      } else if (footer.fixed) {
-        this.pnlScrollable.append(this.headerElm);
-        this.pnlScrollable.append(this.pnlMain);
-        this.pnlScrollable.visible = true;
-      }
-    }
-  }
-
-  async render() {
-    return (
-      <i-vstack height="inherit">
-        <main-header id="headerElm" menuItems={this.menuItems} height="auto" width="100%"></main-header>
-        <i-vstack id="pnlScrollable" visible={false} stack={{ grow: "1" }} overflow={{ y: 'auto' }}></i-vstack>
-        <i-panel id="pnlMain" stack={{ grow: "1" }} ></i-panel>
-        {/* <main-footer
-          id="footerElm"
-          stack={{ shrink: '0' }}
-          class='footer'
-          height="auto"
-          width="100%"
-          copyrightInfo={this._options.copyrightInfo}
-          version={this._options.version}
-        ></main-footer> */}
-      </i-vstack>
-    )
-  };
-};
+}

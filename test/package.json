@@ -6,19 +6,16 @@
     },
     "dependencies": {
         "@ijstech/components": "^0.1.39",
-        "@ijstech/eth-contract": "^0.1.10",
         "@ijstech/eth-wallet": "^0.1.35"
     },
     "devDependencies": {
         "@ijstech/cli": "^0.1.28",
         "@ijstech/compiler": "^0.1.22",
-        "@scom/dapp": "^0.1.9",
         "@scom/secure-page-viewer": "file:./ref"
     },
     "scripts": {
-        "cp:viewer": "rm -rf ref && mkdir ref && cp ../package.json ref/package.json && cp -r ../dist ref/dist && cp -r ../types ref/types && cp -r ../pluginTypes ref/pluginTypes",
-        "cp:local-pageblock": "if [ -d ref/dist/pageblocks ] ; then cp -r ref/dist/pageblocks dist/modules/pageblocks ; fi",
-        "build": "npm run cp:viewer && rm -rf dist && npx @ijstech/compiler && npm run cp:local-pageblock",
+        "cp:viewer": "rm -rf ref && mkdir ref && cp ../package.json ref/package.json && cp -r ../dist ref/dist && cp -r ../pluginTypes ref/pluginTypes",
+        "build": "npm run cp:viewer && rm -rf dist && npx @ijstech/compiler",
         "serve": "npx @ijstech/cli serve 8080",
         "test": "npm run build && npm run serve"
     }
