@@ -687,6 +687,9 @@ define("@scom/secure-page-viewer", ["require", "exports", "@ijstech/components",
             await this.renderPage(data);
             this.isLoaded = true;
         }
+        setRootDir(value) {
+            index_2.setRootDir(value);
+        }
         async renderPage(page) {
             const { header, footer, sections } = page;
             this.viewerHeader.data = header;

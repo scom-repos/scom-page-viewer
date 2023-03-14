@@ -48,6 +48,10 @@ export default class Viewer extends Module {
     this.isLoaded = true;
   }
 
+  setRootDir(value: string) {
+    setRootDir(value);
+  }
+
   async renderPage(page: IPageData) {
     const { header, footer, sections } = page;
     this.viewerHeader.data = header;

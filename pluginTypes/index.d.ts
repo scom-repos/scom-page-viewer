@@ -390,6 +390,7 @@ declare module "@scom/secure-page-viewer" {
         private isLoaded;
         onShow(options: any): Promise<void>;
         setData(data: IPageData): Promise<void>;
+        setRootDir(value: string): void;
         renderPage(page: IPageData): Promise<void>;
         render(): any;
     }
