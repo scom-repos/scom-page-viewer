@@ -4,7 +4,7 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
-define("@scom/secure-page-viewer/interface.ts", ["require", "exports"], function (require, exports) {
+define("@scom/scom-page-viewer/interface.ts", ["require", "exports"], function (require, exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.HeaderType = void 0;
@@ -17,7 +17,7 @@ define("@scom/secure-page-viewer/interface.ts", ["require", "exports"], function
     })(HeaderType = exports.HeaderType || (exports.HeaderType = {}));
     ;
 });
-define("@scom/secure-page-viewer/header.css.ts", ["require", "exports", "@ijstech/components"], function (require, exports, components_1) {
+define("@scom/scom-page-viewer/header.css.ts", ["require", "exports", "@ijstech/components"], function (require, exports, components_1) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     const Theme = components_1.Styles.Theme.ThemeVars;
@@ -26,7 +26,7 @@ define("@scom/secure-page-viewer/header.css.ts", ["require", "exports", "@ijstec
         $nest: {}
     });
 });
-define("@scom/secure-page-viewer/header.tsx", ["require", "exports", "@ijstech/components", "@scom/secure-page-viewer/interface.ts", "@scom/secure-page-viewer/header.css.ts"], function (require, exports, components_2, interface_1) {
+define("@scom/scom-page-viewer/header.tsx", ["require", "exports", "@ijstech/components", "@scom/scom-page-viewer/interface.ts", "@scom/scom-page-viewer/header.css.ts"], function (require, exports, components_2, interface_1) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.ViewerHeader = void 0;
@@ -81,7 +81,7 @@ define("@scom/secure-page-viewer/header.tsx", ["require", "exports", "@ijstech/c
     ], ViewerHeader);
     exports.ViewerHeader = ViewerHeader;
 });
-define("@scom/secure-page-viewer/paging.css.ts", ["require", "exports", "@ijstech/components"], function (require, exports, components_3) {
+define("@scom/scom-page-viewer/paging.css.ts", ["require", "exports", "@ijstech/components"], function (require, exports, components_3) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     const Theme = components_3.Styles.Theme.ThemeVars;
@@ -104,7 +104,7 @@ define("@scom/secure-page-viewer/paging.css.ts", ["require", "exports", "@ijstec
         }
     });
 });
-define("@scom/secure-page-viewer/paging.tsx", ["require", "exports", "@ijstech/components", "@scom/secure-page-viewer/paging.css.ts"], function (require, exports, components_4, paging_css_1) {
+define("@scom/scom-page-viewer/paging.tsx", ["require", "exports", "@ijstech/components", "@scom/scom-page-viewer/paging.css.ts"], function (require, exports, components_4, paging_css_1) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.ViewerPaging = void 0;
@@ -196,7 +196,7 @@ define("@scom/secure-page-viewer/paging.tsx", ["require", "exports", "@ijstech/c
     ], ViewerPaging);
     exports.ViewerPaging = ViewerPaging;
 });
-define("@scom/secure-page-viewer/body.css.ts", ["require", "exports", "@ijstech/components"], function (require, exports, components_5) {
+define("@scom/scom-page-viewer/body.css.ts", ["require", "exports", "@ijstech/components"], function (require, exports, components_5) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.default = components_5.Styles.style({
@@ -212,7 +212,7 @@ define("@scom/secure-page-viewer/body.css.ts", ["require", "exports", "@ijstech/
         }
     });
 });
-define("@scom/secure-page-viewer/body.tsx", ["require", "exports", "@ijstech/components", "@scom/secure-page-viewer/body.css.ts"], function (require, exports, components_6, body_css_1) {
+define("@scom/scom-page-viewer/body.tsx", ["require", "exports", "@ijstech/components", "@scom/scom-page-viewer/body.css.ts"], function (require, exports, components_6, body_css_1) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.ViewrBody = void 0;
@@ -319,7 +319,7 @@ define("@scom/secure-page-viewer/body.tsx", ["require", "exports", "@ijstech/com
     ], ViewrBody);
     exports.ViewrBody = ViewrBody;
 });
-define("@scom/secure-page-viewer/footer.tsx", ["require", "exports", "@ijstech/components"], function (require, exports, components_7) {
+define("@scom/scom-page-viewer/footer.tsx", ["require", "exports", "@ijstech/components"], function (require, exports, components_7) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.ViewerFooter = void 0;
@@ -358,11 +358,11 @@ define("@scom/secure-page-viewer/footer.tsx", ["require", "exports", "@ijstech/c
     ], ViewerFooter);
     exports.ViewerFooter = ViewerFooter;
 });
-define("@scom/secure-page-viewer/store/index.ts", ["require", "exports"], function (require, exports) {
+define("@scom/scom-page-viewer/store/index.ts", ["require", "exports"], function (require, exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.getRootDir = exports.setRootDir = exports.state = void 0;
-    ///<amd-module name='@scom/secure-page-viewer/store/index.ts'/> 
+    ///<amd-module name='@scom/scom-page-viewer/store/index.ts'/> 
     exports.state = {
         rootDir: ''
     };
@@ -375,7 +375,7 @@ define("@scom/secure-page-viewer/store/index.ts", ["require", "exports"], functi
     };
     exports.getRootDir = getRootDir;
 });
-define("@scom/secure-page-viewer/index.css.ts", ["require", "exports", "@ijstech/components"], function (require, exports, components_8) {
+define("@scom/scom-page-viewer/index.css.ts", ["require", "exports", "@ijstech/components"], function (require, exports, components_8) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     const Theme = components_8.Styles.Theme.ThemeVars;
@@ -399,11 +399,11 @@ define("@scom/secure-page-viewer/index.css.ts", ["require", "exports", "@ijstech
         }
     });
 });
-define("@scom/secure-page-viewer/utils.ts", ["require", "exports"], function (require, exports) {
+define("@scom/scom-page-viewer/utils.ts", ["require", "exports"], function (require, exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.getSCConfigByCodeCid = exports.fetchFileContentByCid = exports.IPFS_SCOM_URL = void 0;
-    ///<amd-module name='@scom/secure-page-viewer/utils.ts'/> 
+    ///<amd-module name='@scom/scom-page-viewer/utils.ts'/> 
     const IPFS_SCOM_URL = "https://ipfs.scom.dev/ipfs";
     exports.IPFS_SCOM_URL = IPFS_SCOM_URL;
     async function fetchFileContentByCid(ipfsCid) {
@@ -431,7 +431,7 @@ define("@scom/secure-page-viewer/utils.ts", ["require", "exports"], function (re
     }
     exports.getSCConfigByCodeCid = getSCConfigByCodeCid;
 });
-define("@scom/secure-page-viewer/pageElement.tsx", ["require", "exports", "@ijstech/components", "@scom/secure-page-viewer/utils.ts", "@scom/secure-page-viewer/store/index.ts"], function (require, exports, components_9, utils_1, index_1) {
+define("@scom/scom-page-viewer/pageElement.tsx", ["require", "exports", "@ijstech/components", "@scom/scom-page-viewer/utils.ts", "@scom/scom-page-viewer/store/index.ts"], function (require, exports, components_9, utils_1, index_1) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.ViewrPageElement = void 0;
@@ -511,7 +511,7 @@ define("@scom/secure-page-viewer/pageElement.tsx", ["require", "exports", "@ijst
     ], ViewrPageElement);
     exports.ViewrPageElement = ViewrPageElement;
 });
-define("@scom/secure-page-viewer/section.tsx", ["require", "exports", "@ijstech/components"], function (require, exports, components_10) {
+define("@scom/scom-page-viewer/section.tsx", ["require", "exports", "@ijstech/components"], function (require, exports, components_10) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.ViewrSection = void 0;
@@ -559,7 +559,7 @@ define("@scom/secure-page-viewer/section.tsx", ["require", "exports", "@ijstech/
     ], ViewrSection);
     exports.ViewrSection = ViewrSection;
 });
-define("@scom/secure-page-viewer/sidebar.css.ts", ["require", "exports", "@ijstech/components"], function (require, exports, components_11) {
+define("@scom/scom-page-viewer/sidebar.css.ts", ["require", "exports", "@ijstech/components"], function (require, exports, components_11) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     const Theme = components_11.Styles.Theme.ThemeVars;
@@ -587,7 +587,7 @@ define("@scom/secure-page-viewer/sidebar.css.ts", ["require", "exports", "@ijste
         }
     });
 });
-define("@scom/secure-page-viewer/sidebar.tsx", ["require", "exports", "@ijstech/components", "@scom/secure-page-viewer/sidebar.css.ts"], function (require, exports, components_12, sidebar_css_1) {
+define("@scom/scom-page-viewer/sidebar.tsx", ["require", "exports", "@ijstech/components", "@scom/scom-page-viewer/sidebar.css.ts"], function (require, exports, components_12, sidebar_css_1) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.ViewerSidebar = void 0;
@@ -654,7 +654,7 @@ define("@scom/secure-page-viewer/sidebar.tsx", ["require", "exports", "@ijstech/
     ], ViewerSidebar);
     exports.ViewerSidebar = ViewerSidebar;
 });
-define("@scom/secure-page-viewer", ["require", "exports", "@ijstech/components", "@scom/secure-page-viewer/store/index.ts", "@scom/secure-page-viewer/index.css.ts", "@scom/secure-page-viewer/body.tsx", "@scom/secure-page-viewer/pageElement.tsx", "@scom/secure-page-viewer/section.tsx", "@scom/secure-page-viewer/sidebar.tsx", "@scom/secure-page-viewer/paging.tsx"], function (require, exports, components_13, index_2, index_css_1, body_1, pageElement_1, section_1, sidebar_1, paging_1) {
+define("@scom/scom-page-viewer", ["require", "exports", "@ijstech/components", "@scom/scom-page-viewer/store/index.ts", "@scom/scom-page-viewer/index.css.ts", "@scom/scom-page-viewer/body.tsx", "@scom/scom-page-viewer/pageElement.tsx", "@scom/scom-page-viewer/section.tsx", "@scom/scom-page-viewer/sidebar.tsx", "@scom/scom-page-viewer/paging.tsx"], function (require, exports, components_13, index_2, index_css_1, body_1, pageElement_1, section_1, sidebar_1, paging_1) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.ViewerPaging = exports.ViewerSidebar = exports.ViewrSection = exports.ViewrPageElement = exports.ViewrBody = void 0;

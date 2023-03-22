@@ -1,5 +1,5 @@
-/// <amd-module name="@scom/secure-page-viewer/interface.ts" />
-declare module "@scom/secure-page-viewer/interface.ts" {
+/// <amd-module name="@scom/scom-page-viewer/interface.ts" />
+declare module "@scom/scom-page-viewer/interface.ts" {
     interface IViewerData {
         config?: IConfigData;
         pages: IPageData[];
@@ -130,13 +130,13 @@ declare module "@scom/secure-page-viewer/interface.ts" {
     }
     export { IViewerData, IPageData, IRowData, ISectionData, ICodeInfoFileContent };
 }
-/// <amd-module name="@scom/secure-page-viewer/header.css.ts" />
-declare module "@scom/secure-page-viewer/header.css.ts" { }
-/// <amd-module name="@scom/secure-page-viewer/header.tsx" />
-declare module "@scom/secure-page-viewer/header.tsx" {
+/// <amd-module name="@scom/scom-page-viewer/header.css.ts" />
+declare module "@scom/scom-page-viewer/header.css.ts" { }
+/// <amd-module name="@scom/scom-page-viewer/header.tsx" />
+declare module "@scom/scom-page-viewer/header.tsx" {
     import { Module, ControlElement } from '@ijstech/components';
-    import { IPageHeader } from "@scom/secure-page-viewer/interface.ts";
-    import "@scom/secure-page-viewer/header.css.ts";
+    import { IPageHeader } from "@scom/scom-page-viewer/interface.ts";
+    import "@scom/scom-page-viewer/header.css.ts";
     global {
         namespace JSX {
             interface IntrinsicElements {
@@ -155,15 +155,15 @@ declare module "@scom/secure-page-viewer/header.tsx" {
         render(): any;
     }
 }
-/// <amd-module name="@scom/secure-page-viewer/paging.css.ts" />
-declare module "@scom/secure-page-viewer/paging.css.ts" {
+/// <amd-module name="@scom/scom-page-viewer/paging.css.ts" />
+declare module "@scom/scom-page-viewer/paging.css.ts" {
     const _default: string;
     export default _default;
 }
-/// <amd-module name="@scom/secure-page-viewer/paging.tsx" />
-declare module "@scom/secure-page-viewer/paging.tsx" {
+/// <amd-module name="@scom/scom-page-viewer/paging.tsx" />
+declare module "@scom/scom-page-viewer/paging.tsx" {
     import { ControlElement, Module } from '@ijstech/components';
-    import { IPageData } from "@scom/secure-page-viewer/interface.ts";
+    import { IPageData } from "@scom/scom-page-viewer/interface.ts";
     type pageChangeCallback = (page: IPageData) => void;
     interface PagingElement extends ControlElement {
         onPrevPage: pageChangeCallback;
@@ -196,15 +196,15 @@ declare module "@scom/secure-page-viewer/paging.tsx" {
         render(): any;
     }
 }
-/// <amd-module name="@scom/secure-page-viewer/body.css.ts" />
-declare module "@scom/secure-page-viewer/body.css.ts" {
+/// <amd-module name="@scom/scom-page-viewer/body.css.ts" />
+declare module "@scom/scom-page-viewer/body.css.ts" {
     const _default_1: string;
     export default _default_1;
 }
-/// <amd-module name="@scom/secure-page-viewer/body.tsx" />
-declare module "@scom/secure-page-viewer/body.tsx" {
+/// <amd-module name="@scom/scom-page-viewer/body.tsx" />
+declare module "@scom/scom-page-viewer/body.tsx" {
     import { ControlElement, Module } from "@ijstech/components";
-    import { IPageData, IPageSection } from "@scom/secure-page-viewer/interface.ts";
+    import { IPageData, IPageSection } from "@scom/scom-page-viewer/interface.ts";
     type pageChangeCallback = (page: IPageData) => void;
     interface ViewerBodyElement extends ControlElement {
         onUpdatePage: pageChangeCallback;
@@ -234,10 +234,10 @@ declare module "@scom/secure-page-viewer/body.tsx" {
         render(): any;
     }
 }
-/// <amd-module name="@scom/secure-page-viewer/footer.tsx" />
-declare module "@scom/secure-page-viewer/footer.tsx" {
+/// <amd-module name="@scom/scom-page-viewer/footer.tsx" />
+declare module "@scom/scom-page-viewer/footer.tsx" {
     import { Module, ControlElement } from '@ijstech/components';
-    import { IPageFooter } from "@scom/secure-page-viewer/interface.ts";
+    import { IPageFooter } from "@scom/scom-page-viewer/interface.ts";
     global {
         namespace JSX {
             interface IntrinsicElements {
@@ -256,30 +256,30 @@ declare module "@scom/secure-page-viewer/footer.tsx" {
         render(): any;
     }
 }
-/// <amd-module name="@scom/secure-page-viewer/store/index.ts" />
-declare module "@scom/secure-page-viewer/store/index.ts" {
+/// <amd-module name="@scom/scom-page-viewer/store/index.ts" />
+declare module "@scom/scom-page-viewer/store/index.ts" {
     export const state: {
         rootDir: string;
     };
     export const setRootDir: (value: string) => void;
     export const getRootDir: () => string;
 }
-/// <amd-module name="@scom/secure-page-viewer/index.css.ts" />
-declare module "@scom/secure-page-viewer/index.css.ts" {
+/// <amd-module name="@scom/scom-page-viewer/index.css.ts" />
+declare module "@scom/scom-page-viewer/index.css.ts" {
     const _default_2: string;
     export default _default_2;
 }
-/// <amd-module name="@scom/secure-page-viewer/utils.ts" />
-declare module "@scom/secure-page-viewer/utils.ts" {
+/// <amd-module name="@scom/scom-page-viewer/utils.ts" />
+declare module "@scom/scom-page-viewer/utils.ts" {
     const IPFS_SCOM_URL = "https://ipfs.scom.dev/ipfs";
     function fetchFileContentByCid(ipfsCid: string): Promise<Response | undefined>;
     function getSCConfigByCodeCid(codeCid: string): Promise<any>;
     export { IPFS_SCOM_URL, fetchFileContentByCid, getSCConfigByCodeCid };
 }
-/// <amd-module name="@scom/secure-page-viewer/pageElement.tsx" />
-declare module "@scom/secure-page-viewer/pageElement.tsx" {
+/// <amd-module name="@scom/scom-page-viewer/pageElement.tsx" />
+declare module "@scom/scom-page-viewer/pageElement.tsx" {
     import { Module, ControlElement } from '@ijstech/components';
-    import { IPageElement } from "@scom/secure-page-viewer/interface.ts";
+    import { IPageElement } from "@scom/scom-page-viewer/interface.ts";
     global {
         namespace JSX {
             interface IntrinsicElements {
@@ -298,10 +298,10 @@ declare module "@scom/secure-page-viewer/pageElement.tsx" {
         render(): any;
     }
 }
-/// <amd-module name="@scom/secure-page-viewer/section.tsx" />
-declare module "@scom/secure-page-viewer/section.tsx" {
+/// <amd-module name="@scom/scom-page-viewer/section.tsx" />
+declare module "@scom/scom-page-viewer/section.tsx" {
     import { ControlElement, Module } from "@ijstech/components";
-    import { IPageElement } from "@scom/secure-page-viewer/interface.ts";
+    import { IPageElement } from "@scom/scom-page-viewer/interface.ts";
     global {
         namespace JSX {
             interface IntrinsicElements {
@@ -333,15 +333,15 @@ declare module "@scom/secure-page-viewer/section.tsx" {
         render(): any;
     }
 }
-/// <amd-module name="@scom/secure-page-viewer/sidebar.css.ts" />
-declare module "@scom/secure-page-viewer/sidebar.css.ts" {
+/// <amd-module name="@scom/scom-page-viewer/sidebar.css.ts" />
+declare module "@scom/scom-page-viewer/sidebar.css.ts" {
     const _default_3: string;
     export default _default_3;
 }
-/// <amd-module name="@scom/secure-page-viewer/sidebar.tsx" />
-declare module "@scom/secure-page-viewer/sidebar.tsx" {
+/// <amd-module name="@scom/scom-page-viewer/sidebar.tsx" />
+declare module "@scom/scom-page-viewer/sidebar.tsx" {
     import { Module, ControlElement, TreeView, TreeNode } from '@ijstech/components';
-    import { IPageData } from "@scom/secure-page-viewer/interface.ts";
+    import { IPageData } from "@scom/scom-page-viewer/interface.ts";
     type activedChangeCallback = (page: IPageData) => void;
     interface SidebarElement extends ControlElement {
         onTreeViewActiveChange: activedChangeCallback;
@@ -365,15 +365,15 @@ declare module "@scom/secure-page-viewer/sidebar.tsx" {
         render(): any;
     }
 }
-/// <amd-module name="@scom/secure-page-viewer" />
-declare module "@scom/secure-page-viewer" {
+/// <amd-module name="@scom/scom-page-viewer" />
+declare module "@scom/scom-page-viewer" {
     import { ControlElement, Module } from "@ijstech/components";
-    import { IPageData } from "@scom/secure-page-viewer/interface.ts";
-    export { ViewrBody } from "@scom/secure-page-viewer/body.tsx";
-    export { ViewrPageElement } from "@scom/secure-page-viewer/pageElement.tsx";
-    export { ViewrSection } from "@scom/secure-page-viewer/section.tsx";
-    export { ViewerSidebar } from "@scom/secure-page-viewer/sidebar.tsx";
-    export { ViewerPaging } from "@scom/secure-page-viewer/paging.tsx";
+    import { IPageData } from "@scom/scom-page-viewer/interface.ts";
+    export { ViewrBody } from "@scom/scom-page-viewer/body.tsx";
+    export { ViewrPageElement } from "@scom/scom-page-viewer/pageElement.tsx";
+    export { ViewrSection } from "@scom/scom-page-viewer/section.tsx";
+    export { ViewerSidebar } from "@scom/scom-page-viewer/sidebar.tsx";
+    export { ViewerPaging } from "@scom/scom-page-viewer/paging.tsx";
     global {
         namespace JSX {
             interface IntrinsicElements {

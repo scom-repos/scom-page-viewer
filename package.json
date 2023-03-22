@@ -1,5 +1,5 @@
 {
-    "name": "@scom/secure-page-viewer",
+    "name": "@scom/scom-page-viewer",
     "version": "0.1.0",
     "main": "dist/index.js",
     "plugin": "dist/index.js",
