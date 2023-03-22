@@ -50,11 +50,13 @@ export class ViewrPageElement extends Module {
   async loadModule(rootDir: string, options: { ipfscid?: string, localPath?: string }) {
     let module: any;
     if (options.localPath) {
-      const localRootPath = rootDir ? `${rootDir}/${options.localPath}` : options.localPath;
-      const scconfigRes = await fetch(`${localRootPath}/scconfig.json`);
-      const scconfig = await scconfigRes.json();
-      scconfig.rootDir = localRootPath;
-      module = await application.newModule(scconfig.main, scconfig);
+      let localRootPath = rootDir ? `${rootDir}/${options.localPath}` : options.localPath;
+      // const scconfigRes = await fetch(`${localRootPath}/scconfig.json`);
+      // const scconfig = await scconfigRes.json();
+      // scconfig.rootDir = localRootPath;
+      // module = await application.newModule(scconfig.main, scconfig);
+      if (!localRootPath.endsWith("index.js")) localRootPath += "/index.js";
+      module = await application.newModule(localRootPath);
     } else {
       const response = await fetchFileContentByCid(options.ipfscid);
       if (!response) return;

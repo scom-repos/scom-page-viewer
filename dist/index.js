@@ -467,11 +467,15 @@ define("@scom/scom-page-viewer/pageElement.tsx", ["require", "exports", "@ijstec
         async loadModule(rootDir, options) {
             let module;
             if (options.localPath) {
-                const localRootPath = rootDir ? `${rootDir}/${options.localPath}` : options.localPath;
-                const scconfigRes = await fetch(`${localRootPath}/scconfig.json`);
-                const scconfig = await scconfigRes.json();
-                scconfig.rootDir = localRootPath;
-                module = await components_9.application.newModule(scconfig.main, scconfig);
+                let localRootPath = rootDir ? `${rootDir}/${options.localPath}` : options.localPath;
+                // const scconfigRes = await fetch(`${localRootPath}/scconfig.json`);
+                // const scconfig = await scconfigRes.json();
+                // scconfig.rootDir = localRootPath;
+                // module = await application.newModule(scconfig.main, scconfig);
+                // let localPath = options.localPath;
+                if (!localRootPath.endsWith("index.js"))
+                    localRootPath += "/index.js";
+                module = await components_9.application.newModule(localRootPath);
             }
             else {
                 const response = await utils_1.fetchFileContentByCid(options.ipfscid);
