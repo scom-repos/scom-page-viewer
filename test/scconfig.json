@@ -8,6 +8,6 @@
     }
   },
   "dependencies": {
-    "@scom/secure-page-viewer": "*"
+    "@scom/scom-page-viewer": "*"
   }
 }

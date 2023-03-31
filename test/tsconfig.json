@@ -12,7 +12,7 @@
         "baseUrl": ".",
         "paths": {
             "@modules/*":["modules/*"],
-            "@scom/secure-page-viewer": [".."]
+            "@scom/scom-page-viewer": ["ref"]
         }
     },
     "include": ["modules/**/*.ts","modules/**/*.tsx"],

@@ -472,7 +472,6 @@ define("@scom/scom-page-viewer/pageElement.tsx", ["require", "exports", "@ijstec
                 // const scconfig = await scconfigRes.json();
                 // scconfig.rootDir = localRootPath;
                 // module = await application.newModule(scconfig.main, scconfig);
-                // let localPath = options.localPath;
                 if (!localRootPath.endsWith("index.js"))
                     localRootPath += "/index.js";
                 module = await components_9.application.newModule(localRootPath);
