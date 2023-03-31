@@ -454,6 +454,9 @@ define("@scom/scom-page-viewer/pageElement.tsx", ["require", "exports", "@ijstec
                     await module.setData(properties);
                     if (tag)
                         await module.setTag(tag);
+                    const themeVar = document.body.style.getPropertyValue('--theme');
+                    if (themeVar)
+                        module.theme = themeVar;
                 }
             }
             else {

@@ -37,6 +37,8 @@ export class ViewrPageElement extends Module {
         if (module.setRootDir) module.setRootDir(rootDir);
         await module.setData(properties);
         if (tag) await module.setTag(tag);
+        const themeVar = document.body.style.getPropertyValue('--theme')
+        if (themeVar) module.theme = themeVar
       }
     } else {
       for (const element of elements) {
