@@ -436,6 +436,15 @@ define("@scom/scom-page-viewer/pageElement.tsx", ["require", "exports", "@ijstec
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.ViewrPageElement = void 0;
     let ViewrPageElement = class ViewrPageElement extends components_9.Module {
+        constructor(parent, options) {
+            super(parent, options);
+            this.module = null;
+            components_9.application.EventBus.register(this, 'themeChanged', (value) => {
+                if (this.module)
+                    this.module.theme = value;
+            });
+        }
+        ;
         async setData(pageElement) {
             this.pnlElement.clearInnerHTML();
             this.data = pageElement;
@@ -457,6 +466,7 @@ define("@scom/scom-page-viewer/pageElement.tsx", ["require", "exports", "@ijstec
                     const themeVar = document.body.style.getPropertyValue('--theme');
                     if (themeVar)
                         module.theme = themeVar;
+                    this.module = module;
                 }
             }
             else {

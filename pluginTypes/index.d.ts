@@ -278,7 +278,7 @@ declare module "@scom/scom-page-viewer/utils.ts" {
 }
 /// <amd-module name="@scom/scom-page-viewer/pageElement.tsx" />
 declare module "@scom/scom-page-viewer/pageElement.tsx" {
-    import { Module, ControlElement } from '@ijstech/components';
+    import { Module, ControlElement, Container } from '@ijstech/components';
     import { IPageElement } from "@scom/scom-page-viewer/interface.ts";
     global {
         namespace JSX {
@@ -290,6 +290,8 @@ declare module "@scom/scom-page-viewer/pageElement.tsx" {
     export class ViewrPageElement extends Module {
         private pnlElement;
         private data;
+        private module;
+        constructor(parent?: Container, options?: any);
         setData(pageElement: IPageElement): Promise<void>;
         loadModule(rootDir: string, options: {
             ipfscid?: string;

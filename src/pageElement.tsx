@@ -3,7 +3,8 @@ import {
   customElements,
   ControlElement,
   Panel,
-  application
+  application,
+  Container
 } from '@ijstech/components';
 import { ICodeInfoFileContent, IPageElement } from './interface';
 import { fetchFileContentByCid, getSCConfigByCodeCid, IPFS_SCOM_URL } from './utils';
@@ -21,6 +22,14 @@ declare global {
 export class ViewrPageElement extends Module {
   private pnlElement: Panel;
   private data: IPageElement;
+  private module: Module = null;
+
+  constructor(parent?: Container, options?: any) {
+    super(parent, options);
+    application.EventBus.register(this, 'themeChanged', (value: string) => {
+      if (this.module) (this.module as any).theme = value
+    })
+  };
 
   async setData(pageElement: IPageElement) {
     this.pnlElement.clearInnerHTML();
@@ -39,6 +48,7 @@ export class ViewrPageElement extends Module {
         if (tag) await module.setTag(tag);
         const themeVar = document.body.style.getPropertyValue('--theme')
         if (themeVar) module.theme = themeVar
+        this.module = module;
       }
     } else {
       for (const element of elements) {
