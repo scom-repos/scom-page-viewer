@@ -436,6 +436,15 @@ define("@scom/scom-page-viewer/pageElement.tsx", ["require", "exports", "@ijstec
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.ViewrPageElement = void 0;
     let ViewrPageElement = class ViewrPageElement extends components_9.Module {
+        constructor(parent, options) {
+            super(parent, options);
+            this.module = null;
+            components_9.application.EventBus.register(this, 'themeChanged', (value) => {
+                if (this.module)
+                    this.module.theme = value;
+            });
+        }
+        ;
         async setData(pageElement) {
             this.pnlElement.clearInnerHTML();
             this.data = pageElement;
@@ -454,6 +463,10 @@ define("@scom/scom-page-viewer/pageElement.tsx", ["require", "exports", "@ijstec
                     await module.setData(properties);
                     if (tag)
                         await module.setTag(tag);
+                    const themeVar = document.body.style.getPropertyValue('--theme');
+                    if (themeVar)
+                        module.theme = themeVar;
+                    this.module = module;
                 }
             }
             else {
@@ -472,7 +485,6 @@ define("@scom/scom-page-viewer/pageElement.tsx", ["require", "exports", "@ijstec
                 // const scconfig = await scconfigRes.json();
                 // scconfig.rootDir = localRootPath;
                 // module = await application.newModule(scconfig.main, scconfig);
-                // let localPath = options.localPath;
                 if (!localRootPath.endsWith("index.js"))
                     localRootPath += "/index.js";
                 module = await components_9.application.newModule(localRootPath);
