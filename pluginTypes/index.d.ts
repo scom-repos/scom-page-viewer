@@ -68,20 +68,11 @@ declare module "@scom/scom-page-viewer/interface.ts" {
     }
     interface IPageBlockData {
         name: string;
-        description: string;
-        ipfscid?: string;
-        imgUrl: string;
-        category: {
-            icon: string;
-            idx: string;
-            name: string;
-        }[];
-        chainId: number;
-        packageId: number;
-        projectId: number;
-        local?: boolean;
-        localPath?: string;
-        dependencies?: any;
+        path: string;
+        category?: "components" | "micro-dapps";
+        imgUrl?: string;
+        disableClicked?: boolean;
+        shownBackdrop?: boolean;
     }
     interface ICodeInfoFileContent {
         version: ISemanticVersion;
@@ -129,31 +120,6 @@ declare module "@scom/scom-page-viewer/interface.ts" {
         elements: IPageElement[];
     }
     export { IViewerData, IPageData, IRowData, ISectionData, ICodeInfoFileContent };
-}
-/// <amd-module name="@scom/scom-page-viewer/header.css.ts" />
-declare module "@scom/scom-page-viewer/header.css.ts" { }
-/// <amd-module name="@scom/scom-page-viewer/header.tsx" />
-declare module "@scom/scom-page-viewer/header.tsx" {
-    import { Module, ControlElement } from '@ijstech/components';
-    import { IPageHeader } from "@scom/scom-page-viewer/interface.ts";
-    import "@scom/scom-page-viewer/header.css.ts";
-    global {
-        namespace JSX {
-            interface IntrinsicElements {
-                ['sc-page-viewer-header']: ControlElement;
-            }
-        }
-    }
-    export class ViewerHeader extends Module {
-        private _data;
-        private pnlHeader;
-        constructor(parent?: any);
-        init(): Promise<void>;
-        get data(): IPageHeader;
-        set data(value: IPageHeader);
-        private renderHeader;
-        render(): any;
-    }
 }
 /// <amd-module name="@scom/scom-page-viewer/paging.css.ts" />
 declare module "@scom/scom-page-viewer/paging.css.ts" {
@@ -293,10 +259,7 @@ declare module "@scom/scom-page-viewer/pageElement.tsx" {
         private module;
         constructor(parent?: Container, options?: any);
         setData(pageElement: IPageElement): Promise<void>;
-        loadModule(rootDir: string, options: {
-            ipfscid?: string;
-            localPath?: string;
-        }): Promise<any>;
+        getEmbedElement(rootDir: string, path: string): Promise<HTMLElement>;
         render(): any;
     }
 }
@@ -385,7 +348,6 @@ declare module "@scom/scom-page-viewer" {
     }
     export default class Viewer extends Module {
         private pnlLoading;
-        private viewerHeader;
         private viewerFooter;
         private gridMain;
         private viewerBody;

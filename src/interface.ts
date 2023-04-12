@@ -74,20 +74,11 @@ interface IContainerSettings {
 
 interface IPageBlockData {
   name: string;
-  description: string;
-  ipfscid?: string;
-  imgUrl: string;
-  category: {
-    icon: string;
-    idx: string;
-    name: string;
-  }[];
-  chainId: number;
-  packageId: number;
-  projectId: number;
-  local?: boolean;
-  localPath?: string;
-  dependencies?: any;
+  path: string;
+  category?: "components" | "micro-dapps";
+  imgUrl?: string;
+  disableClicked?: boolean;
+  shownBackdrop?: boolean;
 }
 
 interface ICodeInfoFileContent {

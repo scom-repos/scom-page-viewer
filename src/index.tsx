@@ -1,6 +1,5 @@
 import { ControlElement, customElements, customModule, GridLayout, Module, Panel } from "@ijstech/components";
 import { IPageData } from './interface';
-import { ViewerHeader } from './header';
 import { ViewrBody } from './body';
 import { ViewerFooter } from './footer';
 import { setRootDir } from './store/index';
@@ -23,7 +22,6 @@ declare global {
 @customElements('i-scom-page-viewer')
 export default class Viewer extends Module {
   private pnlLoading: Panel;
-  private viewerHeader: ViewerHeader;
   private viewerFooter: ViewerFooter;
   private gridMain: GridLayout;
   private viewerBody: ViewrBody;
@@ -54,9 +52,7 @@ export default class Viewer extends Module {
 
   async renderPage(page: IPageData) {
     const { header, footer, sections } = page;
-    this.viewerHeader.data = header;
     this.viewerFooter.data = footer;
-    this.viewerHeader.visible = !!header;
     this.viewerFooter.visible = !!header;
     await this.viewerBody.setSections(sections);
   }
@@ -75,7 +71,6 @@ export default class Viewer extends Module {
           >
             <i-panel class={'spinner'}></i-panel>
           </i-vstack>
-          <sc-page-viewer-header id="viewerHeader" visible={false}></sc-page-viewer-header>
           <i-grid-layout id="gridMain" height="100%" templateColumns={["1fr"]}>
             <sc-page-viewer-body id="viewerBody" overflow="auto" onUpdatePage={this.renderPage.bind(this)}></sc-page-viewer-body>
           </i-grid-layout>
