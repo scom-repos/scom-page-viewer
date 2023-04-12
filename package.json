@@ -7,7 +7,7 @@
     "types": "pluginTypes/index.d.ts",
     "dependencies": {
         "@ijstech/components": "^0.1.48",
-        "@ijstech/eth-wallet": "^0.1.35"
+        "@ijstech/eth-wallet": "^0.1.50"
     },
     "devDependencies": {
         "@ijstech/compiler": "^0.1.22",
