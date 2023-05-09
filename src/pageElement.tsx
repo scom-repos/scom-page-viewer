@@ -34,8 +34,7 @@ export class ViewrPageElement extends Module {
   async setData(pageElement: IPageElement) {
     this.pnlElement.clearInnerHTML();
     this.data = pageElement;
-    const { column, columnSpan, id, type, properties, elements, tag } = this.data;
-    // this.pnlElement.grid = { column, columnSpan };
+    const { id, type, properties, elements, tag } = this.data;
     this.pnlElement.id = id;
     const rootDir = getRootDir();
     if (type === 'primitive') {
@@ -43,9 +42,12 @@ export class ViewrPageElement extends Module {
       if (module) {
         this.pnlElement.append(module);
         if (module.ready) await module.ready();
-        if (module.setRootDir) module.setRootDir(rootDir);
-        await module.setData(properties);
-        if (tag) await module.setTag(tag);
+        if (module.getConfigurators) {
+          const builderTarget = module.getConfigurators().find(conf => conf.target === 'Builders');
+          if (builderTarget?.setRootDir) builderTarget.setRootDir(rootDir);
+          if (builderTarget?.setData) await builderTarget.setData(properties);
+          if (tag && builderTarget?.setTag) await builderTarget.setTag(tag);
+        }
         const themeVar = document.body.style.getPropertyValue('--theme')
         if (themeVar) module.theme = themeVar
         this.module = module;
