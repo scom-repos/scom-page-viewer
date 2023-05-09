@@ -384,8 +384,7 @@ define("@scom/scom-page-viewer/pageElement.tsx", ["require", "exports", "@ijstec
         async setData(pageElement) {
             this.pnlElement.clearInnerHTML();
             this.data = pageElement;
-            const { column, columnSpan, id, type, properties, elements, tag } = this.data;
-            // this.pnlElement.grid = { column, columnSpan };
+            const { id, type, properties, elements, tag } = this.data;
             this.pnlElement.id = id;
             const rootDir = index_1.getRootDir();
             if (type === 'primitive') {
@@ -394,11 +393,15 @@ define("@scom/scom-page-viewer/pageElement.tsx", ["require", "exports", "@ijstec
                     this.pnlElement.append(module);
                     if (module.ready)
                         await module.ready();
-                    if (module.setRootDir)
-                        module.setRootDir(rootDir);
-                    await module.setData(properties);
-                    if (tag)
-                        await module.setTag(tag);
+                    if (module.getConfigurators) {
+                        const builderTarget = module.getConfigurators().find(conf => conf.target === 'Builders');
+                        if (builderTarget === null || builderTarget === void 0 ? void 0 : builderTarget.setRootDir)
+                            builderTarget.setRootDir(rootDir);
+                        if (builderTarget === null || builderTarget === void 0 ? void 0 : builderTarget.setData)
+                            await builderTarget.setData(properties);
+                        if (tag && (builderTarget === null || builderTarget === void 0 ? void 0 : builderTarget.setTag))
+                            await builderTarget.setTag(tag);
+                    }
                     const themeVar = document.body.style.getPropertyValue('--theme');
                     if (themeVar)
                         module.theme = themeVar;

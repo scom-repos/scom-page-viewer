@@ -15,7 +15,7 @@
         "@scom/scom-banner": "https://github.com/scom-repos/scom-banner",
         "@scom/scom-blog": "https://github.com/scom-repos/scom-blog",
         "@scom/scom-carousel": "https://github.com/scom-repos/scom-carousel",
-        "@scom/scom-dapp-container": "0.1.1",
+        "@scom/scom-dapp-container": "^0.1.1",
         "@scom/scom-gem-token": "https://github.com/scom-repos/scom-gem-token",
         "@scom/scom-image": "https://github.com/scom-repos/scom-image",
         "@scom/scom-map": "https://github.com/scom-repos/scom-map",
