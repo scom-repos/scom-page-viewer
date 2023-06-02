@@ -1,9 +1,5 @@
 /// <amd-module name="@scom/scom-page-viewer/interface.ts" />
 declare module "@scom/scom-page-viewer/interface.ts" {
-    interface IViewerData {
-        config?: IConfigData;
-        pages: IPageData[];
-    }
     interface IPageData {
         cid?: string;
         title?: string;
@@ -15,56 +11,15 @@ declare module "@scom/scom-page-viewer/interface.ts" {
         sections: IPageSection[];
         footer: IPageFooter;
     }
-    interface IRowData {
-        config: IRowSettings;
-        sections: ISectionData[];
-    }
-    interface IRowSettings {
-        height?: string;
-        width?: string;
-        columns?: number;
-        columnsSettings?: {
-            width?: string;
-            size?: {
-                width?: string;
-                height?: string;
-            };
-        }[];
-        anchorName?: string;
-    }
-    interface ISectionData {
-        module: IPageBlockData | null;
-        data: any;
-        tag: any;
+    enum IColumnLayoutType {
+        FIXED = "Fixed",
+        AUTOMATIC = "Automatic"
     }
     interface IConfigData {
-        header: {
-            showHeader: boolean;
-            showWalletAuthentication: boolean;
-            showTopMenu: boolean;
-            showSideMenu: boolean;
-            showLogo: boolean;
-            logo: string;
-        };
-        body: {
-            boxedLayout: boolean;
-            boxedWidth: string;
-            containerLayout: boolean;
-            containerSettings: IContainerSettings;
-            showPagination: boolean;
-        };
-        footer: {
-            showFooter: boolean;
-            stickyFooter: boolean;
-            copyrightText: string;
-        };
-    }
-    type StyleValues = "-moz-initial" | "inherit" | "initial" | "revert" | "unset";
-    interface IContainerSettings {
-        width?: string;
-        maxWidth?: string;
-        textAlign?: StyleValues | "center" | "end" | "justify" | "left" | "match-parent" | "right" | "start";
-        overflow?: StyleValues | "-moz-hidden-unscrollable" | "auto" | "clip" | "hidden" | "scroll" | "visible" | (string & {});
+        columnLayout?: IColumnLayoutType;
+        columnsNumber?: number;
+        maxColumnsPerRow?: number;
+        columnMinWidth?: number | string;
     }
     interface IPageBlockData {
         name: string;
@@ -114,12 +69,13 @@ declare module "@scom/scom-page-viewer/interface.ts" {
         image?: string;
         backgroundColor?: string;
         elements: IPageElement[];
+        config?: IConfigData;
     }
     export interface IPageFooter {
         image: string;
         elements: IPageElement[];
     }
-    export { IViewerData, IPageData, IRowData, ISectionData, ICodeInfoFileContent };
+    export { IPageData, ICodeInfoFileContent, IColumnLayoutType, IConfigData };
 }
 /// <amd-module name="@scom/scom-page-viewer/paging.css.ts" />
 declare module "@scom/scom-page-viewer/paging.css.ts" {
@@ -222,8 +178,8 @@ declare module "@scom/scom-page-viewer/footer.tsx" {
         render(): any;
     }
 }
-/// <amd-module name="@scom/scom-page-viewer/store/index.ts" />
-declare module "@scom/scom-page-viewer/store/index.ts" {
+/// <amd-module name="@scom/scom-page-viewer/store.ts" />
+declare module "@scom/scom-page-viewer/store.ts" {
     export const state: {
         rootDir: string;
     };
@@ -240,7 +196,9 @@ declare module "@scom/scom-page-viewer/utils.ts" {
     const IPFS_SCOM_URL = "https://ipfs.scom.dev/ipfs";
     function fetchFileContentByCid(ipfsCid: string): Promise<Response | undefined>;
     function getSCConfigByCodeCid(codeCid: string): Promise<any>;
-    export { IPFS_SCOM_URL, fetchFileContentByCid, getSCConfigByCodeCid };
+    const DEFAULT_MAX_COLUMN = 12;
+    const GAP_WIDTH = 15;
+    export { IPFS_SCOM_URL, fetchFileContentByCid, getSCConfigByCodeCid, DEFAULT_MAX_COLUMN, GAP_WIDTH };
 }
 /// <amd-module name="@scom/scom-page-viewer/pageElement.tsx" />
 declare module "@scom/scom-page-viewer/pageElement.tsx" {
@@ -266,7 +224,7 @@ declare module "@scom/scom-page-viewer/pageElement.tsx" {
 /// <amd-module name="@scom/scom-page-viewer/section.tsx" />
 declare module "@scom/scom-page-viewer/section.tsx" {
     import { ControlElement, Module } from "@ijstech/components";
-    import { IPageElement } from "@scom/scom-page-viewer/interface.ts";
+    import { IPageSection } from "@scom/scom-page-viewer/interface.ts";
     global {
         namespace JSX {
             interface IntrinsicElements {
@@ -294,7 +252,8 @@ declare module "@scom/scom-page-viewer/section.tsx" {
         clear(): void;
         init(): Promise<void>;
         updateContainerSize(): void;
-        setData(listPageElm: IPageElement[]): Promise<void>;
+        setData(sectionData: IPageSection): Promise<void>;
+        private updateGridTemplateColumns;
         render(): any;
     }
 }

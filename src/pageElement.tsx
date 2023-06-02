@@ -8,7 +8,7 @@ import {
 } from '@ijstech/components';
 import { ICodeInfoFileContent, IPageElement } from './interface';
 import { fetchFileContentByCid, getSCConfigByCodeCid, IPFS_SCOM_URL } from './utils';
-import { getRootDir } from './store/index';
+import { getRootDir } from './store';
 
 declare global {
   namespace JSX {

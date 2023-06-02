@@ -1,8 +1,3 @@
-interface IViewerData {
-  config?: IConfigData;
-  pages: IPageData[];
-}
-
 interface IPageData {
   cid?: string;
   title?: string;
@@ -16,60 +11,16 @@ interface IPageData {
   footer: IPageFooter;
 }
 
-interface IRowData {
-  config: IRowSettings;
-  sections: ISectionData[];
-}
-
-interface IRowSettings {
-  height?: string;
-  width?: string;
-  columns?: number;
-  columnsSettings?: {
-    width?: string;
-    size?: {
-      width?: string;
-      height?: string;
-    }
-  }[];
-  anchorName?: string;
-}
-
-interface ISectionData {
-  module: IPageBlockData | null;
-  data: any;
-  tag: any;
+enum IColumnLayoutType {
+  FIXED = 'Fixed',
+  AUTOMATIC = 'Automatic'
 }
 
 interface IConfigData {
-  header: {
-    showHeader: boolean;
-    showWalletAuthentication: boolean;
-    showTopMenu: boolean;
-    showSideMenu: boolean;
-    showLogo: boolean;
-    logo: string;
-  };
-  body: {
-    boxedLayout: boolean;
-    boxedWidth: string;
-    containerLayout: boolean;
-    containerSettings: IContainerSettings;
-    showPagination: boolean;
-  };
-  footer: {
-    showFooter: boolean;
-    stickyFooter: boolean;
-    copyrightText: string;
-  };
-}
-
-type StyleValues = "-moz-initial" | "inherit" | "initial" | "revert" | "unset";
-interface IContainerSettings {
-  width?: string;
-  maxWidth?: string;
-  textAlign?: StyleValues | "center" | "end" | "justify" | "left" | "match-parent" | "right" | "start";
-  overflow?: StyleValues | "-moz-hidden-unscrollable" | "auto" | "clip" | "hidden" | "scroll" | "visible" | (string & {});
+  columnLayout?: IColumnLayoutType;
+  columnsNumber?: number;
+  maxColumnsPerRow?: number;
+  columnMinWidth?: number|string;
 }
 
 interface IPageBlockData {
@@ -126,6 +77,7 @@ export interface IPageSection {
   image?: string;
   backgroundColor?: string;
   elements: IPageElement[];
+  config?: IConfigData;
 }
 
 export interface IPageFooter {
@@ -134,9 +86,8 @@ export interface IPageFooter {
 }
 
 export {
-  IViewerData,
   IPageData,
-  IRowData,
-  ISectionData,
-  ICodeInfoFileContent
+  ICodeInfoFileContent,
+  IColumnLayoutType,
+  IConfigData
 }

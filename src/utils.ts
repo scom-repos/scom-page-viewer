@@ -20,8 +20,13 @@ async function getSCConfigByCodeCid(codeCid: string) {
   return scConfig;
 }
 
+const DEFAULT_MAX_COLUMN = 12;
+const GAP_WIDTH = 15;
+
 export {
   IPFS_SCOM_URL,
   fetchFileContentByCid,
-  getSCConfigByCodeCid
+  getSCConfigByCodeCid,
+  DEFAULT_MAX_COLUMN,
+  GAP_WIDTH
 }
