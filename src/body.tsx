@@ -62,7 +62,7 @@ export class ViewrBody extends Module {
       const { image, backgroundColor } = section;
       const pageSection = (<sc-page-viewer-section id={section.id} background={{ image, color: backgroundColor }}></sc-page-viewer-section>);
       this.pnlSections.append(pageSection);
-      await pageSection.setData(section.elements);
+      await pageSection.setData(section);
       const anchorName = section.anchorName;
       if (anchorName) {
         anchors.push({

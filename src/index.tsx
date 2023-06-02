@@ -2,7 +2,7 @@ import { ControlElement, customElements, customModule, GridLayout, Module, Panel
 import { IPageData } from './interface';
 import { ViewrBody } from './body';
 import { ViewerFooter } from './footer';
-import { setRootDir } from './store/index';
+import { setRootDir } from './store';
 import styleClass from './index.css';
 export { ViewrBody } from './body';
 export { ViewrPageElement } from './pageElement';

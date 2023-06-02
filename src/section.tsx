@@ -1,5 +1,6 @@
-import { Control, ControlElement, customElements, GridLayout, Module } from "@ijstech/components";
-import { IPageElement } from "./interface";
+import { ControlElement, customElements, GridLayout, Module } from "@ijstech/components";
+import { IColumnLayoutType, IConfigData, IPageSection } from "./interface";
+import { DEFAULT_MAX_COLUMN, GAP_WIDTH } from "./utils";
 
 declare global {
   namespace JSX {
@@ -51,16 +52,42 @@ export class ViewrSection extends Module {
     }
   }
 
-  async setData(listPageElm: IPageElement[]) {
+  async setData(sectionData: IPageSection) {
     this.width = '100%';
     this.padding = {left: '3rem', right: '3rem'};
-    for (const pageElm of listPageElm) {
-      const { column, columnSpan } = pageElm;
+    const { elements = [], config = {} } = sectionData;
+    for (const pageElm of elements) {
       const pageElement = (<sc-page-viewer-page-element></sc-page-viewer-page-element>) as any;
-      pageElement.grid = { column, columnSpan };
-      pageElement.style.gridRow = '1';
+      if (config?.columnLayout !== IColumnLayoutType.AUTOMATIC) {
+        const { column, columnSpan } = pageElm;
+        pageElement.grid = { column, columnSpan };
+        pageElement.style.gridRow = '1';
+      }
+      this.updateGridTemplateColumns(config);
       this.pnlSection.append(pageElement);
       await pageElement.setData(pageElm);
+    }
+  }
+
+  private updateGridTemplateColumns(config: IConfigData) {
+    let { columnLayout, columnsNumber, maxColumnsPerRow, columnMinWidth } = config || {};
+    if (columnLayout === IColumnLayoutType.AUTOMATIC) {
+      let minWidth = typeof columnMinWidth === 'string' ? columnMinWidth : `${columnMinWidth}px`;
+      if (columnMinWidth && maxColumnsPerRow) {
+        let minmaxFirstParam = `max(${minWidth}, calc(100% / ${maxColumnsPerRow} - ${GAP_WIDTH}px))`;
+        this.pnlSection.style.gridTemplateColumns = `repeat(auto-fill, minmax(${minmaxFirstParam}, 1fr))`;
+      }
+      else if (columnMinWidth) {
+        this.pnlSection.style.gridTemplateColumns = `repeat(auto-fill, minmax(min(${minWidth}, 100%), 1fr))`;
+      }
+      else if (maxColumnsPerRow) {
+        this.pnlSection.style.gridTemplateColumns = `repeat(${maxColumnsPerRow}, 1fr)`;
+      } else {
+        this.pnlSection.style.gridTemplateColumns = `repeat(${DEFAULT_MAX_COLUMN}, 1fr)`;
+      }
+    } else {
+      const columnsPerRow = columnsNumber || DEFAULT_MAX_COLUMN;
+      this.pnlSection.style.gridTemplateColumns = `repeat(${columnsPerRow}, 1fr)`;
     }
   }
 
@@ -73,8 +100,7 @@ export class ViewrSection extends Module {
         maxWidth="100%"
         maxHeight="100%"
         position="relative"
-        gap={{column: 15}}
-        columnsPerRow={12}
+        gap={{column: 15, row: 15}}
         padding={{top: '1.5rem', bottom: '1.5rem'}}
     ></i-grid-layout>
     )
