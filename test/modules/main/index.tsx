@@ -94,7 +94,11 @@ export default class Main extends Module {
 
   render() {
     return <i-panel>
-      <i-scom-page-viewer id="viewer"></i-scom-page-viewer>
+      <i-scom-page-viewer
+        id="viewer"
+        columnLayout="Automatic"
+        columnMinWidth={300}
+      ></i-scom-page-viewer>
     </i-panel>
   }
 }

@@ -1,19 +1,27 @@
 import { ControlElement, customElements, customModule, GridLayout, Module, Panel } from "@ijstech/components";
-import { IPageData } from './interface';
+import { IPageData, IColumnLayoutType, IConfig } from './interface';
 import { ViewrBody } from './body';
 import { ViewerFooter } from './footer';
-import { setRootDir } from './store/index';
+import { setConfig, setRootDir } from './store';
 import styleClass from './index.css';
+import { DEFAULT_MAX_COLUMN } from "./utils";
 export { ViewrBody } from './body';
 export { ViewrPageElement } from './pageElement';
 export { ViewrSection } from './section';
 export { ViewerSidebar } from './sidebar';
 export { ViewerPaging } from './paging';
 
+interface ScomPageViewerElement extends ControlElement {
+  columnLayout?: string;
+  columnsNumber?: number;
+  maxColumnsPerRow?: number;
+  columnMinWidth?: number;
+}
+
 declare global {
   namespace JSX {
       interface IntrinsicElements {
-          ['i-scom-page-viewer']: ControlElement;
+          ['i-scom-page-viewer']: ScomPageViewerElement;
       }
   }
 }
@@ -26,6 +34,48 @@ export default class Viewer extends Module {
   private gridMain: GridLayout;
   private viewerBody: ViewrBody;
   private isLoaded: boolean = false;
+  private config: IConfig = {};
+
+  get columnLayout() {
+    return this.config.columnLayout ?? IColumnLayoutType.FIXED;
+  }
+  set columnLayout(value: IColumnLayoutType) {
+    this.config.columnLayout = value ?? IColumnLayoutType.FIXED;
+    setConfig({...this.config});
+  }
+
+  get columnsNumber() {
+    return this.config.columnsNumber ?? DEFAULT_MAX_COLUMN;
+  }
+  set columnsNumber(value: number) {
+    this.config.columnsNumber = value ?? DEFAULT_MAX_COLUMN;
+    setConfig({...this.config});
+  }
+
+  get maxColumnsPerRow() {
+    return this.config.maxColumnsPerRow ?? 0;
+  }
+  set maxColumnsPerRow(value: number) {
+    this.config.maxColumnsPerRow = value ?? 0;
+    setConfig({...this.config});
+  }
+
+  get columnMinWidth() {
+    return this.config.columnMinWidth ?? 0;
+  }
+  set columnMinWidth(value: number|string) {
+    this.config.columnMinWidth = value ?? 0;
+    setConfig({...this.config});
+  }
+
+  setConfigData(data: IConfig) {
+    this.config = data;
+    setConfig(data);
+  }
+
+  getConfigData() {
+    return this.config;
+  }
 
   async onShow(options: any) {
     this.pnlLoading.visible = true;
@@ -55,6 +105,15 @@ export default class Viewer extends Module {
     this.viewerFooter.data = footer;
     this.viewerFooter.visible = !!header;
     await this.viewerBody.setSections(sections);
+  }
+
+  init() {
+    super.init();
+    const columnLayout = this.getAttribute('columnLayout', true, IColumnLayoutType.FIXED);
+    const maxColumnsPerRow = this.getAttribute('maxColumnsPerRow', true, 0);
+    const columnMinWidth = this.getAttribute('columnMinWidth', true, '');
+    const columnsNumber = this.getAttribute('columnsNumber', true, DEFAULT_MAX_COLUMN);
+    this.setConfigData({columnLayout, maxColumnsPerRow, columnMinWidth, columnsNumber});
   }
 
   render() {

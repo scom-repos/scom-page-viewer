@@ -133,10 +133,24 @@ export interface IPageFooter {
   elements: IPageElement[];
 }
 
+enum IColumnLayoutType {
+  FIXED = 'Fixed',
+  AUTOMATIC = 'Automatic'
+}
+
+interface IConfig {
+  columnLayout?: IColumnLayoutType;
+  columnsNumber?: number;
+  maxColumnsPerRow?: number;
+  columnMinWidth?: number|string;
+}
+
 export {
   IViewerData,
   IPageData,
   IRowData,
   ISectionData,
-  ICodeInfoFileContent
+  ICodeInfoFileContent,
+  IColumnLayoutType,
+  IConfig
 }

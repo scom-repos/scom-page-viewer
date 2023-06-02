@@ -119,7 +119,17 @@ declare module "@scom/scom-page-viewer/interface.ts" {
         image: string;
         elements: IPageElement[];
     }
-    export { IViewerData, IPageData, IRowData, ISectionData, ICodeInfoFileContent };
+    enum IColumnLayoutType {
+        FIXED = "Fixed",
+        AUTOMATIC = "Automatic"
+    }
+    interface IConfig {
+        columnLayout?: IColumnLayoutType;
+        columnsNumber?: number;
+        maxColumnsPerRow?: number;
+        columnMinWidth?: number | string;
+    }
+    export { IViewerData, IPageData, IRowData, ISectionData, ICodeInfoFileContent, IColumnLayoutType, IConfig };
 }
 /// <amd-module name="@scom/scom-page-viewer/paging.css.ts" />
 declare module "@scom/scom-page-viewer/paging.css.ts" {
@@ -222,13 +232,17 @@ declare module "@scom/scom-page-viewer/footer.tsx" {
         render(): any;
     }
 }
-/// <amd-module name="@scom/scom-page-viewer/store/index.ts" />
-declare module "@scom/scom-page-viewer/store/index.ts" {
+/// <amd-module name="@scom/scom-page-viewer/store.ts" />
+declare module "@scom/scom-page-viewer/store.ts" {
+    import { IConfig } from "@scom/scom-page-viewer/interface.ts";
     export const state: {
         rootDir: string;
+        config: IConfig;
     };
     export const setRootDir: (value: string) => void;
     export const getRootDir: () => string;
+    export const setConfig: (value: IConfig) => void;
+    export const getConfig: () => IConfig;
 }
 /// <amd-module name="@scom/scom-page-viewer/index.css.ts" />
 declare module "@scom/scom-page-viewer/index.css.ts" {
@@ -240,7 +254,9 @@ declare module "@scom/scom-page-viewer/utils.ts" {
     const IPFS_SCOM_URL = "https://ipfs.scom.dev/ipfs";
     function fetchFileContentByCid(ipfsCid: string): Promise<Response | undefined>;
     function getSCConfigByCodeCid(codeCid: string): Promise<any>;
-    export { IPFS_SCOM_URL, fetchFileContentByCid, getSCConfigByCodeCid };
+    const DEFAULT_MAX_COLUMN = 12;
+    const GAP_WIDTH = 15;
+    export { IPFS_SCOM_URL, fetchFileContentByCid, getSCConfigByCodeCid, DEFAULT_MAX_COLUMN, GAP_WIDTH };
 }
 /// <amd-module name="@scom/scom-page-viewer/pageElement.tsx" />
 declare module "@scom/scom-page-viewer/pageElement.tsx" {
@@ -292,9 +308,10 @@ declare module "@scom/scom-page-viewer/section.tsx" {
             height?: string;
         });
         clear(): void;
-        init(): Promise<void>;
+        init(): void;
         updateContainerSize(): void;
         setData(listPageElm: IPageElement[]): Promise<void>;
+        private updateGridTemplateColumns;
         render(): any;
     }
 }
@@ -333,16 +350,22 @@ declare module "@scom/scom-page-viewer/sidebar.tsx" {
 /// <amd-module name="@scom/scom-page-viewer" />
 declare module "@scom/scom-page-viewer" {
     import { ControlElement, Module } from "@ijstech/components";
-    import { IPageData } from "@scom/scom-page-viewer/interface.ts";
+    import { IPageData, IColumnLayoutType, IConfig } from "@scom/scom-page-viewer/interface.ts";
     export { ViewrBody } from "@scom/scom-page-viewer/body.tsx";
     export { ViewrPageElement } from "@scom/scom-page-viewer/pageElement.tsx";
     export { ViewrSection } from "@scom/scom-page-viewer/section.tsx";
     export { ViewerSidebar } from "@scom/scom-page-viewer/sidebar.tsx";
     export { ViewerPaging } from "@scom/scom-page-viewer/paging.tsx";
+    interface ScomPageViewerElement extends ControlElement {
+        columnLayout?: string;
+        columnsNumber?: number;
+        maxColumnsPerRow?: number;
+        columnMinWidth?: number;
+    }
     global {
         namespace JSX {
             interface IntrinsicElements {
-                ['i-scom-page-viewer']: ControlElement;
+                ['i-scom-page-viewer']: ScomPageViewerElement;
             }
         }
     }
@@ -352,10 +375,22 @@ declare module "@scom/scom-page-viewer" {
         private gridMain;
         private viewerBody;
         private isLoaded;
+        private config;
+        get columnLayout(): IColumnLayoutType;
+        set columnLayout(value: IColumnLayoutType);
+        get columnsNumber(): number;
+        set columnsNumber(value: number);
+        get maxColumnsPerRow(): number;
+        set maxColumnsPerRow(value: number);
+        get columnMinWidth(): number | string;
+        set columnMinWidth(value: number | string);
+        setConfigData(data: IConfig): void;
+        getConfigData(): IConfig;
         onShow(options: any): Promise<void>;
         setData(data: IPageData): Promise<void>;
         setRootDir(value: string): void;
         renderPage(page: IPageData): Promise<void>;
+        init(): void;
         render(): any;
     }
 }
