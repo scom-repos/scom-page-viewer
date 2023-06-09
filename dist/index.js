@@ -134,7 +134,7 @@ define("@scom/scom-page-viewer/paging.tsx", ["require", "exports", "@ijstech/com
         }
     };
     ViewerPaging = __decorate([
-        components_2.customElements('sc-page-viewer-paging')
+        (0, components_2.customElements)('sc-page-viewer-paging')
     ], ViewerPaging);
     exports.ViewerPaging = ViewerPaging;
 });
@@ -257,7 +257,7 @@ define("@scom/scom-page-viewer/body.tsx", ["require", "exports", "@ijstech/compo
         }
     };
     ViewrBody = __decorate([
-        components_4.customElements('sc-page-viewer-body')
+        (0, components_4.customElements)('sc-page-viewer-body')
     ], ViewrBody);
     exports.ViewrBody = ViewrBody;
 });
@@ -296,7 +296,7 @@ define("@scom/scom-page-viewer/footer.tsx", ["require", "exports", "@ijstech/com
         }
     };
     ViewerFooter = __decorate([
-        components_5.customElements('sc-page-viewer-footer')
+        (0, components_5.customElements)('sc-page-viewer-footer')
     ], ViewerFooter);
     exports.ViewerFooter = ViewerFooter;
 });
@@ -396,7 +396,7 @@ define("@scom/scom-page-viewer/pageElement.tsx", ["require", "exports", "@ijstec
             this.data = pageElement;
             const { id, type, properties, elements, tag } = this.data;
             this.pnlElement.id = id;
-            const rootDir = store_1.getRootDir();
+            const rootDir = (0, store_1.getRootDir)();
             if (type === 'primitive') {
                 let module = await this.getEmbedElement(rootDir, this.data.module.path);
                 if (module) {
@@ -442,7 +442,7 @@ define("@scom/scom-page-viewer/pageElement.tsx", ["require", "exports", "@ijstec
         }
     };
     ViewrPageElement = __decorate([
-        components_7.customElements('sc-page-viewer-page-element')
+        (0, components_7.customElements)('sc-page-viewer-page-element')
     ], ViewrPageElement);
     exports.ViewrPageElement = ViewrPageElement;
 });
@@ -477,35 +477,33 @@ define("@scom/scom-page-viewer/section.tsx", ["require", "exports", "@ijstech/co
             this.width = '100%';
             this.padding = { left: '3rem', right: '3rem' };
             const { elements = [], config = {} } = sectionData;
+            const columnLayout = (config === null || config === void 0 ? void 0 : config.columnLayout) || interface_1.IColumnLayoutType.AUTOMATIC;
             for (const pageElm of elements) {
-                const pageElement = (this.$render("sc-page-viewer-page-element", null));
-                if ((config === null || config === void 0 ? void 0 : config.columnLayout) !== interface_1.IColumnLayoutType.AUTOMATIC) {
-                    const { column, columnSpan } = pageElm;
+                const pageElement = (this.$render("sc-page-viewer-page-element", { display: "block" }));
+                const { column, columnSpan } = pageElm;
+                if (columnLayout !== interface_1.IColumnLayoutType.AUTOMATIC) {
                     pageElement.grid = { column, columnSpan };
                     pageElement.style.gridRow = '1';
                 }
-                this.updateGridTemplateColumns(config);
                 this.pnlSection.append(pageElement);
                 await pageElement.setData(pageElm);
             }
+            this.updateGridTemplateColumns(sectionData);
         }
-        updateGridTemplateColumns(config) {
-            let { columnLayout, columnsNumber, maxColumnsPerRow, columnMinWidth } = config || {};
+        updateGridTemplateColumns(sectionData) {
+            const { elements = [], config = {} } = sectionData;
+            let { columnLayout = interface_1.IColumnLayoutType.AUTOMATIC, columnsNumber, maxColumnsPerRow, columnMinWidth } = config || {};
             if (columnLayout === interface_1.IColumnLayoutType.AUTOMATIC) {
-                let minWidth = typeof columnMinWidth === 'string' ? columnMinWidth : `${columnMinWidth}px`;
-                if (columnMinWidth && maxColumnsPerRow) {
-                    let minmaxFirstParam = `max(${minWidth}, calc(100% / ${maxColumnsPerRow} - ${utils_1.GAP_WIDTH}px))`;
-                    this.pnlSection.style.gridTemplateColumns = `repeat(auto-fill, minmax(${minmaxFirstParam}, 1fr))`;
-                }
-                else if (columnMinWidth) {
-                    this.pnlSection.style.gridTemplateColumns = `repeat(auto-fill, minmax(min(${minWidth}, 100%), 1fr))`;
-                }
-                else if (maxColumnsPerRow) {
-                    this.pnlSection.style.gridTemplateColumns = `repeat(${maxColumnsPerRow}, 1fr)`;
-                }
+                let minWidth = '';
+                if (columnMinWidth)
+                    minWidth = typeof columnMinWidth === 'string' ? columnMinWidth : `${columnMinWidth}px`;
                 else {
-                    this.pnlSection.style.gridTemplateColumns = `repeat(${utils_1.DEFAULT_MAX_COLUMN}, 1fr)`;
+                    const bodyWidth = document.body.offsetWidth;
+                    minWidth = bodyWidth < 1024 ? `100%` : `calc((100% / ${elements.length}) - ${utils_1.GAP_WIDTH}px)`;
                 }
+                let maxColumn = maxColumnsPerRow || elements.length || utils_1.DEFAULT_MAX_COLUMN;
+                let minmaxFirstParam = `max(${minWidth}, calc(100% / ${maxColumn} - ${utils_1.GAP_WIDTH}px))`;
+                this.pnlSection.style.gridTemplateColumns = `repeat(auto-fill, minmax(${minmaxFirstParam}, 1fr))`;
             }
             else {
                 const columnsPerRow = columnsNumber || utils_1.DEFAULT_MAX_COLUMN;
@@ -517,7 +515,7 @@ define("@scom/scom-page-viewer/section.tsx", ["require", "exports", "@ijstech/co
         }
     };
     ViewrSection = __decorate([
-        components_8.customElements('sc-page-viewer-section')
+        (0, components_8.customElements)('sc-page-viewer-section')
     ], ViewrSection);
     exports.ViewrSection = ViewrSection;
 });
@@ -612,7 +610,7 @@ define("@scom/scom-page-viewer/sidebar.tsx", ["require", "exports", "@ijstech/co
         }
     };
     ViewerSidebar = __decorate([
-        components_10.customElements('sc-page-viewer-sidebar')
+        (0, components_10.customElements)('sc-page-viewer-sidebar')
     ], ViewerSidebar);
     exports.ViewerSidebar = ViewerSidebar;
 });
@@ -636,7 +634,7 @@ define("@scom/scom-page-viewer", ["require", "exports", "@ijstech/components", "
             this.gridMain.visible = false;
             if (!this.isLoaded) {
                 this.gridMain.templateColumns = ["1fr"];
-                store_2.setRootDir(options === null || options === void 0 ? void 0 : options.rootDir);
+                (0, store_2.setRootDir)(options === null || options === void 0 ? void 0 : options.rootDir);
                 await this.setData((_a = options === null || options === void 0 ? void 0 : options._data) !== null && _a !== void 0 ? _a : options);
             }
             else if ((_b = options === null || options === void 0 ? void 0 : options._data) !== null && _b !== void 0 ? _b : options) {
@@ -650,7 +648,7 @@ define("@scom/scom-page-viewer", ["require", "exports", "@ijstech/components", "
             this.isLoaded = true;
         }
         setRootDir(value) {
-            store_2.setRootDir(value);
+            (0, store_2.setRootDir)(value);
         }
         async renderPage(page) {
             const { header, footer, sections } = page;
@@ -670,7 +668,7 @@ define("@scom/scom-page-viewer", ["require", "exports", "@ijstech/components", "
     };
     Viewer = __decorate([
         components_11.customModule,
-        components_11.customElements('i-scom-page-viewer')
+        (0, components_11.customElements)('i-scom-page-viewer')
     ], Viewer);
     exports.default = Viewer;
 });
