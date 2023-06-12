@@ -56,35 +56,35 @@ export class ViewrSection extends Module {
     this.width = '100%';
     this.padding = {left: '3rem', right: '3rem'};
     const { elements = [], config = {} } = sectionData;
+    const columnLayout = config?.columnLayout || IColumnLayoutType.AUTOMATIC;
     for (const pageElm of elements) {
-      const pageElement = (<sc-page-viewer-page-element></sc-page-viewer-page-element>) as any;
-      if (config?.columnLayout !== IColumnLayoutType.AUTOMATIC) {
-        const { column, columnSpan } = pageElm;
+      const pageElement = (<sc-page-viewer-page-element display="block"></sc-page-viewer-page-element>) as any;
+      const { column, columnSpan } = pageElm;
+      if (columnLayout !== IColumnLayoutType.AUTOMATIC) {
         pageElement.grid = { column, columnSpan };
         pageElement.style.gridRow = '1';
       }
-      this.updateGridTemplateColumns(config);
       this.pnlSection.append(pageElement);
       await pageElement.setData(pageElm);
     }
+    this.updateGridTemplateColumns(sectionData);
   }
 
-  private updateGridTemplateColumns(config: IConfigData) {
-    let { columnLayout, columnsNumber, maxColumnsPerRow, columnMinWidth } = config || {};
+  private updateGridTemplateColumns(sectionData: IPageSection) {
+    const { elements = [], config = {} } = sectionData;
+    let { columnLayout = IColumnLayoutType.AUTOMATIC, columnsNumber, maxColumnsPerRow, columnMinWidth } = config || {};
     if (columnLayout === IColumnLayoutType.AUTOMATIC) {
-      let minWidth = typeof columnMinWidth === 'string' ? columnMinWidth : `${columnMinWidth}px`;
-      if (columnMinWidth && maxColumnsPerRow) {
-        let minmaxFirstParam = `max(${minWidth}, calc(100% / ${maxColumnsPerRow} - ${GAP_WIDTH}px))`;
-        this.pnlSection.style.gridTemplateColumns = `repeat(auto-fill, minmax(${minmaxFirstParam}, 1fr))`;
+      let minWidth = '';
+      if (columnMinWidth)
+        minWidth = typeof columnMinWidth === 'string' ? columnMinWidth : `${columnMinWidth}px`;
+      else {
+        const bodyWidth = document.body.offsetWidth;
+        minWidth = bodyWidth < 1024 ? `100%` : `calc((100% / ${elements.length}) - ${GAP_WIDTH}px)`;
       }
-      else if (columnMinWidth) {
-        this.pnlSection.style.gridTemplateColumns = `repeat(auto-fill, minmax(min(${minWidth}, 100%), 1fr))`;
-      }
-      else if (maxColumnsPerRow) {
-        this.pnlSection.style.gridTemplateColumns = `repeat(${maxColumnsPerRow}, 1fr)`;
-      } else {
-        this.pnlSection.style.gridTemplateColumns = `repeat(${DEFAULT_MAX_COLUMN}, 1fr)`;
-      }
+
+      let maxColumn = maxColumnsPerRow || elements.length || DEFAULT_MAX_COLUMN;
+      let minmaxFirstParam = `max(${minWidth}, calc(100% / ${maxColumn} - ${GAP_WIDTH}px))`;
+      this.pnlSection.style.gridTemplateColumns = `repeat(auto-fill, minmax(${minmaxFirstParam}, 1fr))`;
     } else {
       const columnsPerRow = columnsNumber || DEFAULT_MAX_COLUMN;
       this.pnlSection.style.gridTemplateColumns = `repeat(${columnsPerRow}, 1fr)`;
