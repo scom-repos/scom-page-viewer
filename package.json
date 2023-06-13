@@ -1,6 +1,6 @@
 {
   "name": "@scom/scom-page-viewer",
-  "version": "0.1.3",
+  "version": "0.1.4",
   "main": "dist/index.js",
   "plugin": "dist/index.js",
   "pluginTypes": "pluginTypes/index.d.ts",
