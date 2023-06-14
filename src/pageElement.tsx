@@ -85,6 +85,7 @@ export class ViewrPageElement extends Module {
     if (!result) return null;
     const elementName = `i-${path.split('/').pop()}`;
     const element = document.createElement(elementName);
+    element.setAttribute('lazyLoad', 'true');
     return element;
   }
 
