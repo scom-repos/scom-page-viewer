@@ -23,6 +23,30 @@ export class ViewrPageElement extends Module {
   private pnlElement: Panel;
   private data: IPageElement;
   private module: Module = null;
+  private observerOptions = {
+    root: null,
+    rootMargin: "0px"
+  };
+  private observer = new IntersectionObserver((entries, observer) => {
+    entries.forEach(async entry => {
+      if (entry.isIntersecting) {
+        if (!this.module.isConnected) await this.module.ready();
+        if ((this.module as any).getConfigurators) {
+          const { properties, tag } = this.data;
+          const rootDir = getRootDir();
+          const builderTarget = (this.module as any).getConfigurators().find(conf => conf.target === 'Builders');
+          if (builderTarget) {
+            if (builderTarget.setRootDir) builderTarget.setRootDir(rootDir);
+            if (builderTarget.setData) await builderTarget.setData(properties);
+            if (tag && builderTarget.setTag) await builderTarget.setTag(tag);
+          }
+        }
+        const themeVar = document.body.style.getPropertyValue('--theme')
+        if (themeVar) (this.module as any).theme = themeVar
+        observer.unobserve(entry.target);
+      }
+    });
+  }, this.observerOptions);
 
   constructor(parent?: Container, options?: any) {
     super(parent, options);
@@ -41,16 +65,8 @@ export class ViewrPageElement extends Module {
       let module: any = await this.getEmbedElement(rootDir, this.data.module.path);
       if (module) {
         this.pnlElement.append(module);
-        if (module.ready) await module.ready();
-        if (module.getConfigurators) {
-          const builderTarget = module.getConfigurators().find(conf => conf.target === 'Builders');
-          if (builderTarget?.setRootDir) builderTarget.setRootDir(rootDir);
-          if (builderTarget?.setData) await builderTarget.setData(properties);
-          if (tag && builderTarget?.setTag) await builderTarget.setTag(tag);
-        }
-        const themeVar = document.body.style.getPropertyValue('--theme')
-        if (themeVar) module.theme = themeVar
         this.module = module;
+        this.observer.observe(module);
       }
     } else {
       for (const element of elements) {

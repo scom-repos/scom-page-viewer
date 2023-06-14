@@ -215,6 +215,8 @@ declare module "@scom/scom-page-viewer/pageElement.tsx" {
         private pnlElement;
         private data;
         private module;
+        private observerOptions;
+        private observer;
         constructor(parent?: Container, options?: any);
         setData(pageElement: IPageElement): Promise<void>;
         getEmbedElement(rootDir: string, path: string): Promise<HTMLElement>;

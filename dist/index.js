@@ -134,7 +134,7 @@ define("@scom/scom-page-viewer/paging.tsx", ["require", "exports", "@ijstech/com
         }
     };
     ViewerPaging = __decorate([
-        (0, components_2.customElements)('sc-page-viewer-paging')
+        components_2.customElements('sc-page-viewer-paging')
     ], ViewerPaging);
     exports.ViewerPaging = ViewerPaging;
 });
@@ -257,7 +257,7 @@ define("@scom/scom-page-viewer/body.tsx", ["require", "exports", "@ijstech/compo
         }
     };
     ViewrBody = __decorate([
-        (0, components_4.customElements)('sc-page-viewer-body')
+        components_4.customElements('sc-page-viewer-body')
     ], ViewrBody);
     exports.ViewrBody = ViewrBody;
 });
@@ -296,7 +296,7 @@ define("@scom/scom-page-viewer/footer.tsx", ["require", "exports", "@ijstech/com
         }
     };
     ViewerFooter = __decorate([
-        (0, components_5.customElements)('sc-page-viewer-footer')
+        components_5.customElements('sc-page-viewer-footer')
     ], ViewerFooter);
     exports.ViewerFooter = ViewerFooter;
 });
@@ -385,6 +385,35 @@ define("@scom/scom-page-viewer/pageElement.tsx", ["require", "exports", "@ijstec
         constructor(parent, options) {
             super(parent, options);
             this.module = null;
+            this.observerOptions = {
+                root: null,
+                rootMargin: "0px"
+            };
+            this.observer = new IntersectionObserver((entries, observer) => {
+                entries.forEach(async (entry) => {
+                    if (entry.isIntersecting) {
+                        if (!this.module.isConnected)
+                            await this.module.ready();
+                        if (this.module.getConfigurators) {
+                            const { properties, tag } = this.data;
+                            const rootDir = store_1.getRootDir();
+                            const builderTarget = this.module.getConfigurators().find(conf => conf.target === 'Builders');
+                            if (builderTarget) {
+                                if (builderTarget.setRootDir)
+                                    builderTarget.setRootDir(rootDir);
+                                if (builderTarget.setData)
+                                    await builderTarget.setData(properties);
+                                if (tag && builderTarget.setTag)
+                                    await builderTarget.setTag(tag);
+                            }
+                        }
+                        const themeVar = document.body.style.getPropertyValue('--theme');
+                        if (themeVar)
+                            this.module.theme = themeVar;
+                        observer.unobserve(entry.target);
+                    }
+                });
+            }, this.observerOptions);
             components_7.application.EventBus.register(this, 'themeChanged', (value) => {
                 if (this.module)
                     this.module.theme = value;
@@ -396,26 +425,13 @@ define("@scom/scom-page-viewer/pageElement.tsx", ["require", "exports", "@ijstec
             this.data = pageElement;
             const { id, type, properties, elements, tag } = this.data;
             this.pnlElement.id = id;
-            const rootDir = (0, store_1.getRootDir)();
+            const rootDir = store_1.getRootDir();
             if (type === 'primitive') {
                 let module = await this.getEmbedElement(rootDir, this.data.module.path);
                 if (module) {
                     this.pnlElement.append(module);
-                    if (module.ready)
-                        await module.ready();
-                    if (module.getConfigurators) {
-                        const builderTarget = module.getConfigurators().find(conf => conf.target === 'Builders');
-                        if (builderTarget === null || builderTarget === void 0 ? void 0 : builderTarget.setRootDir)
-                            builderTarget.setRootDir(rootDir);
-                        if (builderTarget === null || builderTarget === void 0 ? void 0 : builderTarget.setData)
-                            await builderTarget.setData(properties);
-                        if (tag && (builderTarget === null || builderTarget === void 0 ? void 0 : builderTarget.setTag))
-                            await builderTarget.setTag(tag);
-                    }
-                    const themeVar = document.body.style.getPropertyValue('--theme');
-                    if (themeVar)
-                        module.theme = themeVar;
                     this.module = module;
+                    this.observer.observe(module);
                 }
             }
             else {
@@ -442,7 +458,7 @@ define("@scom/scom-page-viewer/pageElement.tsx", ["require", "exports", "@ijstec
         }
     };
     ViewrPageElement = __decorate([
-        (0, components_7.customElements)('sc-page-viewer-page-element')
+        components_7.customElements('sc-page-viewer-page-element')
     ], ViewrPageElement);
     exports.ViewrPageElement = ViewrPageElement;
 });
@@ -515,7 +531,7 @@ define("@scom/scom-page-viewer/section.tsx", ["require", "exports", "@ijstech/co
         }
     };
     ViewrSection = __decorate([
-        (0, components_8.customElements)('sc-page-viewer-section')
+        components_8.customElements('sc-page-viewer-section')
     ], ViewrSection);
     exports.ViewrSection = ViewrSection;
 });
@@ -610,7 +626,7 @@ define("@scom/scom-page-viewer/sidebar.tsx", ["require", "exports", "@ijstech/co
         }
     };
     ViewerSidebar = __decorate([
-        (0, components_10.customElements)('sc-page-viewer-sidebar')
+        components_10.customElements('sc-page-viewer-sidebar')
     ], ViewerSidebar);
     exports.ViewerSidebar = ViewerSidebar;
 });
@@ -634,7 +650,7 @@ define("@scom/scom-page-viewer", ["require", "exports", "@ijstech/components", "
             this.gridMain.visible = false;
             if (!this.isLoaded) {
                 this.gridMain.templateColumns = ["1fr"];
-                (0, store_2.setRootDir)(options === null || options === void 0 ? void 0 : options.rootDir);
+                store_2.setRootDir(options === null || options === void 0 ? void 0 : options.rootDir);
                 await this.setData((_a = options === null || options === void 0 ? void 0 : options._data) !== null && _a !== void 0 ? _a : options);
             }
             else if ((_b = options === null || options === void 0 ? void 0 : options._data) !== null && _b !== void 0 ? _b : options) {
@@ -648,7 +664,7 @@ define("@scom/scom-page-viewer", ["require", "exports", "@ijstech/components", "
             this.isLoaded = true;
         }
         setRootDir(value) {
-            (0, store_2.setRootDir)(value);
+            store_2.setRootDir(value);
         }
         async renderPage(page) {
             const { header, footer, sections } = page;
@@ -668,7 +684,7 @@ define("@scom/scom-page-viewer", ["require", "exports", "@ijstech/components", "
     };
     Viewer = __decorate([
         components_11.customModule,
-        (0, components_11.customElements)('i-scom-page-viewer')
+        components_11.customElements('i-scom-page-viewer')
     ], Viewer);
     exports.default = Viewer;
 });
