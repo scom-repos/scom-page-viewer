@@ -6,8 +6,8 @@ import {
   application,
   Container
 } from '@ijstech/components';
-import { ICodeInfoFileContent, IPageElement } from './interface';
-import { fetchFileContentByCid, getSCConfigByCodeCid, IPFS_SCOM_URL } from './utils';
+import { ICodeInfoFileContent, IColumnLayoutType, IConfigData, IPageElement } from './interface';
+import { DEFAULT_MAX_COLUMN, fetchFileContentByCid, getSCConfigByCodeCid, IPFS_SCOM_URL } from './utils';
 import { getRootDir } from './store';
 
 declare global {
@@ -38,7 +38,16 @@ export class ViewrPageElement extends Module {
           if (builderTarget) {
             if (builderTarget.setRootDir) builderTarget.setRootDir(rootDir);
             if (builderTarget.setData) await builderTarget.setData(properties);
-            if (tag && builderTarget.setTag) await builderTarget.setTag(tag);
+            if (tag && builderTarget.setTag) {
+              const { columnLayout, columnsNumber } = this.config || {};
+              const newTag = {...tag};
+              const maxColumn = columnLayout === IColumnLayoutType.FIXED && columnsNumber ?
+                columnsNumber : DEFAULT_MAX_COLUMN;
+              const colSpan = this.data.columnSpan;
+              const col = this.data.column;
+              if (colSpan === maxColumn && col === 1) newTag.width = '100%';
+              await builderTarget.setTag(newTag);
+            }
           }
         }
         const themeVar = document.body.style.getPropertyValue('--theme')
@@ -47,6 +56,7 @@ export class ViewrPageElement extends Module {
       }
     });
   }, this.observerOptions);
+  private _config: IConfigData;
 
   constructor(parent?: Container, options?: any) {
     super(parent, options);
@@ -54,6 +64,13 @@ export class ViewrPageElement extends Module {
       if (this.module) (this.module as any).theme = value
     })
   };
+
+  get config() {
+    return this._config ?? {};
+  }
+  set config(value: IConfigData) {
+    this._config = value;
+  }
 
   async setData(pageElement: IPageElement) {
     this.pnlElement.clearInnerHTML();

@@ -21,6 +21,7 @@ interface IConfigData {
   columnsNumber?: number;
   maxColumnsPerRow?: number;
   columnMinWidth?: number|string;
+  align?: AlignType;
 }
 
 interface IPageBlockData {
@@ -43,6 +44,8 @@ interface ISemanticVersion {
   minor: number;
   patch: number;
 }
+
+export type AlignType = 'left' | 'center' | 'right';
 
 export interface IPageElement {
   id: string; // uuid
