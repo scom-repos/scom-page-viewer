@@ -77,6 +77,28 @@ declare module "@scom/scom-page-viewer/interface.ts" {
         image: string;
         elements: IPageElement[];
     }
+    export interface IRowData {
+        config: IRowSettings;
+        sections: ISectionData[];
+    }
+    interface IRowSettings {
+        height?: string;
+        width?: string;
+        columns?: number;
+        columnsSettings?: {
+            width?: string;
+            size?: {
+                width?: string;
+                height?: string;
+            };
+        }[];
+        anchorName?: string;
+    }
+    interface ISectionData {
+        module: IPageBlockData | null;
+        data: any;
+        tag: any;
+    }
     export { IPageData, ICodeInfoFileContent, IColumnLayoutType, IConfigData };
 }
 /// <amd-module name="@scom/scom-page-viewer/paging.css.ts" />

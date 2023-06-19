@@ -66,9 +66,8 @@ export class ViewrSection extends Module {
       if (columnLayout !== IColumnLayoutType.AUTOMATIC) {
         pageElement.grid = { column, columnSpan };
         pageElement.style.gridRow = '1';
-        pageElement.config = {...config};
       }
-
+      pageElement.config = {...config};
       this.pnlSection.append(pageElement);
       await pageElement.setData(pageElm);
     }

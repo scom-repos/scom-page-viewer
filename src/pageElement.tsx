@@ -39,13 +39,13 @@ export class ViewrPageElement extends Module {
             if (builderTarget.setRootDir) builderTarget.setRootDir(rootDir);
             if (builderTarget.setData) await builderTarget.setData(properties);
             if (tag && builderTarget.setTag) {
-              const { columnLayout, columnsNumber } = this.config || {};
+              const { columnLayout = IColumnLayoutType.AUTOMATIC, columnsNumber } = this.config || {};
               const newTag = {...tag};
-              const maxColumn = columnLayout === IColumnLayoutType.FIXED && columnsNumber ?
-                columnsNumber : DEFAULT_MAX_COLUMN;
+              const maxColumn = columnLayout === IColumnLayoutType.FIXED && columnsNumber ? columnsNumber : DEFAULT_MAX_COLUMN;
               const colSpan = this.data.columnSpan;
               const col = this.data.column;
-              if (colSpan === maxColumn && col === 1) newTag.width = '100%';
+              if ((colSpan === maxColumn && col === 1) || columnLayout === IColumnLayoutType.AUTOMATIC)
+                newTag.width = '100%';
               await builderTarget.setTag(newTag);
             }
           }

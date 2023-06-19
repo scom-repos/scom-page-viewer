@@ -404,13 +404,12 @@ define("@scom/scom-page-viewer/pageElement.tsx", ["require", "exports", "@ijstec
                                 if (builderTarget.setData)
                                     await builderTarget.setData(properties);
                                 if (tag && builderTarget.setTag) {
-                                    const { columnLayout, columnsNumber } = this.config || {};
+                                    const { columnLayout = interface_1.IColumnLayoutType.AUTOMATIC, columnsNumber } = this.config || {};
                                     const newTag = Object.assign({}, tag);
-                                    const maxColumn = columnLayout === interface_1.IColumnLayoutType.FIXED && columnsNumber ?
-                                        columnsNumber : utils_1.DEFAULT_MAX_COLUMN;
+                                    const maxColumn = columnLayout === interface_1.IColumnLayoutType.FIXED && columnsNumber ? columnsNumber : utils_1.DEFAULT_MAX_COLUMN;
                                     const colSpan = this.data.columnSpan;
                                     const col = this.data.column;
-                                    if (colSpan === maxColumn && col === 1)
+                                    if ((colSpan === maxColumn && col === 1) || columnLayout === interface_1.IColumnLayoutType.AUTOMATIC)
                                         newTag.width = '100%';
                                     await builderTarget.setTag(newTag);
                                 }
@@ -522,8 +521,8 @@ define("@scom/scom-page-viewer/section.tsx", ["require", "exports", "@ijstech/co
                 if (columnLayout !== interface_2.IColumnLayoutType.AUTOMATIC) {
                     pageElement.grid = { column, columnSpan };
                     pageElement.style.gridRow = '1';
-                    pageElement.config = Object.assign({}, config);
                 }
+                pageElement.config = Object.assign({}, config);
                 this.pnlSection.append(pageElement);
                 await pageElement.setData(pageElm);
             }
