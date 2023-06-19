@@ -20,6 +20,7 @@ declare module "@scom/scom-page-viewer/interface.ts" {
         columnsNumber?: number;
         maxColumnsPerRow?: number;
         columnMinWidth?: number | string;
+        align?: AlignType;
     }
     interface IPageBlockData {
         name: string;
@@ -39,6 +40,7 @@ declare module "@scom/scom-page-viewer/interface.ts" {
         minor: number;
         patch: number;
     }
+    export type AlignType = 'left' | 'center' | 'right';
     export interface IPageElement {
         id: string;
         column: number;
@@ -74,6 +76,28 @@ declare module "@scom/scom-page-viewer/interface.ts" {
     export interface IPageFooter {
         image: string;
         elements: IPageElement[];
+    }
+    export interface IRowData {
+        config: IRowSettings;
+        sections: ISectionData[];
+    }
+    interface IRowSettings {
+        height?: string;
+        width?: string;
+        columns?: number;
+        columnsSettings?: {
+            width?: string;
+            size?: {
+                width?: string;
+                height?: string;
+            };
+        }[];
+        anchorName?: string;
+    }
+    interface ISectionData {
+        module: IPageBlockData | null;
+        data: any;
+        tag: any;
     }
     export { IPageData, ICodeInfoFileContent, IColumnLayoutType, IConfigData };
 }
@@ -203,7 +227,7 @@ declare module "@scom/scom-page-viewer/utils.ts" {
 /// <amd-module name="@scom/scom-page-viewer/pageElement.tsx" />
 declare module "@scom/scom-page-viewer/pageElement.tsx" {
     import { Module, ControlElement, Container } from '@ijstech/components';
-    import { IPageElement } from "@scom/scom-page-viewer/interface.ts";
+    import { IConfigData, IPageElement } from "@scom/scom-page-viewer/interface.ts";
     global {
         namespace JSX {
             interface IntrinsicElements {
@@ -217,7 +241,10 @@ declare module "@scom/scom-page-viewer/pageElement.tsx" {
         private module;
         private observerOptions;
         private observer;
+        private _config;
         constructor(parent?: Container, options?: any);
+        get config(): IConfigData;
+        set config(value: IConfigData);
         setData(pageElement: IPageElement): Promise<void>;
         getEmbedElement(rootDir: string, path: string): Promise<HTMLElement>;
         render(): any;
@@ -243,6 +270,8 @@ declare module "@scom/scom-page-viewer/section.tsx" {
     export class ViewrSection extends Module {
         private pnlSection;
         private _size;
+        private maxColumn;
+        private sectionData;
         get size(): {
             width?: string;
             height?: string;
@@ -256,6 +285,7 @@ declare module "@scom/scom-page-viewer/section.tsx" {
         updateContainerSize(): void;
         setData(sectionData: IPageSection): Promise<void>;
         private updateGridTemplateColumns;
+        private updateAlign;
         render(): any;
     }
 }

@@ -21,6 +21,7 @@ interface IConfigData {
   columnsNumber?: number;
   maxColumnsPerRow?: number;
   columnMinWidth?: number|string;
+  align?: AlignType;
 }
 
 interface IPageBlockData {
@@ -43,6 +44,8 @@ interface ISemanticVersion {
   minor: number;
   patch: number;
 }
+
+export type AlignType = 'left' | 'center' | 'right';
 
 export interface IPageElement {
   id: string; // uuid
@@ -83,6 +86,31 @@ export interface IPageSection {
 export interface IPageFooter {
   image: string;
   elements: IPageElement[];
+}
+
+export interface IRowData {
+  config: IRowSettings;
+  sections: ISectionData[];
+}
+
+interface IRowSettings {
+  height?: string;
+  width?: string;
+  columns?: number;
+  columnsSettings?: {
+    width?: string;
+    size?: {
+      width?: string;
+      height?: string;
+    }
+  }[];
+  anchorName?: string;
+}
+
+interface ISectionData {
+  module: IPageBlockData | null;
+  data: any;
+  tag: any;
 }
 
 export {

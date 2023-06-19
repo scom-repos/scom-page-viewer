@@ -403,8 +403,10 @@ define("@scom/scom-page-viewer/pageElement.tsx", ["require", "exports", "@ijstec
                                     builderTarget.setRootDir(rootDir);
                                 if (builderTarget.setData)
                                     await builderTarget.setData(properties);
-                                if (tag && builderTarget.setTag)
-                                    await builderTarget.setTag(tag);
+                                if (tag && builderTarget.setTag) {
+                                    const newTag = Object.assign(Object.assign({}, tag), { width: '100%' });
+                                    await builderTarget.setTag(newTag);
+                                }
                             }
                         }
                         const themeVar = document.body.style.getPropertyValue('--theme');
@@ -420,6 +422,13 @@ define("@scom/scom-page-viewer/pageElement.tsx", ["require", "exports", "@ijstec
             });
         }
         ;
+        get config() {
+            var _a;
+            return (_a = this._config) !== null && _a !== void 0 ? _a : {};
+        }
+        set config(value) {
+            this._config = value;
+        }
         async setData(pageElement) {
             this.pnlElement.clearInnerHTML();
             this.data = pageElement;
@@ -468,6 +477,10 @@ define("@scom/scom-page-viewer/section.tsx", ["require", "exports", "@ijstech/co
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.ViewrSection = void 0;
     let ViewrSection = class ViewrSection extends components_8.Module {
+        constructor() {
+            super(...arguments);
+            this.maxColumn = 1;
+        }
         get size() {
             return this._size || {};
         }
@@ -494,6 +507,7 @@ define("@scom/scom-page-viewer/section.tsx", ["require", "exports", "@ijstech/co
             this.width = '100%';
             this.padding = { left: '3rem', right: '3rem' };
             const { elements = [], config = {} } = sectionData;
+            this.sectionData = Object.assign({}, sectionData);
             const columnLayout = (config === null || config === void 0 ? void 0 : config.columnLayout) || interface_1.IColumnLayoutType.AUTOMATIC;
             for (const pageElm of elements) {
                 const pageElement = (this.$render("sc-page-viewer-page-element", { display: "block" }));
@@ -502,10 +516,12 @@ define("@scom/scom-page-viewer/section.tsx", ["require", "exports", "@ijstech/co
                     pageElement.grid = { column, columnSpan };
                     pageElement.style.gridRow = '1';
                 }
+                pageElement.config = Object.assign({}, config);
                 this.pnlSection.append(pageElement);
                 await pageElement.setData(pageElm);
             }
             this.updateGridTemplateColumns(sectionData);
+            this.updateAlign(config);
         }
         updateGridTemplateColumns(sectionData) {
             const { elements = [], config = {} } = sectionData;
@@ -521,10 +537,42 @@ define("@scom/scom-page-viewer/section.tsx", ["require", "exports", "@ijstech/co
                 let maxColumn = maxColumnsPerRow || elements.length || utils_1.DEFAULT_MAX_COLUMN;
                 let minmaxFirstParam = `max(${minWidth}, calc(100% / ${maxColumn} - ${utils_1.GAP_WIDTH}px))`;
                 this.pnlSection.style.gridTemplateColumns = `repeat(auto-fill, minmax(${minmaxFirstParam}, 1fr))`;
+                this.maxColumn = utils_1.DEFAULT_MAX_COLUMN;
             }
             else {
                 const columnsPerRow = columnsNumber || utils_1.DEFAULT_MAX_COLUMN;
                 this.pnlSection.style.gridTemplateColumns = `repeat(${columnsPerRow}, 1fr)`;
+                this.maxColumn = columnsPerRow;
+            }
+        }
+        updateAlign(config) {
+            var _a;
+            const { align = 'left', columnLayout = interface_1.IColumnLayoutType.AUTOMATIC } = config;
+            let alignValue = 'start';
+            switch (align) {
+                case 'right':
+                    alignValue = 'end';
+                    break;
+                case 'center':
+                    alignValue = 'center';
+                    break;
+            }
+            if (alignValue !== 'start') {
+                this.pnlSection.grid = { horizontalAlignment: alignValue };
+                this.pnlSection.style.maxWidth = '100%';
+                if (columnLayout === interface_1.IColumnLayoutType.AUTOMATIC)
+                    return;
+                this.pnlSection.style.gridTemplateColumns = 'min-content';
+                const sections = Array.from(this.pnlSection.querySelectorAll('sc-page-viewer-page-element'));
+                const sectionWidth = this.pnlSection.offsetWidth;
+                const sectionDatas = this.sectionData.elements || [];
+                const gridColWidth = (sectionWidth - utils_1.GAP_WIDTH * (this.maxColumn - 1)) / this.maxColumn;
+                for (let i = 0; i < sections.length; i++) {
+                    const columnSpan = ((_a = sectionDatas[i]) === null || _a === void 0 ? void 0 : _a.columnSpan) || 1;
+                    const widthNumber = columnSpan * gridColWidth + ((columnSpan - 1) * utils_1.GAP_WIDTH);
+                    sections[i].width = `${widthNumber}px`;
+                    sections[i].style.gridArea = 'unset';
+                }
             }
         }
         render() {
