@@ -46,7 +46,6 @@ export class ViewrPageElement extends Module {
           }
         }
         // const themeVar = document.body.style.getPropertyValue('--theme')
-        console.log(getTheme());
         (this.module as any).theme = getTheme();
         observer.unobserve(entry.target);
       }
@@ -68,6 +67,7 @@ export class ViewrPageElement extends Module {
   }
 
   async setData(pageElement: IPageElement) {
+    if (!this.pnlElement) return;
     this.pnlElement.clearInnerHTML();
     this.data = pageElement;
     const { id, type, properties, elements, tag } = this.data;

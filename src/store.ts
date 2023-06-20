@@ -18,5 +18,5 @@ export const setTheme = (value: ThemeType) => {
 }
 
 export const getTheme = () => {
-  return state.theme;
+  return state.theme ?? 'light';
 }

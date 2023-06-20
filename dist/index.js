@@ -321,7 +321,8 @@ define("@scom/scom-page-viewer/store.ts", ["require", "exports"], function (requ
     };
     exports.setTheme = setTheme;
     const getTheme = () => {
-        return exports.state.theme;
+        var _a;
+        return (_a = exports.state.theme) !== null && _a !== void 0 ? _a : 'light';
     };
     exports.getTheme = getTheme;
 });
@@ -418,7 +419,6 @@ define("@scom/scom-page-viewer/pageElement.tsx", ["require", "exports", "@ijstec
                             }
                         }
                         // const themeVar = document.body.style.getPropertyValue('--theme')
-                        console.log((0, store_1.getTheme)());
                         this.module.theme = (0, store_1.getTheme)();
                         observer.unobserve(entry.target);
                     }
@@ -437,6 +437,8 @@ define("@scom/scom-page-viewer/pageElement.tsx", ["require", "exports", "@ijstec
             this._config = value;
         }
         async setData(pageElement) {
+            if (!this.pnlElement)
+                return;
             this.pnlElement.clearInnerHTML();
             this.data = pageElement;
             const { id, type, properties, elements, tag } = this.data;
@@ -712,6 +714,9 @@ define("@scom/scom-page-viewer", ["require", "exports", "@ijstech/components", "
                 const color = this.theme === 'light' ? '#ffffff' : '#1E1E1E';
                 this.pnlContainer.background = { color };
             }
+            if (this._data) {
+                this.renderPage(this._data);
+            }
         }
         async onShow(options) {
             var _a, _b, _c;
@@ -731,6 +736,7 @@ define("@scom/scom-page-viewer", ["require", "exports", "@ijstech/components", "
             this.gridMain.visible = true;
         }
         async setData(data) {
+            this._data = data;
             await this.renderPage(data);
             this.isLoaded = true;
         }
