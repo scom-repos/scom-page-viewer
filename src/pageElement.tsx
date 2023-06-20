@@ -46,7 +46,6 @@ export class ViewrPageElement extends Module {
           }
         }
         // const themeVar = document.body.style.getPropertyValue('--theme')
-        console.log(getTheme());
         (this.module as any).theme = getTheme();
         observer.unobserve(entry.target);
       }

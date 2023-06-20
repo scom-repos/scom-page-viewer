@@ -27,6 +27,7 @@ export default class Viewer extends Module {
   private viewerBody: ViewrBody;
   private pnlContainer: Panel;
   private isLoaded: boolean = false;
+  private _data: IPageData;
   private _theme: ThemeType = 'light';
 
   get theme() {
@@ -39,6 +40,8 @@ export default class Viewer extends Module {
       const color = this.theme === 'light' ? '#ffffff' : '#1E1E1E';
       this.pnlContainer.background = {color};
     }
+    if (this._data)
+      this.renderPage(this._data);
   }
 
   async onShow(options: any) {
@@ -58,6 +61,7 @@ export default class Viewer extends Module {
   }
 
   async setData(data: IPageData) {
+    this._data = data;
     await this.renderPage(data);
     this.isLoaded = true;
   }
