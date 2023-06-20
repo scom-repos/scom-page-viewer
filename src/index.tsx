@@ -70,6 +70,10 @@ export default class Viewer extends Module {
     const { header, footer, sections } = page;
     this.viewerFooter.data = footer;
     this.viewerFooter.visible = !!header;
+    if (this.pnlContainer) {
+      const color = this.theme === 'light' ? '#ffffff' : '#1E1E1E';
+      this.pnlContainer.background = {color};
+    }
     await this.viewerBody.setSections(sections);
   }
 
