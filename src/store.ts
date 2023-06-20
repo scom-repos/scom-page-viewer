@@ -1,5 +1,8 @@
+import { ThemeType } from "./interface";
+
 export const state = {
-  rootDir: ''
+  rootDir: '',
+  theme: 'light'
 }
 
 export const setRootDir = (value: string) => {
@@ -8,4 +11,12 @@ export const setRootDir = (value: string) => {
 
 export const getRootDir = () => {
   return state.rootDir;
+}
+
+export const setTheme = (value: ThemeType) => {
+  state.theme = value ?? 'light';
+}
+
+export const getTheme = () => {
+  return state.theme;
 }

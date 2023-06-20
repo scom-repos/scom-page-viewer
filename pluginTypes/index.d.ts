@@ -99,7 +99,8 @@ declare module "@scom/scom-page-viewer/interface.ts" {
         data: any;
         tag: any;
     }
-    export { IPageData, ICodeInfoFileContent, IColumnLayoutType, IConfigData };
+    type ThemeType = 'dark' | 'light';
+    export { IPageData, ICodeInfoFileContent, IColumnLayoutType, IConfigData, ThemeType };
 }
 /// <amd-module name="@scom/scom-page-viewer/paging.css.ts" />
 declare module "@scom/scom-page-viewer/paging.css.ts" {
@@ -204,11 +205,15 @@ declare module "@scom/scom-page-viewer/footer.tsx" {
 }
 /// <amd-module name="@scom/scom-page-viewer/store.ts" />
 declare module "@scom/scom-page-viewer/store.ts" {
+    import { ThemeType } from "@scom/scom-page-viewer/interface.ts";
     export const state: {
         rootDir: string;
+        theme: string;
     };
     export const setRootDir: (value: string) => void;
     export const getRootDir: () => string;
+    export const setTheme: (value: ThemeType) => void;
+    export const getTheme: () => string;
 }
 /// <amd-module name="@scom/scom-page-viewer/index.css.ts" />
 declare module "@scom/scom-page-viewer/index.css.ts" {
@@ -238,10 +243,10 @@ declare module "@scom/scom-page-viewer/pageElement.tsx" {
     export class ViewrPageElement extends Module {
         private pnlElement;
         private data;
+        private _config;
         private module;
         private observerOptions;
         private observer;
-        private _config;
         constructor(parent?: Container, options?: any);
         get config(): IConfigData;
         set config(value: IConfigData);
@@ -324,7 +329,7 @@ declare module "@scom/scom-page-viewer/sidebar.tsx" {
 /// <amd-module name="@scom/scom-page-viewer" />
 declare module "@scom/scom-page-viewer" {
     import { ControlElement, Module } from "@ijstech/components";
-    import { IPageData } from "@scom/scom-page-viewer/interface.ts";
+    import { IPageData, ThemeType } from "@scom/scom-page-viewer/interface.ts";
     export { ViewrBody } from "@scom/scom-page-viewer/body.tsx";
     export { ViewrPageElement } from "@scom/scom-page-viewer/pageElement.tsx";
     export { ViewrSection } from "@scom/scom-page-viewer/section.tsx";
@@ -342,7 +347,11 @@ declare module "@scom/scom-page-viewer" {
         private viewerFooter;
         private gridMain;
         private viewerBody;
+        private pnlContainer;
         private isLoaded;
+        private _theme;
+        get theme(): ThemeType;
+        set theme(value: ThemeType);
         onShow(options: any): Promise<void>;
         setData(data: IPageData): Promise<void>;
         setRootDir(value: string): void;

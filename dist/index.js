@@ -303,10 +303,10 @@ define("@scom/scom-page-viewer/footer.tsx", ["require", "exports", "@ijstech/com
 define("@scom/scom-page-viewer/store.ts", ["require", "exports"], function (require, exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
-    exports.getRootDir = exports.setRootDir = exports.state = void 0;
-    ///<amd-module name='@scom/scom-page-viewer/store.ts'/> 
+    exports.getTheme = exports.setTheme = exports.getRootDir = exports.setRootDir = exports.state = void 0;
     exports.state = {
-        rootDir: ''
+        rootDir: '',
+        theme: 'light'
     };
     const setRootDir = (value) => {
         exports.state.rootDir = value || '';
@@ -316,6 +316,14 @@ define("@scom/scom-page-viewer/store.ts", ["require", "exports"], function (requ
         return exports.state.rootDir;
     };
     exports.getRootDir = getRootDir;
+    const setTheme = (value) => {
+        exports.state.theme = value !== null && value !== void 0 ? value : 'light';
+    };
+    exports.setTheme = setTheme;
+    const getTheme = () => {
+        return exports.state.theme;
+    };
+    exports.getTheme = getTheme;
 });
 define("@scom/scom-page-viewer/index.css.ts", ["require", "exports", "@ijstech/components"], function (require, exports, components_6) {
     "use strict";
@@ -409,17 +417,16 @@ define("@scom/scom-page-viewer/pageElement.tsx", ["require", "exports", "@ijstec
                                 }
                             }
                         }
-                        const themeVar = document.body.style.getPropertyValue('--theme');
-                        if (themeVar)
-                            this.module.theme = themeVar;
+                        // const themeVar = document.body.style.getPropertyValue('--theme')
+                        console.log((0, store_1.getTheme)());
+                        this.module.theme = (0, store_1.getTheme)();
                         observer.unobserve(entry.target);
                     }
                 });
             }, this.observerOptions);
-            components_7.application.EventBus.register(this, 'themeChanged', (value) => {
-                if (this.module)
-                    this.module.theme = value;
-            });
+            // application.EventBus.register(this, 'themeChanged', (value: string) => {
+            //   if (this.module) (this.module as any).theme = value
+            // })
         }
         ;
         get config() {
@@ -692,11 +699,26 @@ define("@scom/scom-page-viewer", ["require", "exports", "@ijstech/components", "
         constructor() {
             super(...arguments);
             this.isLoaded = false;
+            this._theme = 'light';
+        }
+        get theme() {
+            var _a;
+            return (_a = this._theme) !== null && _a !== void 0 ? _a : 'light';
+        }
+        set theme(value) {
+            this._theme = value;
+            (0, store_2.setTheme)(value);
+            if (this.pnlContainer) {
+                const color = this.theme === 'light' ? '#ffffff' : '#1E1E1E';
+                this.pnlContainer.background = { color };
+            }
         }
         async onShow(options) {
             var _a, _b, _c;
             this.pnlLoading.visible = true;
             this.gridMain.visible = false;
+            if (options === null || options === void 0 ? void 0 : options.theme)
+                (0, store_2.setTheme)(options.theme);
             if (!this.isLoaded) {
                 this.gridMain.templateColumns = ["1fr"];
                 (0, store_2.setRootDir)(options === null || options === void 0 ? void 0 : options.rootDir);
@@ -722,7 +744,7 @@ define("@scom/scom-page-viewer", ["require", "exports", "@ijstech/components", "
             await this.viewerBody.setSections(sections);
         }
         render() {
-            return (this.$render("i-vstack", { class: `sc-page-viewer-container ${index_css_1.default}`, width: "100%", height: "100%" },
+            return (this.$render("i-vstack", { id: "pnlContainer", class: `sc-page-viewer-container ${index_css_1.default}`, width: "100%", height: "100%" },
                 this.$render("i-panel", { stack: { grow: "1" }, overflow: "hidden" },
                     this.$render("i-vstack", { id: "pnlLoading", height: "100%", horizontalAlignment: "center", verticalAlignment: "center", padding: { top: "1rem", bottom: "1rem", left: "1rem", right: "1rem" }, visible: false },
                         this.$render("i-panel", { class: 'spinner' })),

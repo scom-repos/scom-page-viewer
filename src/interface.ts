@@ -113,9 +113,12 @@ interface ISectionData {
   tag: any;
 }
 
+type ThemeType = 'dark' | 'light'
+
 export {
   IPageData,
   ICodeInfoFileContent,
   IColumnLayoutType,
-  IConfigData
+  IConfigData,
+  ThemeType
 }
