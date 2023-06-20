@@ -8,7 +8,7 @@ import {
 } from '@ijstech/components';
 import { ICodeInfoFileContent, IColumnLayoutType, IConfigData, IPageElement } from './interface';
 import { DEFAULT_MAX_COLUMN, fetchFileContentByCid, getSCConfigByCodeCid, IPFS_SCOM_URL } from './utils';
-import { getRootDir } from './store';
+import { getRootDir, getTheme } from './store';
 
 declare global {
   namespace JSX {
@@ -22,6 +22,7 @@ declare global {
 export class ViewrPageElement extends Module {
   private pnlElement: Panel;
   private data: IPageElement;
+  private _config: IConfigData;
   private module: Module = null;
   private observerOptions = {
     root: null,
@@ -44,19 +45,19 @@ export class ViewrPageElement extends Module {
             }
           }
         }
-        const themeVar = document.body.style.getPropertyValue('--theme')
-        if (themeVar) (this.module as any).theme = themeVar
+        // const themeVar = document.body.style.getPropertyValue('--theme')
+        console.log(getTheme());
+        (this.module as any).theme = getTheme();
         observer.unobserve(entry.target);
       }
     });
   }, this.observerOptions);
-  private _config: IConfigData;
 
   constructor(parent?: Container, options?: any) {
     super(parent, options);
-    application.EventBus.register(this, 'themeChanged', (value: string) => {
-      if (this.module) (this.module as any).theme = value
-    })
+    // application.EventBus.register(this, 'themeChanged', (value: string) => {
+    //   if (this.module) (this.module as any).theme = value
+    // })
   };
 
   get config() {

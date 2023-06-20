@@ -1,8 +1,8 @@
 import { ControlElement, customElements, customModule, GridLayout, Module, Panel } from "@ijstech/components";
-import { IPageData } from './interface';
+import { IPageData, ThemeType } from './interface';
 import { ViewrBody } from './body';
 import { ViewerFooter } from './footer';
-import { setRootDir } from './store';
+import { setRootDir, setTheme } from './store';
 import styleClass from './index.css';
 export { ViewrBody } from './body';
 export { ViewrPageElement } from './pageElement';
@@ -25,11 +25,27 @@ export default class Viewer extends Module {
   private viewerFooter: ViewerFooter;
   private gridMain: GridLayout;
   private viewerBody: ViewrBody;
+  private pnlContainer: Panel;
   private isLoaded: boolean = false;
+  private _theme: ThemeType = 'light';
+
+  get theme() {
+    return this._theme ?? 'light';
+  }
+  set theme(value: ThemeType) {
+    this._theme = value;
+    setTheme(value);
+    if (this.pnlContainer) {
+      const color = this.theme === 'light' ? '#ffffff' : '#1E1E1E';
+      this.pnlContainer.background = {color};
+    }
+  }
 
   async onShow(options: any) {
     this.pnlLoading.visible = true;
     this.gridMain.visible = false;
+    if (options?.theme)
+      setTheme(options.theme);
     if (!this.isLoaded) {
       this.gridMain.templateColumns = ["1fr"];
       setRootDir(options?.rootDir);
@@ -54,12 +70,16 @@ export default class Viewer extends Module {
     const { header, footer, sections } = page;
     this.viewerFooter.data = footer;
     this.viewerFooter.visible = !!header;
+    if (this.pnlContainer) {
+      const color = this.theme === 'light' ? '#ffffff' : '#1E1E1E';
+      this.pnlContainer.background = {color};
+    }
     await this.viewerBody.setSections(sections);
   }
 
   render() {
     return (
-      <i-vstack class={`sc-page-viewer-container ${styleClass}`} width="100%" height="100%">
+      <i-vstack id="pnlContainer" class={`sc-page-viewer-container ${styleClass}`} width="100%" height="100%">
         <i-panel stack={{ grow: "1" }} overflow="hidden">
           <i-vstack
             id="pnlLoading"
