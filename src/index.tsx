@@ -1,8 +1,8 @@
-import { ControlElement, customElements, customModule, GridLayout, Module, Panel } from "@ijstech/components";
+import { ControlElement, customElements, customModule, GridLayout, Module, Panel, Styles } from "@ijstech/components";
 import { IPageData, ThemeType } from './interface';
 import { ViewrBody } from './body';
 import { ViewerFooter } from './footer';
-import { setRootDir, setTheme } from './store';
+import { setRootDir } from './store';
 import styleClass from './index.css';
 export { ViewrBody } from './body';
 export { ViewrPageElement } from './pageElement';
@@ -17,6 +17,9 @@ declare global {
       }
   }
 }
+
+const lightTheme = Styles.Theme.defaultTheme;
+const darkTheme = Styles.Theme.darkTheme;
 
 @customModule
 @customElements('i-scom-page-viewer')
@@ -35,21 +38,14 @@ export default class Viewer extends Module {
   }
   set theme(value: ThemeType) {
     this._theme = value;
-    setTheme(value);
-    if (this.pnlContainer) {
-      const color = this.theme === 'light' ? '#ffffff' : '#1E1E1E';
-      this.pnlContainer.background = {color};
-    }
-    if (this._data) {
-      this.renderPage(this._data);
-    }
+    this.setTheme(this.theme);
   }
 
   async onShow(options: any) {
     this.pnlLoading.visible = true;
     this.gridMain.visible = false;
     if (options?.theme)
-      setTheme(options.theme);
+      this.setTheme(options.theme);
     if (!this.isLoaded) {
       this.gridMain.templateColumns = ["1fr"];
       setRootDir(options?.rootDir);
@@ -71,15 +67,30 @@ export default class Viewer extends Module {
     setRootDir(value);
   }
 
+  private setTheme(value: ThemeType) {
+    this.style.setProperty('--viewer-theme', value);
+    if (this.pnlContainer) {
+      const color = this.getBackgroundColor();
+      this.pnlContainer.background = {color};
+    }
+    if (this._data) {
+      this.renderPage(this._data);
+    }
+  }
+
   async renderPage(page: IPageData) {
     const { header, footer, sections } = page;
     this.viewerFooter.data = footer;
     this.viewerFooter.visible = !!header;
     if (this.pnlContainer) {
-      const color = this.theme === 'light' ? '#ffffff' : '#1E1E1E';
+      const color = this.getBackgroundColor();
       this.pnlContainer.background = {color};
     }
     await this.viewerBody.setSections(sections);
+  }
+
+  private getBackgroundColor() {
+    return this.theme === 'light' ? lightTheme.background.main : darkTheme.background.main;
   }
 
   render() {

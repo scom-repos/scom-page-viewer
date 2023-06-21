@@ -356,7 +356,9 @@ declare module "@scom/scom-page-viewer" {
         onShow(options: any): Promise<void>;
         setData(data: IPageData): Promise<void>;
         setRootDir(value: string): void;
+        private setTheme;
         renderPage(page: IPageData): Promise<void>;
+        private getBackgroundColor;
         render(): any;
     }
 }
