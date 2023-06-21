@@ -8,7 +8,7 @@ import {
 } from '@ijstech/components';
 import { ICodeInfoFileContent, IColumnLayoutType, IConfigData, IPageElement } from './interface';
 import { DEFAULT_MAX_COLUMN, fetchFileContentByCid, getSCConfigByCodeCid, IPFS_SCOM_URL } from './utils';
-import { getRootDir, getTheme } from './store';
+import { getRootDir } from './store';
 
 declare global {
   namespace JSX {
@@ -45,8 +45,9 @@ export class ViewrPageElement extends Module {
             }
           }
         }
-        // const themeVar = document.body.style.getPropertyValue('--theme')
-        (this.module as any).theme = getTheme();
+        const parentElm = this.closest('i-scom-page-viewer') as HTMLElement;
+        const themeVar = parentElm && parentElm.style.getPropertyValue('--viewer-theme');
+        (this.module as any).theme = themeVar || 'light';
         observer.unobserve(entry.target);
       }
     });
@@ -54,9 +55,6 @@ export class ViewrPageElement extends Module {
 
   constructor(parent?: Container, options?: any) {
     super(parent, options);
-    // application.EventBus.register(this, 'themeChanged', (value: string) => {
-    //   if (this.module) (this.module as any).theme = value
-    // })
   };
 
   get config() {

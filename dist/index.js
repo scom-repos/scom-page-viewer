@@ -418,15 +418,13 @@ define("@scom/scom-page-viewer/pageElement.tsx", ["require", "exports", "@ijstec
                                 }
                             }
                         }
-                        // const themeVar = document.body.style.getPropertyValue('--theme')
-                        this.module.theme = (0, store_1.getTheme)();
+                        const parentElm = this.closest('i-scom-page-viewer');
+                        const themeVar = parentElm && parentElm.style.getPropertyValue('--viewer-theme');
+                        this.module.theme = themeVar || 'light';
                         observer.unobserve(entry.target);
                     }
                 });
             }, this.observerOptions);
-            // application.EventBus.register(this, 'themeChanged', (value: string) => {
-            //   if (this.module) (this.module as any).theme = value
-            // })
         }
         ;
         get config() {
@@ -697,6 +695,8 @@ define("@scom/scom-page-viewer", ["require", "exports", "@ijstech/components", "
     Object.defineProperty(exports, "ViewrSection", { enumerable: true, get: function () { return section_1.ViewrSection; } });
     Object.defineProperty(exports, "ViewerSidebar", { enumerable: true, get: function () { return sidebar_1.ViewerSidebar; } });
     Object.defineProperty(exports, "ViewerPaging", { enumerable: true, get: function () { return paging_1.ViewerPaging; } });
+    const lightTheme = components_11.Styles.Theme.defaultTheme;
+    const darkTheme = components_11.Styles.Theme.darkTheme;
     let Viewer = class Viewer extends components_11.Module {
         constructor() {
             super(...arguments);
@@ -709,21 +709,14 @@ define("@scom/scom-page-viewer", ["require", "exports", "@ijstech/components", "
         }
         set theme(value) {
             this._theme = value;
-            (0, store_2.setTheme)(value);
-            if (this.pnlContainer) {
-                const color = this.theme === 'light' ? '#ffffff' : '#1E1E1E';
-                this.pnlContainer.background = { color };
-            }
-            if (this._data) {
-                this.renderPage(this._data);
-            }
+            this.setTheme(this.theme);
         }
         async onShow(options) {
             var _a, _b, _c;
             this.pnlLoading.visible = true;
             this.gridMain.visible = false;
             if (options === null || options === void 0 ? void 0 : options.theme)
-                (0, store_2.setTheme)(options.theme);
+                this.setTheme(options.theme);
             if (!this.isLoaded) {
                 this.gridMain.templateColumns = ["1fr"];
                 (0, store_2.setRootDir)(options === null || options === void 0 ? void 0 : options.rootDir);
@@ -743,15 +736,28 @@ define("@scom/scom-page-viewer", ["require", "exports", "@ijstech/components", "
         setRootDir(value) {
             (0, store_2.setRootDir)(value);
         }
+        setTheme(value) {
+            this.style.setProperty('--viewer-theme', value);
+            if (this.pnlContainer) {
+                const color = this.getBackgroundColor();
+                this.pnlContainer.background = { color };
+            }
+            if (this._data) {
+                this.renderPage(this._data);
+            }
+        }
         async renderPage(page) {
             const { header, footer, sections } = page;
             this.viewerFooter.data = footer;
             this.viewerFooter.visible = !!header;
             if (this.pnlContainer) {
-                const color = this.theme === 'light' ? '#ffffff' : '#1E1E1E';
+                const color = this.getBackgroundColor();
                 this.pnlContainer.background = { color };
             }
             await this.viewerBody.setSections(sections);
+        }
+        getBackgroundColor() {
+            return this.theme === 'light' ? lightTheme.background.main : darkTheme.background.main;
         }
         render() {
             return (this.$render("i-vstack", { id: "pnlContainer", class: `sc-page-viewer-container ${index_css_1.default}`, width: "100%", height: "100%" },
