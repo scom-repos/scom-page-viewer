@@ -349,6 +349,7 @@ declare module "@scom/scom-page-viewer" {
         private viewerBody;
         private pnlContainer;
         private isLoaded;
+        private _data;
         private _theme;
         get theme(): ThemeType;
         set theme(value: ThemeType);
