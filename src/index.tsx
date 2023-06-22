@@ -69,10 +69,7 @@ export default class Viewer extends Module {
 
   private setTheme(value: ThemeType) {
     this.style.setProperty('--viewer-theme', value);
-    if (this.pnlContainer) {
-      const color = this.getBackgroundColor();
-      this.pnlContainer.background = {color};
-    }
+    this.updateContainer();
     if (this._data) {
       this.renderPage(this._data);
     }
@@ -82,15 +79,23 @@ export default class Viewer extends Module {
     const { header, footer, sections } = page;
     this.viewerFooter.data = footer;
     this.viewerFooter.visible = !!header;
-    if (this.pnlContainer) {
-      const color = this.getBackgroundColor();
-      this.pnlContainer.background = {color};
-    }
+    this.updateContainer();
     await this.viewerBody.setSections(sections);
   }
 
   private getBackgroundColor() {
     return this.theme === 'light' ? lightTheme.background.main : darkTheme.background.main;
+  }
+
+  private updateContainer() {
+    if (this.pnlContainer) {
+      const defaultColor = this.getBackgroundColor();
+      const { backgroundColor = defaultColor, margin, maxWidth } = this._data?.config || {};
+      this.pnlContainer.background = {color: backgroundColor};
+      this.pnlContainer.maxWidth = maxWidth || '100%';
+      const { x = 'auto', y = 0 } = margin || {};
+      this.pnlContainer.margin = {top: y, bottom: y, left: x, right: x};
+    }
   }
 
   render() {

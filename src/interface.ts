@@ -9,18 +9,19 @@ interface IPageData {
   header: IPageHeader;
   sections: IPageSection[];
   footer: IPageFooter;
+  config?: IPageConfig;
 }
 
-enum IColumnLayoutType {
-  FIXED = 'Fixed',
-  AUTOMATIC = 'Automatic'
+interface IPageConfig {
+  backgroundColor?: string;
+  maxWidth?: number|string;
+  margin?: {
+    x?: number|string;
+    y?: number|string;
+  };
 }
 
 interface IConfigData {
-  columnLayout?: IColumnLayoutType;
-  columnsNumber?: number;
-  maxColumnsPerRow?: number;
-  columnMinWidth?: number|string;
   align?: AlignType;
 }
 
@@ -118,7 +119,6 @@ type ThemeType = 'dark' | 'light'
 export {
   IPageData,
   ICodeInfoFileContent,
-  IColumnLayoutType,
   IConfigData,
   ThemeType
 }
