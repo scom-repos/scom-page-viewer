@@ -57,9 +57,17 @@ export interface IPageElement {
   tag?: any;
   module?: IPageBlockData; // follow the standard defined in secure page, if type === 'primitive'
   elements?: IPageElement[]; // type === 'composite'
+  displaySettings?: {[key: string]: IGrid};
+}
 
-  visibleOn?: string;
-  invisibleOn?: string;
+interface IGrid {
+  column?: number;
+  columnSpan?: number;
+  row?: number;
+  rowSpan?: number;
+  horizontalAlignment?: "stretch" | "start" | "end" | "center";
+  verticalAlignment?: "stretch" | "start" | "end" | "center";
+  area?: string;
 }
 
 export enum HeaderType {

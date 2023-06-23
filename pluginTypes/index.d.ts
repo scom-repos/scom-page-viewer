@@ -51,8 +51,18 @@ declare module "@scom/scom-page-viewer/interface.ts" {
         tag?: any;
         module?: IPageBlockData;
         elements?: IPageElement[];
-        visibleOn?: string;
-        invisibleOn?: string;
+        displaySettings?: {
+            [key: string]: IGrid;
+        };
+    }
+    interface IGrid {
+        column?: number;
+        columnSpan?: number;
+        row?: number;
+        rowSpan?: number;
+        horizontalAlignment?: "stretch" | "start" | "end" | "center";
+        verticalAlignment?: "stretch" | "start" | "end" | "center";
+        area?: string;
     }
     export enum HeaderType {
         'COVER' = "cover",
@@ -272,7 +282,6 @@ declare module "@scom/scom-page-viewer/section.tsx" {
     export class ViewrSection extends Module {
         private pnlSection;
         private _size;
-        private maxColumn;
         private sectionData;
         get size(): {
             width?: string;

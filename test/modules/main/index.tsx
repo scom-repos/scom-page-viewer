@@ -27,20 +27,17 @@ const data = {
               height: 190,
             },
             displaySettings: {
-              '<768': {
-                row: 2,
+              '< 768px': {
                 column: 1,
-                columnSpan: 12,
+                columnSpan: 12
               },
-              '768-992': {
-                row: 2,
+              '768px - 992px': {
                 column: 1,
-                columnSpan: 12,
+                columnSpan: 12
               },
-              '>992': {
-                row: 1,
-                column: 6,
-                columnSpan: 7,
+              '> 992': {
+                column: 1,
+                columnSpan: 4
               },
             },
           },
@@ -65,20 +62,9 @@ const data = {
             },
             displaySettings: {
               '<768': {
-                row: 2,
                 column: 1,
-                columnSpan: 12,
-              },
-              '768-992': {
-                row: 2,
-                column: 1,
-                columnSpan: 12,
-              },
-              '>992': {
-                row: 1,
-                column: 6,
-                columnSpan: 7,
-              },
+                columnSpan: 12
+              }
             },
           },
         ],
@@ -107,7 +93,12 @@ const data = {
               path: 'scom-counter',
               category: 'charts',
             },
-            tag: {},
+            displaySettings: {
+              '<768': {
+                column: 1,
+                columnSpan: 12
+              }
+            }
           },
           {
             id: 'd225c86d-5a6f-4cd1-a26c-a890ef7bbc09',
@@ -157,6 +148,12 @@ const data = {
             tag: {
               width: 532,
               height: 504,
+            },
+            displaySettings: {
+              '<768': {
+                column: 1,
+                columnSpan: 12
+              }
             },
           },
         ],
@@ -238,6 +235,12 @@ const data = {
               width: 532,
               height: 330,
             },
+            displaySettings: {
+              '<768': {
+                column: 1,
+                columnSpan: 12
+              }
+            },
           },
           {
             id: '0b604e04-578e-4b1f-9239-40efb29177a3',
@@ -282,6 +285,12 @@ const data = {
               width: 532,
               height: 168,
             },
+            displaySettings: {
+              '<768': {
+                column: 1,
+                columnSpan: 12
+              }
+            },
           },
           {
             id: 'dde6049c-9536-4183-8deb-f07b0487dd84',
@@ -300,6 +309,12 @@ const data = {
             tag: {
               width: 532,
               height: 168,
+            },
+            displaySettings: {
+              '<768': {
+                column: 1,
+                columnSpan: 12
+              }
             },
           },
         ],
@@ -327,6 +342,12 @@ const data = {
               width: 441,
               height: 380,
             },
+            displaySettings: {
+              '<768': {
+                column: 1,
+                columnSpan: 12
+              }
+            },
           },
           {
             id: '1e10329f-cf7b-4391-ad88-ee867aa5c4cb',
@@ -345,6 +366,12 @@ const data = {
             tag: {
               width: 624,
               height: 380,
+            },
+            displaySettings: {
+              '<768': {
+                column: 1,
+                columnSpan: 12
+              }
             },
           },
         ],
@@ -373,6 +400,12 @@ const data = {
               width: 532,
               height: 203,
             },
+            displaySettings: {
+              '<768': {
+                column: 1,
+                columnSpan: 12
+              }
+            },
           },
           {
             id: 'f359baf2-1713-49ed-bea1-0d8ab37da6d1',
@@ -393,6 +426,12 @@ const data = {
             tag: {
               width: 532,
               height: 208,
+            },
+            displaySettings: {
+              '<768': {
+                column: 1,
+                columnSpan: 12
+              }
             },
           },
         ],
@@ -415,6 +454,12 @@ const data = {
               path: 'scom-nft-minter',
               category: 'micro-dapps',
             },
+            displaySettings: {
+              '<768': {
+                column: 1,
+                columnSpan: 12
+              }
+            },
           },
           {
             id: 'da00dc14-562b-471a-a942-a258645cd242',
@@ -433,6 +478,12 @@ const data = {
             tag: {
               width: 532,
               height: 691,
+            },
+            displaySettings: {
+              '<768': {
+                column: 1,
+                columnSpan: 12
+              }
             },
           },
         ],
@@ -455,6 +506,12 @@ const data = {
               path: 'scom-commission-claim',
               category: 'micro-dapps',
             },
+            displaySettings: {
+              '<768': {
+                column: 1,
+                columnSpan: 12
+              }
+            },
           },
           {
             id: '749574ec-3202-4b36-8e80-63307a119bfc',
@@ -473,6 +530,12 @@ const data = {
             tag: {
               width: 532,
               height: 910,
+            },
+            displaySettings: {
+              '<768': {
+                column: 1,
+                columnSpan: 12
+              }
             },
           },
         ],
@@ -648,6 +711,12 @@ const data = {
               name: 'Pool DApp',
               path: 'scom-amm-pool',
               category: 'micro-dapps',
+            },
+            displaySettings: {
+              '<768': {
+                column: 1,
+                columnSpan: 12
+              }
             },
           },
         ],
