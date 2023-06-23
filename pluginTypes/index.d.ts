@@ -251,7 +251,6 @@ declare module "@scom/scom-page-viewer/pageElement.tsx" {
         get config(): IConfigData;
         set config(value: IConfigData);
         setData(pageElement: IPageElement): Promise<void>;
-        getEmbedElement(rootDir: string, path: string): Promise<HTMLElement>;
         render(): any;
     }
 }
