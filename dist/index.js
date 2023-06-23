@@ -394,9 +394,10 @@ define("@scom/scom-page-viewer/pageElement.tsx", ["require", "exports", "@ijstec
             this.data = pageElement;
             const { id, type, properties, elements, tag } = this.data;
             this.pnlElement.id = id;
-            const rootDir = (0, store_1.getRootDir)();
+            // const rootDir = getRootDir();
             if (type === 'primitive') {
-                let module = await this.getEmbedElement(rootDir, this.data.module.path);
+                // let module: any = await this.getEmbedElement(rootDir, this.data.module.path);
+                let module = await components_7.application.createElement(this.data.module.path);
                 if (module) {
                     this.pnlElement.append(module);
                     this.module = module;
@@ -411,18 +412,17 @@ define("@scom/scom-page-viewer/pageElement.tsx", ["require", "exports", "@ijstec
                 }
             }
         }
-        async getEmbedElement(rootDir, path) {
-            let modulePath = rootDir ? `${rootDir}/libs/@scom/${path}` : `libs/@scom/${path}`;
-            components_7.application.currentModuleDir = modulePath;
-            const result = await components_7.application.loadScript(`${modulePath}/index.js`);
-            components_7.application.currentModuleDir = '';
-            if (!result)
-                return null;
-            const elementName = `i-${path.split('/').pop()}`;
-            const element = document.createElement(elementName);
-            element.setAttribute('lazyLoad', 'true');
-            return element;
-        }
+        // async getEmbedElement(rootDir: string, path: string) {
+        //   let modulePath = rootDir ? `${rootDir}/libs/@scom/${path}` : `libs/@scom/${path}`;
+        //   application.currentModuleDir = modulePath;
+        //   const result = await application.loadScript(`${modulePath}/index.js`);
+        //   application.currentModuleDir = '';
+        //   if (!result) return null;
+        //   const elementName = `i-${path.split('/').pop()}`;
+        //   const element = document.createElement(elementName);
+        //   element.setAttribute('lazyLoad', 'true');
+        //   return element;
+        // }
         render() {
             return (this.$render("i-panel", { id: "pnlElement" }));
         }

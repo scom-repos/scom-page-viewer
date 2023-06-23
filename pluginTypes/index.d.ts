@@ -240,7 +240,6 @@ declare module "@scom/scom-page-viewer/pageElement.tsx" {
         private observer;
         constructor(parent?: Container, options?: any);
         setData(pageElement: IPageElement): Promise<void>;
-        getEmbedElement(rootDir: string, path: string): Promise<HTMLElement>;
         render(): any;
     }
 }
