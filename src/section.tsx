@@ -1,5 +1,5 @@
 import { Control, ControlElement, customElements, GridLayout, Module } from "@ijstech/components";
-import { IColumnLayoutType, IConfigData, IPageSection } from "./interface";
+import { IConfigData, IPageElement, IPageSection } from "./interface";
 import { DEFAULT_MAX_COLUMN, GAP_WIDTH } from "./utils";
 
 declare global {
@@ -24,7 +24,6 @@ export class ViewrSection extends Module {
     width?: string;
     height?: string;
   }
-  private maxColumn: number = 1;
   private sectionData: IPageSection;
 
   get size() {
@@ -59,47 +58,63 @@ export class ViewrSection extends Module {
     this.padding = {left: '3rem', right: '3rem'};
     const { elements = [], config = {} } = sectionData;
     this.sectionData = {...sectionData};
-    const columnLayout = config?.columnLayout || IColumnLayoutType.AUTOMATIC;
-    for (const pageElm of elements) {
-      const pageElement = (<sc-page-viewer-page-element display="block"></sc-page-viewer-page-element>) as any;
-      const { column, columnSpan } = pageElm;
-      if (columnLayout !== IColumnLayoutType.AUTOMATIC) {
-        pageElement.grid = { column, columnSpan };
-        pageElement.style.gridRow = '1';
-      }
-      pageElement.config = {...config};
+    for (let i = 0; i < elements.length; i++) {
+      const element = elements[i];
+      const pageElement = (
+        <sc-page-viewer-page-element
+          display="block"
+        ></sc-page-viewer-page-element>
+      ) as any;
+      this.updateElementConfig(pageElement, element, i);
       this.pnlSection.append(pageElement);
-      await pageElement.setData(pageElm);
+      await pageElement.setData(element);
     }
-    this.updateGridTemplateColumns(sectionData);
     this.updateAlign(config);
   }
 
-  private updateGridTemplateColumns(sectionData: IPageSection) {
-    const { elements = [], config = {} } = sectionData;
-    let { columnLayout = IColumnLayoutType.AUTOMATIC, columnsNumber, maxColumnsPerRow, columnMinWidth } = config || {};
-    if (columnLayout === IColumnLayoutType.AUTOMATIC) {
-      let minWidth = '';
-      if (columnMinWidth)
-        minWidth = typeof columnMinWidth === 'string' ? columnMinWidth : `${columnMinWidth}px`;
-      else {
-        const bodyWidth = document.body.offsetWidth;
-        minWidth = bodyWidth < 1024 ? `100%` : `calc((100% / ${elements.length}) - ${GAP_WIDTH}px)`;
+  private updateElementConfig(el: Control, data: IPageElement, index: number) {
+    const { column, columnSpan, displaySettings } = data;
+    el.grid = { column, columnSpan };
+    el.style.gridRow = '1';
+    if (displaySettings) {
+      let mediaQueries = [];
+      for (let key in displaySettings) {
+        let minWidth: string | number = 0;
+        let maxWidth: string | number = 0;
+        const grid = { ...displaySettings[key] };
+        if (!grid.row && column && columnSpan && column + columnSpan === DEFAULT_MAX_COLUMN + 1) {
+          grid.row = 1 + index;
+        }
+        const properties = { grid };
+        if (/^\>/.test(key)) {
+          minWidth = key.replace('>', '').trim();
+          mediaQueries.push({
+            minWidth: !isNaN(+minWidth) ? `${+minWidth}px` : minWidth,
+            properties
+          })
+        } else if (/^\</.test(key)) {
+          maxWidth = key.replace('<', '').trim();
+          mediaQueries.push({
+            maxWidth: !isNaN(+maxWidth) ? `${+maxWidth}px` : maxWidth,
+            properties
+          })
+        } else if (/^\d+\-\d+$/.test(key)) {
+          const data = key.split('-');
+          minWidth = data[0].trim();
+          maxWidth = data[1].trim();
+          mediaQueries.push({
+            minWidth: !isNaN(+minWidth) ? `${+minWidth}px` : minWidth,
+            maxWidth: !isNaN(+maxWidth) ? `${+maxWidth}px` : maxWidth,
+            properties
+          })
+        }
       }
-
-      let maxColumn = maxColumnsPerRow || elements.length || DEFAULT_MAX_COLUMN;
-      let minmaxFirstParam = `max(${minWidth}, calc(100% / ${maxColumn} - ${GAP_WIDTH}px))`;
-      this.pnlSection.style.gridTemplateColumns = `repeat(auto-fill, minmax(${minmaxFirstParam}, 1fr))`;
-      this.maxColumn = DEFAULT_MAX_COLUMN;
-    } else {
-      const columnsPerRow = columnsNumber || DEFAULT_MAX_COLUMN;
-      this.pnlSection.style.gridTemplateColumns = `repeat(${columnsPerRow}, 1fr)`;
-      this.maxColumn = columnsPerRow;
+      el.mediaQueries = mediaQueries;
     }
   }
 
   private updateAlign(config: IConfigData) {
-    const { align = 'left', columnLayout = IColumnLayoutType.AUTOMATIC } = config;
+    const { align = 'left' } = config;
     let alignValue = 'start'
     switch (align) {
       case 'right':
@@ -112,12 +127,11 @@ export class ViewrSection extends Module {
     if (alignValue !== 'start') {
       this.pnlSection.grid = { horizontalAlignment: alignValue as any }
       this.pnlSection.style.maxWidth = '100%'
-      if (columnLayout === IColumnLayoutType.AUTOMATIC) return;
       this.pnlSection.style.gridTemplateColumns = 'min-content'
       const sections = Array.from(this.pnlSection.querySelectorAll('sc-page-viewer-page-element'))
       const sectionWidth = this.pnlSection.offsetWidth;
       const sectionDatas = this.sectionData.elements || [];
-      const gridColWidth = (sectionWidth - GAP_WIDTH * (this.maxColumn - 1)) / this.maxColumn;
+      const gridColWidth = (sectionWidth - GAP_WIDTH * (DEFAULT_MAX_COLUMN - 1)) / DEFAULT_MAX_COLUMN;
       for (let i = 0; i < sections.length; i++) {
         const columnSpan = sectionDatas[i]?.columnSpan || 1;
         const widthNumber = columnSpan * gridColWidth + ((columnSpan - 1) * GAP_WIDTH);
@@ -137,8 +151,9 @@ export class ViewrSection extends Module {
         maxHeight="100%"
         position="relative"
         gap={{column: 15, row: 15}}
+        templateColumns={[`repeat(12, 1fr)`]}
         padding={{top: '1.5rem', bottom: '1.5rem'}}
-    ></i-grid-layout>
+      ></i-grid-layout>
     )
   }
 }

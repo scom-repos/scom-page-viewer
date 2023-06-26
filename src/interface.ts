@@ -9,18 +9,19 @@ interface IPageData {
   header: IPageHeader;
   sections: IPageSection[];
   footer: IPageFooter;
+  config?: IPageConfig;
 }
 
-enum IColumnLayoutType {
-  FIXED = 'Fixed',
-  AUTOMATIC = 'Automatic'
+interface IPageConfig {
+  backgroundColor?: string;
+  maxWidth?: number|string;
+  margin?: {
+    x?: number|string;
+    y?: number|string;
+  };
 }
 
 interface IConfigData {
-  columnLayout?: IColumnLayoutType;
-  columnsNumber?: number;
-  maxColumnsPerRow?: number;
-  columnMinWidth?: number|string;
   align?: AlignType;
 }
 
@@ -56,9 +57,17 @@ export interface IPageElement {
   tag?: any;
   module?: IPageBlockData; // follow the standard defined in secure page, if type === 'primitive'
   elements?: IPageElement[]; // type === 'composite'
+  displaySettings?: {[key: string]: IGrid};
+}
 
-  visibleOn?: string;
-  invisibleOn?: string;
+interface IGrid {
+  column?: number;
+  columnSpan?: number;
+  row?: number;
+  rowSpan?: number;
+  horizontalAlignment?: "stretch" | "start" | "end" | "center";
+  verticalAlignment?: "stretch" | "start" | "end" | "center";
+  area?: string;
 }
 
 export enum HeaderType {
@@ -118,7 +127,6 @@ type ThemeType = 'dark' | 'light'
 export {
   IPageData,
   ICodeInfoFileContent,
-  IColumnLayoutType,
   IConfigData,
   ThemeType
 }

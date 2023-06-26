@@ -6,8 +6,7 @@ import {
   application,
   Container
 } from '@ijstech/components';
-import { ICodeInfoFileContent, IColumnLayoutType, IConfigData, IPageElement } from './interface';
-import { DEFAULT_MAX_COLUMN, fetchFileContentByCid, getSCConfigByCodeCid, IPFS_SCOM_URL } from './utils';
+import { IPageElement } from './interface';
 import { getRootDir } from './store';
 
 declare global {
@@ -22,7 +21,6 @@ declare global {
 export class ViewrPageElement extends Module {
   private pnlElement: Panel;
   private data: IPageElement;
-  private _config: IConfigData;
   private module: Module = null;
   private observerOptions = {
     root: null,
@@ -39,6 +37,7 @@ export class ViewrPageElement extends Module {
           if (builderTarget) {
             if (builderTarget.setRootDir) builderTarget.setRootDir(rootDir);
             if (builderTarget.setData) await builderTarget.setData(properties);
+            if (builderTarget.setRootParent) builderTarget.setRootParent(this.closest('sc-page-viewer-section'));
             if (tag && builderTarget.setTag) {
               const newTag = {...tag, width: '100%'};
               await builderTarget.setTag(newTag);
@@ -57,18 +56,11 @@ export class ViewrPageElement extends Module {
     super(parent, options);
   };
 
-  get config() {
-    return this._config ?? {};
-  }
-  set config(value: IConfigData) {
-    this._config = value;
-  }
-
   async setData(pageElement: IPageElement) {
     if (!this.pnlElement) return;
     this.pnlElement.clearInnerHTML();
     this.data = pageElement;
-    const { id, type, properties, elements, tag } = this.data;
+    const { id, type, elements } = this.data;
     this.pnlElement.id = id;
     // const rootDir = getRootDir();
     if (type === 'primitive') {

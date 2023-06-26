@@ -10,16 +10,17 @@ declare module "@scom/scom-page-viewer/interface.ts" {
         header: IPageHeader;
         sections: IPageSection[];
         footer: IPageFooter;
+        config?: IPageConfig;
     }
-    enum IColumnLayoutType {
-        FIXED = "Fixed",
-        AUTOMATIC = "Automatic"
+    interface IPageConfig {
+        backgroundColor?: string;
+        maxWidth?: number | string;
+        margin?: {
+            x?: number | string;
+            y?: number | string;
+        };
     }
     interface IConfigData {
-        columnLayout?: IColumnLayoutType;
-        columnsNumber?: number;
-        maxColumnsPerRow?: number;
-        columnMinWidth?: number | string;
         align?: AlignType;
     }
     interface IPageBlockData {
@@ -50,8 +51,18 @@ declare module "@scom/scom-page-viewer/interface.ts" {
         tag?: any;
         module?: IPageBlockData;
         elements?: IPageElement[];
-        visibleOn?: string;
-        invisibleOn?: string;
+        displaySettings?: {
+            [key: string]: IGrid;
+        };
+    }
+    interface IGrid {
+        column?: number;
+        columnSpan?: number;
+        row?: number;
+        rowSpan?: number;
+        horizontalAlignment?: "stretch" | "start" | "end" | "center";
+        verticalAlignment?: "stretch" | "start" | "end" | "center";
+        area?: string;
     }
     export enum HeaderType {
         'COVER' = "cover",
@@ -100,7 +111,7 @@ declare module "@scom/scom-page-viewer/interface.ts" {
         tag: any;
     }
     type ThemeType = 'dark' | 'light';
-    export { IPageData, ICodeInfoFileContent, IColumnLayoutType, IConfigData, ThemeType };
+    export { IPageData, ICodeInfoFileContent, IConfigData, ThemeType };
 }
 /// <amd-module name="@scom/scom-page-viewer/paging.css.ts" />
 declare module "@scom/scom-page-viewer/paging.css.ts" {
@@ -220,19 +231,10 @@ declare module "@scom/scom-page-viewer/index.css.ts" {
     const _default_2: string;
     export default _default_2;
 }
-/// <amd-module name="@scom/scom-page-viewer/utils.ts" />
-declare module "@scom/scom-page-viewer/utils.ts" {
-    const IPFS_SCOM_URL = "https://ipfs.scom.dev/ipfs";
-    function fetchFileContentByCid(ipfsCid: string): Promise<Response | undefined>;
-    function getSCConfigByCodeCid(codeCid: string): Promise<any>;
-    const DEFAULT_MAX_COLUMN = 12;
-    const GAP_WIDTH = 15;
-    export { IPFS_SCOM_URL, fetchFileContentByCid, getSCConfigByCodeCid, DEFAULT_MAX_COLUMN, GAP_WIDTH };
-}
 /// <amd-module name="@scom/scom-page-viewer/pageElement.tsx" />
 declare module "@scom/scom-page-viewer/pageElement.tsx" {
     import { Module, ControlElement, Container } from '@ijstech/components';
-    import { IConfigData, IPageElement } from "@scom/scom-page-viewer/interface.ts";
+    import { IPageElement } from "@scom/scom-page-viewer/interface.ts";
     global {
         namespace JSX {
             interface IntrinsicElements {
@@ -243,16 +245,22 @@ declare module "@scom/scom-page-viewer/pageElement.tsx" {
     export class ViewrPageElement extends Module {
         private pnlElement;
         private data;
-        private _config;
         private module;
         private observerOptions;
         private observer;
         constructor(parent?: Container, options?: any);
-        get config(): IConfigData;
-        set config(value: IConfigData);
         setData(pageElement: IPageElement): Promise<void>;
         render(): any;
     }
+}
+/// <amd-module name="@scom/scom-page-viewer/utils.ts" />
+declare module "@scom/scom-page-viewer/utils.ts" {
+    const IPFS_SCOM_URL = "https://ipfs.scom.dev/ipfs";
+    function fetchFileContentByCid(ipfsCid: string): Promise<Response | undefined>;
+    function getSCConfigByCodeCid(codeCid: string): Promise<any>;
+    const DEFAULT_MAX_COLUMN = 12;
+    const GAP_WIDTH = 15;
+    export { IPFS_SCOM_URL, fetchFileContentByCid, getSCConfigByCodeCid, DEFAULT_MAX_COLUMN, GAP_WIDTH };
 }
 /// <amd-module name="@scom/scom-page-viewer/section.tsx" />
 declare module "@scom/scom-page-viewer/section.tsx" {
@@ -274,7 +282,6 @@ declare module "@scom/scom-page-viewer/section.tsx" {
     export class ViewrSection extends Module {
         private pnlSection;
         private _size;
-        private maxColumn;
         private sectionData;
         get size(): {
             width?: string;
@@ -288,7 +295,7 @@ declare module "@scom/scom-page-viewer/section.tsx" {
         init(): Promise<void>;
         updateContainerSize(): void;
         setData(sectionData: IPageSection): Promise<void>;
-        private updateGridTemplateColumns;
+        private updateElementConfig;
         private updateAlign;
         render(): any;
     }
@@ -358,6 +365,7 @@ declare module "@scom/scom-page-viewer" {
         private setTheme;
         renderPage(page: IPageData): Promise<void>;
         private getBackgroundColor;
+        private updateContainer;
         render(): any;
     }
 }

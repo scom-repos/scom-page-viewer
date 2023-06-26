@@ -7,13 +7,7 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 define("@scom/scom-page-viewer/interface.ts", ["require", "exports"], function (require, exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
-    exports.IColumnLayoutType = exports.HeaderType = void 0;
-    var IColumnLayoutType;
-    (function (IColumnLayoutType) {
-        IColumnLayoutType["FIXED"] = "Fixed";
-        IColumnLayoutType["AUTOMATIC"] = "Automatic";
-    })(IColumnLayoutType || (IColumnLayoutType = {}));
-    exports.IColumnLayoutType = IColumnLayoutType;
+    exports.HeaderType = void 0;
     var HeaderType;
     (function (HeaderType) {
         HeaderType["COVER"] = "cover";
@@ -350,42 +344,6 @@ define("@scom/scom-page-viewer/index.css.ts", ["require", "exports", "@ijstech/c
         }
     });
 });
-define("@scom/scom-page-viewer/utils.ts", ["require", "exports"], function (require, exports) {
-    "use strict";
-    Object.defineProperty(exports, "__esModule", { value: true });
-    exports.GAP_WIDTH = exports.DEFAULT_MAX_COLUMN = exports.getSCConfigByCodeCid = exports.fetchFileContentByCid = exports.IPFS_SCOM_URL = void 0;
-    ///<amd-module name='@scom/scom-page-viewer/utils.ts'/> 
-    const IPFS_SCOM_URL = "https://ipfs.scom.dev/ipfs";
-    exports.IPFS_SCOM_URL = IPFS_SCOM_URL;
-    async function fetchFileContentByCid(ipfsCid) {
-        let response;
-        try {
-            response = await fetch(`${IPFS_SCOM_URL}/${ipfsCid}`);
-        }
-        catch (err) {
-            const IPFS_Gateway = 'https://ipfs.io/ipfs/{CID}';
-            response = await fetch(IPFS_Gateway.replace('{CID}', ipfsCid));
-        }
-        return response;
-    }
-    exports.fetchFileContentByCid = fetchFileContentByCid;
-    ;
-    async function getSCConfigByCodeCid(codeCid) {
-        let scConfig;
-        try {
-            let scConfigRes = await fetchFileContentByCid(`${codeCid}/dist/scconfig.json`);
-            if (scConfigRes)
-                scConfig = await scConfigRes.json();
-        }
-        catch (err) { }
-        return scConfig;
-    }
-    exports.getSCConfigByCodeCid = getSCConfigByCodeCid;
-    const DEFAULT_MAX_COLUMN = 12;
-    exports.DEFAULT_MAX_COLUMN = DEFAULT_MAX_COLUMN;
-    const GAP_WIDTH = 15;
-    exports.GAP_WIDTH = GAP_WIDTH;
-});
 define("@scom/scom-page-viewer/pageElement.tsx", ["require", "exports", "@ijstech/components", "@scom/scom-page-viewer/store.ts"], function (require, exports, components_7, store_1) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
@@ -412,6 +370,8 @@ define("@scom/scom-page-viewer/pageElement.tsx", ["require", "exports", "@ijstec
                                     builderTarget.setRootDir(rootDir);
                                 if (builderTarget.setData)
                                     await builderTarget.setData(properties);
+                                if (builderTarget.setRootParent)
+                                    builderTarget.setRootParent(this.closest('sc-page-viewer-section'));
                                 if (tag && builderTarget.setTag) {
                                     const newTag = Object.assign(Object.assign({}, tag), { width: '100%' });
                                     await builderTarget.setTag(newTag);
@@ -427,19 +387,12 @@ define("@scom/scom-page-viewer/pageElement.tsx", ["require", "exports", "@ijstec
             }, this.observerOptions);
         }
         ;
-        get config() {
-            var _a;
-            return (_a = this._config) !== null && _a !== void 0 ? _a : {};
-        }
-        set config(value) {
-            this._config = value;
-        }
         async setData(pageElement) {
             if (!this.pnlElement)
                 return;
             this.pnlElement.clearInnerHTML();
             this.data = pageElement;
-            const { id, type, properties, elements, tag } = this.data;
+            const { id, type, elements } = this.data;
             this.pnlElement.id = id;
             // const rootDir = getRootDir();
             if (type === 'primitive') {
@@ -479,15 +432,47 @@ define("@scom/scom-page-viewer/pageElement.tsx", ["require", "exports", "@ijstec
     ], ViewrPageElement);
     exports.ViewrPageElement = ViewrPageElement;
 });
-define("@scom/scom-page-viewer/section.tsx", ["require", "exports", "@ijstech/components", "@scom/scom-page-viewer/interface.ts", "@scom/scom-page-viewer/utils.ts"], function (require, exports, components_8, interface_1, utils_1) {
+define("@scom/scom-page-viewer/utils.ts", ["require", "exports"], function (require, exports) {
+    "use strict";
+    Object.defineProperty(exports, "__esModule", { value: true });
+    exports.GAP_WIDTH = exports.DEFAULT_MAX_COLUMN = exports.getSCConfigByCodeCid = exports.fetchFileContentByCid = exports.IPFS_SCOM_URL = void 0;
+    ///<amd-module name='@scom/scom-page-viewer/utils.ts'/> 
+    const IPFS_SCOM_URL = "https://ipfs.scom.dev/ipfs";
+    exports.IPFS_SCOM_URL = IPFS_SCOM_URL;
+    async function fetchFileContentByCid(ipfsCid) {
+        let response;
+        try {
+            response = await fetch(`${IPFS_SCOM_URL}/${ipfsCid}`);
+        }
+        catch (err) {
+            const IPFS_Gateway = 'https://ipfs.io/ipfs/{CID}';
+            response = await fetch(IPFS_Gateway.replace('{CID}', ipfsCid));
+        }
+        return response;
+    }
+    exports.fetchFileContentByCid = fetchFileContentByCid;
+    ;
+    async function getSCConfigByCodeCid(codeCid) {
+        let scConfig;
+        try {
+            let scConfigRes = await fetchFileContentByCid(`${codeCid}/dist/scconfig.json`);
+            if (scConfigRes)
+                scConfig = await scConfigRes.json();
+        }
+        catch (err) { }
+        return scConfig;
+    }
+    exports.getSCConfigByCodeCid = getSCConfigByCodeCid;
+    const DEFAULT_MAX_COLUMN = 12;
+    exports.DEFAULT_MAX_COLUMN = DEFAULT_MAX_COLUMN;
+    const GAP_WIDTH = 15;
+    exports.GAP_WIDTH = GAP_WIDTH;
+});
+define("@scom/scom-page-viewer/section.tsx", ["require", "exports", "@ijstech/components", "@scom/scom-page-viewer/utils.ts"], function (require, exports, components_8, utils_1) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.ViewrSection = void 0;
     let ViewrSection = class ViewrSection extends components_8.Module {
-        constructor() {
-            super(...arguments);
-            this.maxColumn = 1;
-        }
         get size() {
             return this._size || {};
         }
@@ -515,46 +500,60 @@ define("@scom/scom-page-viewer/section.tsx", ["require", "exports", "@ijstech/co
             this.padding = { left: '3rem', right: '3rem' };
             const { elements = [], config = {} } = sectionData;
             this.sectionData = Object.assign({}, sectionData);
-            const columnLayout = (config === null || config === void 0 ? void 0 : config.columnLayout) || interface_1.IColumnLayoutType.AUTOMATIC;
-            for (const pageElm of elements) {
+            for (let i = 0; i < elements.length; i++) {
+                const element = elements[i];
                 const pageElement = (this.$render("sc-page-viewer-page-element", { display: "block" }));
-                const { column, columnSpan } = pageElm;
-                if (columnLayout !== interface_1.IColumnLayoutType.AUTOMATIC) {
-                    pageElement.grid = { column, columnSpan };
-                    pageElement.style.gridRow = '1';
-                }
-                pageElement.config = Object.assign({}, config);
+                this.updateElementConfig(pageElement, element, i);
                 this.pnlSection.append(pageElement);
-                await pageElement.setData(pageElm);
+                await pageElement.setData(element);
             }
-            this.updateGridTemplateColumns(sectionData);
             this.updateAlign(config);
         }
-        updateGridTemplateColumns(sectionData) {
-            const { elements = [], config = {} } = sectionData;
-            let { columnLayout = interface_1.IColumnLayoutType.AUTOMATIC, columnsNumber, maxColumnsPerRow, columnMinWidth } = config || {};
-            if (columnLayout === interface_1.IColumnLayoutType.AUTOMATIC) {
-                let minWidth = '';
-                if (columnMinWidth)
-                    minWidth = typeof columnMinWidth === 'string' ? columnMinWidth : `${columnMinWidth}px`;
-                else {
-                    const bodyWidth = document.body.offsetWidth;
-                    minWidth = bodyWidth < 1024 ? `100%` : `calc((100% / ${elements.length}) - ${utils_1.GAP_WIDTH}px)`;
+        updateElementConfig(el, data, index) {
+            const { column, columnSpan, displaySettings } = data;
+            el.grid = { column, columnSpan };
+            el.style.gridRow = '1';
+            if (displaySettings) {
+                let mediaQueries = [];
+                for (let key in displaySettings) {
+                    let minWidth = 0;
+                    let maxWidth = 0;
+                    const grid = Object.assign({}, displaySettings[key]);
+                    if (!grid.row && column && columnSpan && column + columnSpan === utils_1.DEFAULT_MAX_COLUMN + 1) {
+                        grid.row = 1 + index;
+                    }
+                    const properties = { grid };
+                    if (/^\>/.test(key)) {
+                        minWidth = key.replace('>', '').trim();
+                        mediaQueries.push({
+                            minWidth: !isNaN(+minWidth) ? `${+minWidth}px` : minWidth,
+                            properties
+                        });
+                    }
+                    else if (/^\</.test(key)) {
+                        maxWidth = key.replace('<', '').trim();
+                        mediaQueries.push({
+                            maxWidth: !isNaN(+maxWidth) ? `${+maxWidth}px` : maxWidth,
+                            properties
+                        });
+                    }
+                    else if (/^\d+\-\d+$/.test(key)) {
+                        const data = key.split('-');
+                        minWidth = data[0].trim();
+                        maxWidth = data[1].trim();
+                        mediaQueries.push({
+                            minWidth: !isNaN(+minWidth) ? `${+minWidth}px` : minWidth,
+                            maxWidth: !isNaN(+maxWidth) ? `${+maxWidth}px` : maxWidth,
+                            properties
+                        });
+                    }
                 }
-                let maxColumn = maxColumnsPerRow || elements.length || utils_1.DEFAULT_MAX_COLUMN;
-                let minmaxFirstParam = `max(${minWidth}, calc(100% / ${maxColumn} - ${utils_1.GAP_WIDTH}px))`;
-                this.pnlSection.style.gridTemplateColumns = `repeat(auto-fill, minmax(${minmaxFirstParam}, 1fr))`;
-                this.maxColumn = utils_1.DEFAULT_MAX_COLUMN;
-            }
-            else {
-                const columnsPerRow = columnsNumber || utils_1.DEFAULT_MAX_COLUMN;
-                this.pnlSection.style.gridTemplateColumns = `repeat(${columnsPerRow}, 1fr)`;
-                this.maxColumn = columnsPerRow;
+                el.mediaQueries = mediaQueries;
             }
         }
         updateAlign(config) {
             var _a;
-            const { align = 'left', columnLayout = interface_1.IColumnLayoutType.AUTOMATIC } = config;
+            const { align = 'left' } = config;
             let alignValue = 'start';
             switch (align) {
                 case 'right':
@@ -567,13 +566,11 @@ define("@scom/scom-page-viewer/section.tsx", ["require", "exports", "@ijstech/co
             if (alignValue !== 'start') {
                 this.pnlSection.grid = { horizontalAlignment: alignValue };
                 this.pnlSection.style.maxWidth = '100%';
-                if (columnLayout === interface_1.IColumnLayoutType.AUTOMATIC)
-                    return;
                 this.pnlSection.style.gridTemplateColumns = 'min-content';
                 const sections = Array.from(this.pnlSection.querySelectorAll('sc-page-viewer-page-element'));
                 const sectionWidth = this.pnlSection.offsetWidth;
                 const sectionDatas = this.sectionData.elements || [];
-                const gridColWidth = (sectionWidth - utils_1.GAP_WIDTH * (this.maxColumn - 1)) / this.maxColumn;
+                const gridColWidth = (sectionWidth - utils_1.GAP_WIDTH * (utils_1.DEFAULT_MAX_COLUMN - 1)) / utils_1.DEFAULT_MAX_COLUMN;
                 for (let i = 0; i < sections.length; i++) {
                     const columnSpan = ((_a = sectionDatas[i]) === null || _a === void 0 ? void 0 : _a.columnSpan) || 1;
                     const widthNumber = columnSpan * gridColWidth + ((columnSpan - 1) * utils_1.GAP_WIDTH);
@@ -583,7 +580,7 @@ define("@scom/scom-page-viewer/section.tsx", ["require", "exports", "@ijstech/co
             }
         }
         render() {
-            return (this.$render("i-grid-layout", { id: "pnlSection", width: "100%", height: "100%", maxWidth: "100%", maxHeight: "100%", position: "relative", gap: { column: 15, row: 15 }, padding: { top: '1.5rem', bottom: '1.5rem' } }));
+            return (this.$render("i-grid-layout", { id: "pnlSection", width: "100%", height: "100%", maxWidth: "100%", maxHeight: "100%", position: "relative", gap: { column: 15, row: 15 }, templateColumns: [`repeat(12, 1fr)`], padding: { top: '1.5rem', bottom: '1.5rem' } }));
         }
     };
     ViewrSection = __decorate([
@@ -738,10 +735,7 @@ define("@scom/scom-page-viewer", ["require", "exports", "@ijstech/components", "
         }
         setTheme(value) {
             this.style.setProperty('--viewer-theme', value);
-            if (this.pnlContainer) {
-                const color = this.getBackgroundColor();
-                this.pnlContainer.background = { color };
-            }
+            this.updateContainer();
             if (this._data) {
                 this.renderPage(this._data);
             }
@@ -750,14 +744,22 @@ define("@scom/scom-page-viewer", ["require", "exports", "@ijstech/components", "
             const { header, footer, sections } = page;
             this.viewerFooter.data = footer;
             this.viewerFooter.visible = !!header;
-            if (this.pnlContainer) {
-                const color = this.getBackgroundColor();
-                this.pnlContainer.background = { color };
-            }
+            this.updateContainer();
             await this.viewerBody.setSections(sections);
         }
         getBackgroundColor() {
             return this.theme === 'light' ? lightTheme.background.main : darkTheme.background.main;
+        }
+        updateContainer() {
+            var _a;
+            if (this.pnlContainer) {
+                const defaultColor = this.getBackgroundColor();
+                const { backgroundColor = defaultColor, margin, maxWidth } = ((_a = this._data) === null || _a === void 0 ? void 0 : _a.config) || {};
+                this.pnlContainer.background = { color: backgroundColor };
+                this.pnlContainer.maxWidth = maxWidth || '100%';
+                const { x = 'auto', y = 0 } = margin || {};
+                this.pnlContainer.margin = { top: y, bottom: y, left: x, right: x };
+            }
         }
         render() {
             return (this.$render("i-vstack", { id: "pnlContainer", class: `sc-page-viewer-container ${index_css_1.default}`, width: "100%", height: "100%" },
