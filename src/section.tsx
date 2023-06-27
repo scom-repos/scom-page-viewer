@@ -1,5 +1,5 @@
 import { Control, ControlElement, customElements, GridLayout, Module } from "@ijstech/components";
-import { IConfigData, IPageElement, IPageSection } from "./interface";
+import { IPageSectionConfig, IPageElement, IPageSection } from "./interface";
 import { DEFAULT_MAX_COLUMN, GAP_WIDTH } from "./utils";
 
 declare global {
@@ -113,7 +113,7 @@ export class ViewrSection extends Module {
     }
   }
 
-  private updateAlign(config: IConfigData) {
+  private updateAlign(config: IPageSectionConfig) {
     const { align = 'left' } = config;
     let alignValue = 'start'
     switch (align) {

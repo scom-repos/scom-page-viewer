@@ -21,8 +21,9 @@ interface IPageConfig {
   };
 }
 
-interface IConfigData {
+interface IPageSectionConfig extends IPageConfig {
   align?: AlignType;
+  image?: string;
 }
 
 interface IPageBlockData {
@@ -87,9 +88,8 @@ export interface IPageSection {
   row: number;
   anchorName?: string;
   image?: string;
-  backgroundColor?: string;
   elements: IPageElement[];
-  config?: IConfigData;
+  config?: IPageSectionConfig;
 }
 
 export interface IPageFooter {
@@ -127,6 +127,6 @@ type ThemeType = 'dark' | 'light'
 export {
   IPageData,
   ICodeInfoFileContent,
-  IConfigData,
+  IPageSectionConfig,
   ThemeType
 }
