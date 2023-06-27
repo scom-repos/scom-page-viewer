@@ -193,7 +193,7 @@ define("@scom/scom-page-viewer/body.tsx", ["require", "exports", "@ijstech/compo
             }
             let anchors = [];
             for (const section of this.sections) {
-                const { image = '', backgroundColor, margin, maxWidth } = (section === null || section === void 0 ? void 0 : section.config) || {};
+                const { image = '', backgroundColor = '', margin, maxWidth } = (section === null || section === void 0 ? void 0 : section.config) || {};
                 const { x = 'auto', y = 8 } = margin || {};
                 const pageSection = (this.$render("sc-page-viewer-section", { id: section.id, display: "block", background: { image, color: backgroundColor }, maxWidth: maxWidth || '100%', margin: { top: y, bottom: y, left: x, right: x } }));
                 this.pnlSections.append(pageSection);
