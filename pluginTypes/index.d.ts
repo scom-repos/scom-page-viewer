@@ -25,9 +25,10 @@ declare module "@scom/scom-page-viewer/interface.ts" {
         image?: string;
     }
     interface IPageBlockData {
+        title: string;
         name: string;
-        path: string;
-        category?: "components" | "micro-dapps";
+        path?: string;
+        category?: string;
         imgUrl?: string;
         disableClicked?: boolean;
         shownBackdrop?: boolean;

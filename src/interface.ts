@@ -27,9 +27,10 @@ interface IPageSectionConfig extends IPageConfig {
 }
 
 interface IPageBlockData {
+  title: string;
   name: string;
-  path: string;
-  category?: "components" | "micro-dapps";
+  path?: string;
+  category?: string;
   imgUrl?: string;
   disableClicked?: boolean;
   shownBackdrop?: boolean;
