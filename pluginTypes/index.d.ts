@@ -179,14 +179,10 @@ declare module "@scom/scom-page-viewer/body.tsx" {
         private sections;
         private pnlSections;
         private viewerPaging;
-        private archorElm;
         onUpdatePage: pageChangeCallback;
         generateUUID(): string;
         setSections(sections: IPageSection[]): Promise<void>;
         renderSections(): Promise<void>;
-        private updateAnchors;
-        private onScrollListener;
-        private onScrollToRow;
         clearSections(): void;
         setPaging(pages: IPageData[], currPage: IPageData): Promise<void>;
         setPagingVisibility(pagingVisible: boolean): void;
