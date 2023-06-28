@@ -397,8 +397,7 @@ define("@scom/scom-page-viewer/pageElement.tsx", ["require", "exports", "@ijstec
             this.pnlElement.id = id;
             // const rootDir = getRootDir();
             if (type === 'primitive') {
-                // let module: any = await this.getEmbedElement(rootDir, this.data.module.path);
-                let module = await components_7.application.createElement(this.data.module.name, false, undefined, this.data.module.path);
+                let module = await components_7.application.createElement(this.data.module.path, true);
                 if (module) {
                     this.pnlElement.append(module);
                     this.module = module;
@@ -413,17 +412,6 @@ define("@scom/scom-page-viewer/pageElement.tsx", ["require", "exports", "@ijstec
                 }
             }
         }
-        // async getEmbedElement(rootDir: string, path: string) {
-        //   let modulePath = rootDir ? `${rootDir}/libs/@scom/${path}` : `libs/@scom/${path}`;
-        //   application.currentModuleDir = modulePath;
-        //   const result = await application.loadScript(`${modulePath}/index.js`);
-        //   application.currentModuleDir = '';
-        //   if (!result) return null;
-        //   const elementName = `i-${path.split('/').pop()}`;
-        //   const element = document.createElement(elementName);
-        //   element.setAttribute('lazyLoad', 'true');
-        //   return element;
-        // }
         render() {
             return (this.$render("i-panel", { id: "pnlElement" }));
         }
@@ -711,10 +699,9 @@ define("@scom/scom-page-viewer", ["require", "exports", "@ijstech/components", "
         }
         async onShow(options) {
             var _a, _b, _c;
-            this.pnlLoading.visible = true;
-            this.gridMain.visible = false;
-            if (options === null || options === void 0 ? void 0 : options.theme)
+            if (options === null || options === void 0 ? void 0 : options.theme) {
                 this.setTheme(options.theme);
+            }
             if (!this.isLoaded) {
                 this.gridMain.templateColumns = ["1fr"];
                 (0, store_2.setRootDir)(options === null || options === void 0 ? void 0 : options.rootDir);
@@ -723,8 +710,17 @@ define("@scom/scom-page-viewer", ["require", "exports", "@ijstech/components", "
             else if ((_b = options === null || options === void 0 ? void 0 : options._data) !== null && _b !== void 0 ? _b : options) {
                 await this.renderPage((_c = options === null || options === void 0 ? void 0 : options._data) !== null && _c !== void 0 ? _c : options);
             }
-            this.pnlLoading.visible = false;
-            this.gridMain.visible = true;
+            // setTimeout(async () => {
+            //   if (options?.theme)
+            //     this.setTheme(options.theme);
+            //   if (!this.isLoaded) {
+            //     this.gridMain.templateColumns = ["1fr"];
+            //     setRootDir(options?.rootDir);
+            //     await this.setData(options?._data??options);
+            //   } else if (options?._data??options) {
+            //     await this.renderPage(options?._data??options);
+            //   }
+            // })
         }
         async setData(data) {
             this._data = data;

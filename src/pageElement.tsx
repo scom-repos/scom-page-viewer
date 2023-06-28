@@ -64,8 +64,7 @@ export class ViewrPageElement extends Module {
     this.pnlElement.id = id;
     // const rootDir = getRootDir();
     if (type === 'primitive') {
-      // let module: any = await this.getEmbedElement(rootDir, this.data.module.path);
-      let module:any = await application.createElement(this.data.module.name, false, undefined, this.data.module.path);
+      let module:any = await application.createElement(this.data.module.path, true);
       if (module) {
         this.pnlElement.append(module);
         this.module = module;
@@ -79,18 +78,6 @@ export class ViewrPageElement extends Module {
       }
     }
   }
-
-  // async getEmbedElement(rootDir: string, path: string) {
-  //   let modulePath = rootDir ? `${rootDir}/libs/@scom/${path}` : `libs/@scom/${path}`;
-  //   application.currentModuleDir = modulePath;
-  //   const result = await application.loadScript(`${modulePath}/index.js`);
-  //   application.currentModuleDir = '';
-  //   if (!result) return null;
-  //   const elementName = `i-${path.split('/').pop()}`;
-  //   const element = document.createElement(elementName);
-  //   element.setAttribute('lazyLoad', 'true');
-  //   return element;
-  // }
 
   render() {
     return (
