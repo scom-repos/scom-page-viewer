@@ -59,8 +59,16 @@ export class ViewrBody extends Module {
     }
     let anchors: { name: string, sectionElm: any }[] = [];
     for (const section of this.sections) {
-      const { image, backgroundColor } = section;
-      const pageSection = (<sc-page-viewer-section id={section.id} background={{ image, color: backgroundColor }}></sc-page-viewer-section>);
+      const { image = '', backgroundColor = '', margin, maxWidth } = section?.config || {};
+      const { x = 'auto', y = 8 } = margin || {};
+      const pageSection = (
+        <sc-page-viewer-section
+          id={section.id}
+          display="block"
+          background={{ image, color: backgroundColor }}
+          maxWidth={maxWidth || '100%'}
+          margin={{top: y, bottom: y, left: x, right: x}}
+        ></sc-page-viewer-section>);
       this.pnlSections.append(pageSection);
       await pageSection.setData(section);
       const anchorName = section.anchorName;

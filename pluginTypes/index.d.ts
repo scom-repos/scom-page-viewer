@@ -20,8 +20,9 @@ declare module "@scom/scom-page-viewer/interface.ts" {
             y?: number | string;
         };
     }
-    interface IConfigData {
+    interface IPageSectionConfig extends IPageConfig {
         align?: AlignType;
+        image?: string;
     }
     interface IPageBlockData {
         name: string;
@@ -80,9 +81,8 @@ declare module "@scom/scom-page-viewer/interface.ts" {
         row: number;
         anchorName?: string;
         image?: string;
-        backgroundColor?: string;
         elements: IPageElement[];
-        config?: IConfigData;
+        config?: IPageSectionConfig;
     }
     export interface IPageFooter {
         image: string;
@@ -111,7 +111,7 @@ declare module "@scom/scom-page-viewer/interface.ts" {
         tag: any;
     }
     type ThemeType = 'dark' | 'light';
-    export { IPageData, ICodeInfoFileContent, IConfigData, ThemeType };
+    export { IPageData, ICodeInfoFileContent, IPageSectionConfig, ThemeType };
 }
 /// <amd-module name="@scom/scom-page-viewer/paging.css.ts" />
 declare module "@scom/scom-page-viewer/paging.css.ts" {
