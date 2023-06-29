@@ -82,10 +82,10 @@ export class ViewrSection extends Module {
         let minWidth: string | number = 0;
         let maxWidth: string | number = 0;
         const grid = { ...displaySettings[key] };
-        if (!grid.row && column && columnSpan && column + columnSpan === DEFAULT_MAX_COLUMN + 1) {
+        if (!grid.row && grid.column && grid.columnSpan && grid.column + grid.columnSpan === DEFAULT_MAX_COLUMN + 1) {
           grid.row = 1 + index;
         }
-        const properties = { grid };
+        const properties = { grid, width: '100%' };
         if (/^\>/.test(key)) {
           minWidth = key.replace('>', '').trim();
           mediaQueries.push({
@@ -125,7 +125,7 @@ export class ViewrSection extends Module {
         break
     }
     if (alignValue !== 'start') {
-      this.pnlSection.grid = { horizontalAlignment: alignValue as any }
+      this.pnlSection.grid = {horizontalAlignment: alignValue as any}
       this.pnlSection.style.maxWidth = '100%'
       this.pnlSection.style.gridTemplateColumns = 'min-content'
       const sections = Array.from(this.pnlSection.querySelectorAll('sc-page-viewer-page-element'))
@@ -133,10 +133,12 @@ export class ViewrSection extends Module {
       const sectionDatas = this.sectionData.elements || [];
       const gridColWidth = (sectionWidth - GAP_WIDTH * (DEFAULT_MAX_COLUMN - 1)) / DEFAULT_MAX_COLUMN;
       for (let i = 0; i < sections.length; i++) {
+        const section = sections[i] as Control;
         const columnSpan = sectionDatas[i]?.columnSpan || 1;
         const widthNumber = columnSpan * gridColWidth + ((columnSpan - 1) * GAP_WIDTH);
-        (sections[i] as Control).width = `${widthNumber}px`;
-        (sections[i] as Control).style.gridArea = 'unset';
+        section.style.width = widthNumber ? `${widthNumber}px` : '100%';
+        section.style.gridArea = 'unset';
+        section.style.maxWidth = '100%';
       }
     }
   }
@@ -150,6 +152,7 @@ export class ViewrSection extends Module {
         maxWidth="100%"
         maxHeight="100%"
         position="relative"
+        overflow={'hidden'}
         gap={{column: 15, row: 15}}
         templateColumns={[`repeat(12, 1fr)`]}
         padding={{top: '1.5rem', bottom: '1.5rem'}}

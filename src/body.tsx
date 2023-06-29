@@ -67,6 +67,7 @@ export class ViewrBody extends Module {
           display="block"
           background={{ image, color: backgroundColor }}
           maxWidth={maxWidth || '100%'}
+          width="100%"
           margin={{top: y, bottom: y, left: x, right: x}}
         ></sc-page-viewer-section>);
       this.pnlSections.append(pageSection);
