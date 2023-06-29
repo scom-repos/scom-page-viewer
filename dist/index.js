@@ -181,7 +181,7 @@ define("@scom/scom-page-viewer/body.tsx", ["require", "exports", "@ijstech/compo
             for (const section of this.sections) {
                 const { image = '', backgroundColor = '', margin, maxWidth } = (section === null || section === void 0 ? void 0 : section.config) || {};
                 const { x = 'auto', y = 0 } = margin || {};
-                const pageSection = (this.$render("sc-page-viewer-section", { id: section.id, display: "block", background: { image, color: backgroundColor }, maxWidth: maxWidth || '100%', margin: { top: y, bottom: y, left: x, right: x } }));
+                const pageSection = (this.$render("sc-page-viewer-section", { id: section.id, display: "block", background: { image, color: backgroundColor }, maxWidth: maxWidth || '100%', width: "100%", margin: { top: y, bottom: y, left: x, right: x } }));
                 this.pnlSections.append(pageSection);
                 await pageSection.setData(section);
                 // const anchorName = section.anchorName;
@@ -503,10 +503,10 @@ define("@scom/scom-page-viewer/section.tsx", ["require", "exports", "@ijstech/co
                     let minWidth = 0;
                     let maxWidth = 0;
                     const grid = Object.assign({}, displaySettings[key]);
-                    if (!grid.row && column && columnSpan && column + columnSpan === utils_1.DEFAULT_MAX_COLUMN + 1) {
+                    if (!grid.row && grid.column && grid.columnSpan && grid.column + grid.columnSpan === utils_1.DEFAULT_MAX_COLUMN + 1) {
                         grid.row = 1 + index;
                     }
-                    const properties = { grid };
+                    const properties = { grid, width: '100%' };
                     if (/^\>/.test(key)) {
                         minWidth = key.replace('>', '').trim();
                         mediaQueries.push({
@@ -556,15 +556,17 @@ define("@scom/scom-page-viewer/section.tsx", ["require", "exports", "@ijstech/co
                 const sectionDatas = this.sectionData.elements || [];
                 const gridColWidth = (sectionWidth - utils_1.GAP_WIDTH * (utils_1.DEFAULT_MAX_COLUMN - 1)) / utils_1.DEFAULT_MAX_COLUMN;
                 for (let i = 0; i < sections.length; i++) {
+                    const section = sections[i];
                     const columnSpan = ((_a = sectionDatas[i]) === null || _a === void 0 ? void 0 : _a.columnSpan) || 1;
                     const widthNumber = columnSpan * gridColWidth + ((columnSpan - 1) * utils_1.GAP_WIDTH);
-                    sections[i].width = `${widthNumber}px`;
-                    sections[i].style.gridArea = 'unset';
+                    section.style.width = widthNumber ? `${widthNumber}px` : '100%';
+                    section.style.gridArea = 'unset';
+                    section.style.maxWidth = '100%';
                 }
             }
         }
         render() {
-            return (this.$render("i-grid-layout", { id: "pnlSection", width: "100%", height: "100%", maxWidth: "100%", maxHeight: "100%", position: "relative", gap: { column: 15, row: 15 }, templateColumns: [`repeat(12, 1fr)`], padding: { top: '1.5rem', bottom: '1.5rem' } }));
+            return (this.$render("i-grid-layout", { id: "pnlSection", width: "100%", height: "100%", maxWidth: "100%", maxHeight: "100%", position: "relative", overflow: 'hidden', gap: { column: 15, row: 15 }, templateColumns: [`repeat(12, 1fr)`], padding: { top: '1.5rem', bottom: '1.5rem' } }));
         }
     };
     ViewrSection = __decorate([
