@@ -30,7 +30,7 @@ export class ViewrBody extends Module {
   private sections: IPageSection[];
   private pnlSections: VStack;
   private viewerPaging: ViewerPaging;
-  private archorElm: HStack;
+  // private archorElm: HStack;
   public onUpdatePage: pageChangeCallback;
 
   generateUUID() {
@@ -57,10 +57,10 @@ export class ViewrBody extends Module {
         }
       ]
     }
-    let anchors: { name: string, sectionElm: any }[] = [];
+    // let anchors: { name: string, sectionElm: any }[] = [];
     for (const section of this.sections) {
       const { image = '', backgroundColor = '', margin, maxWidth } = section?.config || {};
-      const { x = 'auto', y = 8 } = margin || {};
+      const { x = 'auto', y = 0 } = margin || {};
       const pageSection = (
         <sc-page-viewer-section
           id={section.id}
@@ -71,55 +71,55 @@ export class ViewrBody extends Module {
         ></sc-page-viewer-section>);
       this.pnlSections.append(pageSection);
       await pageSection.setData(section);
-      const anchorName = section.anchorName;
-      if (anchorName) {
-        anchors.push({
-          name: anchorName,
-          sectionElm: pageSection
-        });
-      }
+      // const anchorName = section.anchorName;
+      // if (anchorName) {
+      //   anchors.push({
+      //     name: anchorName,
+      //     sectionElm: pageSection
+      //   });
+      // }
     }
-    this.updateAnchors(anchors);
+    // this.updateAnchors(anchors);
   }
 
-  private updateAnchors(anchors: { name: string, sectionElm: any }[]) {
-    this.archorElm.clearInnerHTML();
-    if (anchors && anchors.length) {
-      for (let i = 0; i < anchors.length; i++) {
-        const anchor = anchors[i];
-        if (i > 0) {
-          this.archorElm.appendChild(<i-panel width={1} height={16} display="block" background={{ color: Theme.divider }} />);
-        }
-        this.archorElm.appendChild(<i-label caption={anchor.name} class="pointer anchor-item" onClick={() => this.onScrollToRow(anchor.sectionElm)} />);
-      }
-      this.archorElm.visible = true;
-      this.archorElm.display = 'flex';
-      this.pnlSections.padding.top = (this.archorElm.clientHeight > 45 ? this.archorElm.clientHeight : 45);
-      window.addEventListener("scroll", this.onScrollListener);
-    } else {
-      this.pnlSections.padding.top = 0;
-      this.archorElm.visible = false;
-      window.removeEventListener("scroll", this.onScrollListener);
-    }
-  }
+  // private updateAnchors(anchors: { name: string, sectionElm: any }[]) {
+  //   this.archorElm.clearInnerHTML();
+  //   if (anchors && anchors.length) {
+  //     for (let i = 0; i < anchors.length; i++) {
+  //       const anchor = anchors[i];
+  //       if (i > 0) {
+  //         this.archorElm.appendChild(<i-panel width={1} height={16} display="block" background={{ color: Theme.divider }} />);
+  //       }
+  //       this.archorElm.appendChild(<i-label caption={anchor.name} class="pointer anchor-item" onClick={() => this.onScrollToRow(anchor.sectionElm)} />);
+  //     }
+  //     this.archorElm.visible = true;
+  //     this.archorElm.display = 'flex';
+  //     this.pnlSections.padding.top = (this.archorElm.clientHeight > 45 ? this.archorElm.clientHeight : 45);
+  //     window.addEventListener("scroll", this.onScrollListener);
+  //   } else {
+  //     this.pnlSections.padding.top = 0;
+  //     this.archorElm.visible = false;
+  //     window.removeEventListener("scroll", this.onScrollListener);
+  //   }
+  // }
 
-  private onScrollListener = () => {
-    const currentScroll = window.pageYOffset;
-    const mainHeader = document.querySelector('main-header');
-    const hHeight = mainHeader?.clientHeight || 0;
-    if (currentScroll > hHeight) {
-      this.archorElm.top = 0;
-    } else {
-      this.archorElm.top = hHeight - currentScroll;
-    }
-  }
+  // private onScrollListener = () => {
+  //   const currentScroll = window.pageYOffset;
+  //   const mainHeader = document.querySelector('main-header');
+  //   const hHeight = mainHeader?.clientHeight || 0;
+  //   if (currentScroll > hHeight) {
+  //     this.archorElm.top = 0;
+  //   } else {
+  //     this.archorElm.top = hHeight - currentScroll;
+  //   }
+  // }
 
-  private onScrollToRow(rowElm: any) {
-    if (rowElm) {
-      const _offsetTop = rowElm.getBoundingClientRect().top + window.pageYOffset - this.archorElm.offsetHeight;
-      window.scrollTo({ top: _offsetTop, behavior: 'smooth' });
-    }
-  }
+  // private onScrollToRow(rowElm: any) {
+  //   if (rowElm) {
+  //     const _offsetTop = rowElm.getBoundingClientRect().top + window.pageYOffset - this.archorElm.offsetHeight;
+  //     window.scrollTo({ top: _offsetTop, behavior: 'smooth' });
+  //   }
+  // }
 
   clearSections() {
     this.pnlSections.clearInnerHTML();
@@ -136,7 +136,7 @@ export class ViewrBody extends Module {
   render() {
     return (
       <i-panel class={styleClass} height={'100%'}>
-        <i-hstack id={'archorElm'} display="flex" background={{ color: Theme.background.default }} zIndex={9999} gap={10} verticalAlignment="center" horizontalAlignment="center" wrap="wrap" position="fixed" width="100%" padding={{ left: 50, right: 50, top: 10, bottom: 10 }}></i-hstack>
+        {/* <i-hstack id={'archorElm'} display="flex" background={{ color: Theme.background.default }} zIndex={9999} gap={10} verticalAlignment="center" horizontalAlignment="center" wrap="wrap" position="fixed" width="100%" padding={{ left: 50, right: 50, top: 10, bottom: 10 }}></i-hstack> */}
         <i-vstack id={'pnlSections'} alignItems="center" padding={{}}></i-vstack>
         <sc-page-viewer-paging id="viewerPaging" visible={false} onPrevPage={this.onUpdatePage.bind(this)} onNextPage={this.onUpdatePage.bind(this)}></sc-page-viewer-paging>
       </i-panel>

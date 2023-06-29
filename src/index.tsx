@@ -41,20 +41,17 @@ export default class Viewer extends Module {
     this.setTheme(this.theme);
   }
 
-  async onShow(options: any) {
-    this.pnlLoading.visible = true;
-    this.gridMain.visible = false;
-    if (options?.theme)
+  async onShow(options: any) { 
+    if (options?.theme) {
       this.setTheme(options.theme);
+    }
     if (!this.isLoaded) {
       this.gridMain.templateColumns = ["1fr"];
       setRootDir(options?.rootDir);
       await this.setData(options?._data??options);
     } else if (options?._data??options) {
       await this.renderPage(options?._data??options);
-    }
-    this.pnlLoading.visible = false;
-    this.gridMain.visible = true;
+    }    
   }
 
   async setData(data: IPageData) {

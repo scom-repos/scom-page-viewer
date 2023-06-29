@@ -80,18 +80,6 @@ export class ViewrPageElement extends Module {
     }
   }
 
-  // async getEmbedElement(rootDir: string, path: string) {
-  //   let modulePath = rootDir ? `${rootDir}/libs/@scom/${path}` : `libs/@scom/${path}`;
-  //   application.currentModuleDir = modulePath;
-  //   const result = await application.loadScript(`${modulePath}/index.js`);
-  //   application.currentModuleDir = '';
-  //   if (!result) return null;
-  //   const elementName = `i-${path.split('/').pop()}`;
-  //   const element = document.createElement(elementName);
-  //   element.setAttribute('lazyLoad', 'true');
-  //   return element;
-  // }
-
   render() {
     return (
       <i-panel id="pnlElement"></i-panel>

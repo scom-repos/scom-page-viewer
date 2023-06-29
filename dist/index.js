@@ -154,20 +154,6 @@ define("@scom/scom-page-viewer/body.tsx", ["require", "exports", "@ijstech/compo
     exports.ViewrBody = void 0;
     const Theme = components_4.Styles.Theme.ThemeVars;
     let ViewrBody = class ViewrBody extends components_4.Module {
-        constructor() {
-            super(...arguments);
-            this.onScrollListener = () => {
-                const currentScroll = window.pageYOffset;
-                const mainHeader = document.querySelector('main-header');
-                const hHeight = (mainHeader === null || mainHeader === void 0 ? void 0 : mainHeader.clientHeight) || 0;
-                if (currentScroll > hHeight) {
-                    this.archorElm.top = 0;
-                }
-                else {
-                    this.archorElm.top = hHeight - currentScroll;
-                }
-            };
-        }
         generateUUID() {
             return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
                 var r = Math.random() * 16 | 0, v = c == 'x' ? r : (r & 0x3 | 0x8);
@@ -191,50 +177,59 @@ define("@scom/scom-page-viewer/body.tsx", ["require", "exports", "@ijstech/compo
                     }
                 ];
             }
-            let anchors = [];
+            // let anchors: { name: string, sectionElm: any }[] = [];
             for (const section of this.sections) {
                 const { image = '', backgroundColor = '', margin, maxWidth } = (section === null || section === void 0 ? void 0 : section.config) || {};
-                const { x = 'auto', y = 8 } = margin || {};
+                const { x = 'auto', y = 0 } = margin || {};
                 const pageSection = (this.$render("sc-page-viewer-section", { id: section.id, display: "block", background: { image, color: backgroundColor }, maxWidth: maxWidth || '100%', margin: { top: y, bottom: y, left: x, right: x } }));
                 this.pnlSections.append(pageSection);
                 await pageSection.setData(section);
-                const anchorName = section.anchorName;
-                if (anchorName) {
-                    anchors.push({
-                        name: anchorName,
-                        sectionElm: pageSection
-                    });
-                }
+                // const anchorName = section.anchorName;
+                // if (anchorName) {
+                //   anchors.push({
+                //     name: anchorName,
+                //     sectionElm: pageSection
+                //   });
+                // }
             }
-            this.updateAnchors(anchors);
+            // this.updateAnchors(anchors);
         }
-        updateAnchors(anchors) {
-            this.archorElm.clearInnerHTML();
-            if (anchors && anchors.length) {
-                for (let i = 0; i < anchors.length; i++) {
-                    const anchor = anchors[i];
-                    if (i > 0) {
-                        this.archorElm.appendChild(this.$render("i-panel", { width: 1, height: 16, display: "block", background: { color: Theme.divider } }));
-                    }
-                    this.archorElm.appendChild(this.$render("i-label", { caption: anchor.name, class: "pointer anchor-item", onClick: () => this.onScrollToRow(anchor.sectionElm) }));
-                }
-                this.archorElm.visible = true;
-                this.archorElm.display = 'flex';
-                this.pnlSections.padding.top = (this.archorElm.clientHeight > 45 ? this.archorElm.clientHeight : 45);
-                window.addEventListener("scroll", this.onScrollListener);
-            }
-            else {
-                this.pnlSections.padding.top = 0;
-                this.archorElm.visible = false;
-                window.removeEventListener("scroll", this.onScrollListener);
-            }
-        }
-        onScrollToRow(rowElm) {
-            if (rowElm) {
-                const _offsetTop = rowElm.getBoundingClientRect().top + window.pageYOffset - this.archorElm.offsetHeight;
-                window.scrollTo({ top: _offsetTop, behavior: 'smooth' });
-            }
-        }
+        // private updateAnchors(anchors: { name: string, sectionElm: any }[]) {
+        //   this.archorElm.clearInnerHTML();
+        //   if (anchors && anchors.length) {
+        //     for (let i = 0; i < anchors.length; i++) {
+        //       const anchor = anchors[i];
+        //       if (i > 0) {
+        //         this.archorElm.appendChild(<i-panel width={1} height={16} display="block" background={{ color: Theme.divider }} />);
+        //       }
+        //       this.archorElm.appendChild(<i-label caption={anchor.name} class="pointer anchor-item" onClick={() => this.onScrollToRow(anchor.sectionElm)} />);
+        //     }
+        //     this.archorElm.visible = true;
+        //     this.archorElm.display = 'flex';
+        //     this.pnlSections.padding.top = (this.archorElm.clientHeight > 45 ? this.archorElm.clientHeight : 45);
+        //     window.addEventListener("scroll", this.onScrollListener);
+        //   } else {
+        //     this.pnlSections.padding.top = 0;
+        //     this.archorElm.visible = false;
+        //     window.removeEventListener("scroll", this.onScrollListener);
+        //   }
+        // }
+        // private onScrollListener = () => {
+        //   const currentScroll = window.pageYOffset;
+        //   const mainHeader = document.querySelector('main-header');
+        //   const hHeight = mainHeader?.clientHeight || 0;
+        //   if (currentScroll > hHeight) {
+        //     this.archorElm.top = 0;
+        //   } else {
+        //     this.archorElm.top = hHeight - currentScroll;
+        //   }
+        // }
+        // private onScrollToRow(rowElm: any) {
+        //   if (rowElm) {
+        //     const _offsetTop = rowElm.getBoundingClientRect().top + window.pageYOffset - this.archorElm.offsetHeight;
+        //     window.scrollTo({ top: _offsetTop, behavior: 'smooth' });
+        //   }
+        // }
         clearSections() {
             this.pnlSections.clearInnerHTML();
         }
@@ -246,7 +241,6 @@ define("@scom/scom-page-viewer/body.tsx", ["require", "exports", "@ijstech/compo
         }
         render() {
             return (this.$render("i-panel", { class: body_css_1.default, height: '100%' },
-                this.$render("i-hstack", { id: 'archorElm', display: "flex", background: { color: Theme.background.default }, zIndex: 9999, gap: 10, verticalAlignment: "center", horizontalAlignment: "center", wrap: "wrap", position: "fixed", width: "100%", padding: { left: 50, right: 50, top: 10, bottom: 10 } }),
                 this.$render("i-vstack", { id: 'pnlSections', alignItems: "center", padding: {} }),
                 this.$render("sc-page-viewer-paging", { id: "viewerPaging", visible: false, onPrevPage: this.onUpdatePage.bind(this), onNextPage: this.onUpdatePage.bind(this) })));
         }
@@ -413,17 +407,6 @@ define("@scom/scom-page-viewer/pageElement.tsx", ["require", "exports", "@ijstec
                 }
             }
         }
-        // async getEmbedElement(rootDir: string, path: string) {
-        //   let modulePath = rootDir ? `${rootDir}/libs/@scom/${path}` : `libs/@scom/${path}`;
-        //   application.currentModuleDir = modulePath;
-        //   const result = await application.loadScript(`${modulePath}/index.js`);
-        //   application.currentModuleDir = '';
-        //   if (!result) return null;
-        //   const elementName = `i-${path.split('/').pop()}`;
-        //   const element = document.createElement(elementName);
-        //   element.setAttribute('lazyLoad', 'true');
-        //   return element;
-        // }
         render() {
             return (this.$render("i-panel", { id: "pnlElement" }));
         }
@@ -711,10 +694,9 @@ define("@scom/scom-page-viewer", ["require", "exports", "@ijstech/components", "
         }
         async onShow(options) {
             var _a, _b, _c;
-            this.pnlLoading.visible = true;
-            this.gridMain.visible = false;
-            if (options === null || options === void 0 ? void 0 : options.theme)
+            if (options === null || options === void 0 ? void 0 : options.theme) {
                 this.setTheme(options.theme);
+            }
             if (!this.isLoaded) {
                 this.gridMain.templateColumns = ["1fr"];
                 (0, store_2.setRootDir)(options === null || options === void 0 ? void 0 : options.rootDir);
@@ -723,8 +705,6 @@ define("@scom/scom-page-viewer", ["require", "exports", "@ijstech/components", "
             else if ((_b = options === null || options === void 0 ? void 0 : options._data) !== null && _b !== void 0 ? _b : options) {
                 await this.renderPage((_c = options === null || options === void 0 ? void 0 : options._data) !== null && _c !== void 0 ? _c : options);
             }
-            this.pnlLoading.visible = false;
-            this.gridMain.visible = true;
         }
         async setData(data) {
             this._data = data;
