@@ -391,7 +391,8 @@ define("@scom/scom-page-viewer/pageElement.tsx", ["require", "exports", "@ijstec
             this.pnlElement.id = id;
             // const rootDir = getRootDir();
             if (type === 'primitive') {
-                let module = await components_7.application.createElement(this.data.module.path, true);
+                // let module: any = await this.getEmbedElement(rootDir, this.data.module.path);
+                let module = await components_7.application.createElement(this.data.module.path);
                 if (module) {
                     this.pnlElement.append(module);
                     this.module = module;

@@ -64,7 +64,8 @@ export class ViewrPageElement extends Module {
     this.pnlElement.id = id;
     // const rootDir = getRootDir();
     if (type === 'primitive') {
-      let module:any = await application.createElement(this.data.module.path, true);
+      // let module: any = await this.getEmbedElement(rootDir, this.data.module.path);
+      let module:any = await application.createElement(this.data.module.path);
       if (module) {
         this.pnlElement.append(module);
         this.module = module;
