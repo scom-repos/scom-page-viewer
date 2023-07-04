@@ -60,8 +60,8 @@ export class ViewrPageElement extends Module {
     if (!this.pnlElement) return;
     this.pnlElement.clearInnerHTML();
     this.data = pageElement;
-    const { id, type, elements } = this.data;
-    this.pnlElement.id = id;
+    const { type, elements } = this.data;
+    // this.pnlElement.id = id;
     // const rootDir = getRootDir();
     if (type === 'primitive') {
       // let module: any = await this.getEmbedElement(rootDir, this.data.module.path);
@@ -69,11 +69,14 @@ export class ViewrPageElement extends Module {
       if (module) {
         this.pnlElement.append(module);
         this.module = module;
+        module.style.display = 'block';
+        module.maxWidth = '100%';
+        module.maxHeight = '100%';
         this.observer.observe(module);
       }
     } else {
       for (const element of elements) {
-        const pnlElm = (<sc-page-viewer-page-element></sc-page-viewer-page-element>);
+        const pnlElm = (<sc-page-viewer-page-element id={element.id} display="block"></sc-page-viewer-page-element>);
         this.pnlElement.append(pnlElm);
         await pnlElm.setData(element);
       }

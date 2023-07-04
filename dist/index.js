@@ -181,7 +181,14 @@ define("@scom/scom-page-viewer/body.tsx", ["require", "exports", "@ijstech/compo
             for (const section of this.sections) {
                 const { image = '', backgroundColor = '', margin, maxWidth } = (section === null || section === void 0 ? void 0 : section.config) || {};
                 const { x = 'auto', y = 0 } = margin || {};
-                const pageSection = (this.$render("sc-page-viewer-section", { id: section.id, display: "block", background: { image, color: backgroundColor }, maxWidth: maxWidth || '100%', width: "100%", margin: { top: y, bottom: y, left: x, right: x } }));
+                const pageSection = (this.$render("sc-page-viewer-section", { id: section.id, display: "block", background: { image, color: backgroundColor }, maxWidth: maxWidth || '100%', width: "100%", margin: { top: y, bottom: y, left: x, right: x }, padding: { left: '3rem', right: '3rem' }, mediaQueries: [
+                        {
+                            maxWidth: '767px',
+                            properties: {
+                                padding: { left: '1rem', right: '1rem' }
+                            }
+                        }
+                    ] }));
                 this.pnlSections.append(pageSection);
                 await pageSection.setData(section);
                 // const anchorName = section.anchorName;
@@ -292,7 +299,7 @@ define("@scom/scom-page-viewer/footer.tsx", ["require", "exports", "@ijstech/com
 define("@scom/scom-page-viewer/store.ts", ["require", "exports"], function (require, exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
-    exports.getTheme = exports.setTheme = exports.getRootDir = exports.setRootDir = exports.state = void 0;
+    exports.maxContainerWidths = exports.getDefaultDisplaySettings = exports.getTheme = exports.setTheme = exports.getRootDir = exports.setRootDir = exports.state = void 0;
     exports.state = {
         rootDir: '',
         theme: 'light'
@@ -314,6 +321,22 @@ define("@scom/scom-page-viewer/store.ts", ["require", "exports"], function (requ
         return (_a = exports.state.theme) !== null && _a !== void 0 ? _a : 'light';
     };
     exports.getTheme = getTheme;
+    const getDefaultDisplaySettings = () => {
+        return [{
+                maxWidth: 767,
+                properties: {
+                    column: 1,
+                    columnSpan: 12
+                }
+            }];
+    };
+    exports.getDefaultDisplaySettings = getDefaultDisplaySettings;
+    exports.maxContainerWidths = {
+        sm: 540,
+        md: 720,
+        lg: 960,
+        xl: 1140
+    };
 });
 define("@scom/scom-page-viewer/index.css.ts", ["require", "exports", "@ijstech/components"], function (require, exports, components_6) {
     "use strict";
@@ -387,8 +410,8 @@ define("@scom/scom-page-viewer/pageElement.tsx", ["require", "exports", "@ijstec
                 return;
             this.pnlElement.clearInnerHTML();
             this.data = pageElement;
-            const { id, type, elements } = this.data;
-            this.pnlElement.id = id;
+            const { type, elements } = this.data;
+            // this.pnlElement.id = id;
             // const rootDir = getRootDir();
             if (type === 'primitive') {
                 // let module: any = await this.getEmbedElement(rootDir, this.data.module.path);
@@ -396,12 +419,15 @@ define("@scom/scom-page-viewer/pageElement.tsx", ["require", "exports", "@ijstec
                 if (module) {
                     this.pnlElement.append(module);
                     this.module = module;
+                    module.style.display = 'block';
+                    module.maxWidth = '100%';
+                    module.maxHeight = '100%';
                     this.observer.observe(module);
                 }
             }
             else {
                 for (const element of elements) {
-                    const pnlElm = (this.$render("sc-page-viewer-page-element", null));
+                    const pnlElm = (this.$render("sc-page-viewer-page-element", { id: element.id, display: "block" }));
                     this.pnlElement.append(pnlElm);
                     await pnlElm.setData(element);
                 }
@@ -452,7 +478,7 @@ define("@scom/scom-page-viewer/utils.ts", ["require", "exports"], function (requ
     const GAP_WIDTH = 15;
     exports.GAP_WIDTH = GAP_WIDTH;
 });
-define("@scom/scom-page-viewer/section.tsx", ["require", "exports", "@ijstech/components", "@scom/scom-page-viewer/utils.ts"], function (require, exports, components_8, utils_1) {
+define("@scom/scom-page-viewer/section.tsx", ["require", "exports", "@ijstech/components", "@scom/scom-page-viewer/utils.ts", "@scom/scom-page-viewer/store.ts"], function (require, exports, components_8, utils_1, store_2) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.ViewrSection = void 0;
@@ -480,13 +506,12 @@ define("@scom/scom-page-viewer/section.tsx", ["require", "exports", "@ijstech/co
             }
         }
         async setData(sectionData) {
-            this.width = '100%';
-            this.padding = { left: '3rem', right: '3rem' };
             const { elements = [], config = {} } = sectionData;
-            this.sectionData = Object.assign({}, sectionData);
+            this.sectionData = JSON.parse(JSON.stringify(sectionData));
             for (let i = 0; i < elements.length; i++) {
                 const element = elements[i];
-                const pageElement = (this.$render("sc-page-viewer-page-element", { display: "block" }));
+                const pageElement = (this.$render("sc-page-viewer-page-element", { display: "block", class: "is-parent" }));
+                pageElement.id = element.id;
                 this.updateElementConfig(pageElement, element, i);
                 this.pnlSection.append(pageElement);
                 await pageElement.setData(element);
@@ -494,49 +519,49 @@ define("@scom/scom-page-viewer/section.tsx", ["require", "exports", "@ijstech/co
             this.updateAlign(config);
         }
         updateElementConfig(el, data, index) {
-            const { column, columnSpan, displaySettings } = data;
+            const { column, columnSpan, displaySettings = (0, store_2.getDefaultDisplaySettings)() } = data;
             el.grid = { column, columnSpan };
             el.style.gridRow = '1';
-            if (displaySettings) {
+            if (displaySettings === null || displaySettings === void 0 ? void 0 : displaySettings.length) {
                 let mediaQueries = [];
-                for (let key in displaySettings) {
-                    let minWidth = 0;
-                    let maxWidth = 0;
-                    const grid = Object.assign({}, displaySettings[key]);
+                for (let displaySetting of displaySettings) {
+                    const { minWidth = 0, maxWidth = 0, properties: grid } = displaySetting;
                     if (!grid.row && grid.column && grid.columnSpan && grid.column + grid.columnSpan === utils_1.DEFAULT_MAX_COLUMN + 1) {
                         grid.row = 1 + index;
                     }
-                    const properties = { grid, width: '100%' };
-                    if (/^\>/.test(key)) {
-                        minWidth = key.replace('>', '').trim();
-                        mediaQueries.push({
-                            minWidth: !isNaN(+minWidth) ? `${+minWidth}px` : minWidth,
-                            properties
-                        });
-                    }
-                    else if (/^\</.test(key)) {
-                        maxWidth = key.replace('<', '').trim();
-                        mediaQueries.push({
-                            maxWidth: !isNaN(+maxWidth) ? `${+maxWidth}px` : maxWidth,
-                            properties
-                        });
-                    }
-                    else if (/^\d+\-\d+$/.test(key)) {
-                        const data = key.split('-');
-                        minWidth = data[0].trim();
-                        maxWidth = data[1].trim();
-                        mediaQueries.push({
-                            minWidth: !isNaN(+minWidth) ? `${+minWidth}px` : minWidth,
-                            maxWidth: !isNaN(+maxWidth) ? `${+maxWidth}px` : maxWidth,
-                            properties
-                        });
-                    }
+                    const mediaQuery = { properties: { grid, width: '100%' } };
+                    if (minWidth)
+                        mediaQuery.minWidth = !isNaN(+minWidth) ? `${+minWidth}px` : minWidth;
+                    if (maxWidth)
+                        mediaQuery.maxWidth = !isNaN(+maxWidth) ? `${+maxWidth}px` : maxWidth;
+                    mediaQueries.push(mediaQuery);
+                    // if (/^\>/.test(key)) {
+                    //   minWidth = key.replace('>', '').trim();
+                    //   mediaQueries.push({
+                    //     minWidth: !isNaN(+minWidth) ? `${+minWidth}px` : minWidth,
+                    //     properties
+                    //   })
+                    // } else if (/^\</.test(key)) {
+                    //   maxWidth = key.replace('<', '').trim();
+                    //   mediaQueries.push({
+                    //     maxWidth: !isNaN(+maxWidth) ? `${+maxWidth}px` : maxWidth,
+                    //     properties
+                    //   })
+                    // } else if (/^\d+\-\d+$/.test(key)) {
+                    //   const data = key.split('-');
+                    //   minWidth = data[0].trim();
+                    //   maxWidth = data[1].trim();
+                    //   mediaQueries.push({
+                    //     minWidth: !isNaN(+minWidth) ? `${+minWidth}px` : minWidth,
+                    //     maxWidth: !isNaN(+maxWidth) ? `${+maxWidth}px` : maxWidth,
+                    //     properties
+                    //   })
+                    // }
                 }
                 el.mediaQueries = mediaQueries;
             }
         }
         updateAlign(config) {
-            var _a;
             const { align = 'left' } = config;
             let alignValue = 'start';
             switch (align) {
@@ -551,22 +576,34 @@ define("@scom/scom-page-viewer/section.tsx", ["require", "exports", "@ijstech/co
                 this.pnlSection.grid = { horizontalAlignment: alignValue };
                 this.pnlSection.style.maxWidth = '100%';
                 this.pnlSection.style.gridTemplateColumns = 'min-content';
-                const sections = Array.from(this.pnlSection.querySelectorAll('sc-page-viewer-page-element'));
+                const sections = Array.from(this.pnlSection.querySelectorAll('.is-parent'));
                 const sectionWidth = this.pnlSection.offsetWidth;
                 const sectionDatas = this.sectionData.elements || [];
                 const gridColWidth = (sectionWidth - utils_1.GAP_WIDTH * (utils_1.DEFAULT_MAX_COLUMN - 1)) / utils_1.DEFAULT_MAX_COLUMN;
+                const unitWidth = Number((1 / utils_1.DEFAULT_MAX_COLUMN).toFixed(3)) * 100;
                 for (let i = 0; i < sections.length; i++) {
                     const section = sections[i];
-                    const columnSpan = ((_a = sectionDatas[i]) === null || _a === void 0 ? void 0 : _a.columnSpan) || 1;
+                    if (sectionWidth <= store_2.maxContainerWidths.sm) {
+                        section.style.width = '100%';
+                        continue;
+                    }
+                    const sectionData = sectionDatas.find(sec => section.id === sec.id);
+                    const columnSpan = (sectionData === null || sectionData === void 0 ? void 0 : sectionData.columnSpan) || 1;
                     const widthNumber = columnSpan * gridColWidth + ((columnSpan - 1) * utils_1.GAP_WIDTH);
-                    section.style.width = widthNumber ? `${widthNumber}px` : '100%';
-                    section.style.gridArea = 'unset';
+                    section.style.width = widthNumber ? `${widthNumber}px` : `${columnSpan * unitWidth}%`;
                     section.style.maxWidth = '100%';
                 }
             }
         }
         render() {
-            return (this.$render("i-grid-layout", { id: "pnlSection", width: "100%", height: "100%", maxWidth: "100%", maxHeight: "100%", position: "relative", overflow: 'hidden', gap: { column: 15, row: 15 }, templateColumns: [`repeat(12, 1fr)`], padding: { top: '1.5rem', bottom: '1.5rem' } }));
+            return (this.$render("i-grid-layout", { id: "pnlSection", width: "100%", height: "100%", maxWidth: "100%", maxHeight: "100%", position: "relative", overflow: 'hidden', gap: { column: 15, row: 15 }, templateColumns: [`repeat(${utils_1.DEFAULT_MAX_COLUMN}, minmax(${utils_1.GAP_WIDTH}px, 1fr))`], padding: { top: '1.5rem', bottom: '1.5rem' }, mediaQueries: [
+                    {
+                        maxWidth: '767px',
+                        properties: {
+                            templateColumns: [`repeat(${utils_1.DEFAULT_MAX_COLUMN}, minmax(${utils_1.GAP_WIDTH}px, 1fr))`]
+                        }
+                    }
+                ] }));
         }
     };
     ViewrSection = __decorate([
@@ -669,7 +706,7 @@ define("@scom/scom-page-viewer/sidebar.tsx", ["require", "exports", "@ijstech/co
     ], ViewerSidebar);
     exports.ViewerSidebar = ViewerSidebar;
 });
-define("@scom/scom-page-viewer", ["require", "exports", "@ijstech/components", "@scom/scom-page-viewer/store.ts", "@scom/scom-page-viewer/index.css.ts", "@scom/scom-page-viewer/body.tsx", "@scom/scom-page-viewer/pageElement.tsx", "@scom/scom-page-viewer/section.tsx", "@scom/scom-page-viewer/sidebar.tsx", "@scom/scom-page-viewer/paging.tsx"], function (require, exports, components_11, store_2, index_css_1, body_1, pageElement_1, section_1, sidebar_1, paging_1) {
+define("@scom/scom-page-viewer", ["require", "exports", "@ijstech/components", "@scom/scom-page-viewer/store.ts", "@scom/scom-page-viewer/index.css.ts", "@scom/scom-page-viewer/body.tsx", "@scom/scom-page-viewer/pageElement.tsx", "@scom/scom-page-viewer/section.tsx", "@scom/scom-page-viewer/sidebar.tsx", "@scom/scom-page-viewer/paging.tsx"], function (require, exports, components_11, store_3, index_css_1, body_1, pageElement_1, section_1, sidebar_1, paging_1) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.ViewerPaging = exports.ViewerSidebar = exports.ViewrSection = exports.ViewrPageElement = exports.ViewrBody = void 0;
@@ -701,7 +738,7 @@ define("@scom/scom-page-viewer", ["require", "exports", "@ijstech/components", "
             }
             if (!this.isLoaded) {
                 this.gridMain.templateColumns = ["1fr"];
-                (0, store_2.setRootDir)(options === null || options === void 0 ? void 0 : options.rootDir);
+                (0, store_3.setRootDir)(options === null || options === void 0 ? void 0 : options.rootDir);
                 await this.setData((_a = options === null || options === void 0 ? void 0 : options._data) !== null && _a !== void 0 ? _a : options);
             }
             else if ((_b = options === null || options === void 0 ? void 0 : options._data) !== null && _b !== void 0 ? _b : options) {
@@ -714,7 +751,7 @@ define("@scom/scom-page-viewer", ["require", "exports", "@ijstech/components", "
             this.isLoaded = true;
         }
         setRootDir(value) {
-            (0, store_2.setRootDir)(value);
+            (0, store_3.setRootDir)(value);
         }
         setTheme(value) {
             this.style.setProperty('--viewer-theme', value);
