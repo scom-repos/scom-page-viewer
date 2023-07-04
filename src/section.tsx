@@ -1,6 +1,7 @@
 import { Control, ControlElement, customElements, GridLayout, Module } from "@ijstech/components";
-import { IPageSectionConfig, IPageElement, IPageSection } from "./interface";
+import { IPageSectionConfig, IPageElement, IPageSection, IDisplaySettings } from "./interface";
 import { DEFAULT_MAX_COLUMN, GAP_WIDTH } from "./utils";
+import { getDefaultDisplaySettings } from "./store";
 
 declare global {
   namespace JSX {
@@ -54,8 +55,6 @@ export class ViewrSection extends Module {
   }
 
   async setData(sectionData: IPageSection) {
-    this.width = '100%';
-    this.padding = {left: '3rem', right: '3rem'};
     const { elements = [], config = {} } = sectionData;
     this.sectionData = {...sectionData};
     for (let i = 0; i < elements.length; i++) {
@@ -73,41 +72,43 @@ export class ViewrSection extends Module {
   }
 
   private updateElementConfig(el: Control, data: IPageElement, index: number) {
-    const { column, columnSpan, displaySettings } = data;
+    const { column, columnSpan, displaySettings = getDefaultDisplaySettings() } = data;
     el.grid = { column, columnSpan };
     el.style.gridRow = '1';
-    if (displaySettings) {
+    if (displaySettings?.length) {
       let mediaQueries = [];
-      for (let key in displaySettings) {
-        let minWidth: string | number = 0;
-        let maxWidth: string | number = 0;
-        const grid = { ...displaySettings[key] };
+      for (let displaySetting of displaySettings) {
+        const { minWidth = 0, maxWidth = 0, properties: grid } = displaySetting as IDisplaySettings;
         if (!grid.row && grid.column && grid.columnSpan && grid.column + grid.columnSpan === DEFAULT_MAX_COLUMN + 1) {
           grid.row = 1 + index;
         }
-        const properties = { grid, width: '100%' };
-        if (/^\>/.test(key)) {
-          minWidth = key.replace('>', '').trim();
-          mediaQueries.push({
-            minWidth: !isNaN(+minWidth) ? `${+minWidth}px` : minWidth,
-            properties
-          })
-        } else if (/^\</.test(key)) {
-          maxWidth = key.replace('<', '').trim();
-          mediaQueries.push({
-            maxWidth: !isNaN(+maxWidth) ? `${+maxWidth}px` : maxWidth,
-            properties
-          })
-        } else if (/^\d+\-\d+$/.test(key)) {
-          const data = key.split('-');
-          minWidth = data[0].trim();
-          maxWidth = data[1].trim();
-          mediaQueries.push({
-            minWidth: !isNaN(+minWidth) ? `${+minWidth}px` : minWidth,
-            maxWidth: !isNaN(+maxWidth) ? `${+maxWidth}px` : maxWidth,
-            properties
-          })
-        }
+        const mediaQuery: any = {properties: { grid }};
+        if (minWidth) mediaQuery.minWidth = !isNaN(+minWidth) ? `${+minWidth}px` : minWidth;
+        if (maxWidth) mediaQuery.maxWidth = !isNaN(+maxWidth) ? `${+maxWidth}px` : maxWidth;
+        mediaQueries.push(mediaQuery);
+
+        // if (/^\>/.test(key)) {
+        //   minWidth = key.replace('>', '').trim();
+        //   mediaQueries.push({
+        //     minWidth: !isNaN(+minWidth) ? `${+minWidth}px` : minWidth,
+        //     properties
+        //   })
+        // } else if (/^\</.test(key)) {
+        //   maxWidth = key.replace('<', '').trim();
+        //   mediaQueries.push({
+        //     maxWidth: !isNaN(+maxWidth) ? `${+maxWidth}px` : maxWidth,
+        //     properties
+        //   })
+        // } else if (/^\d+\-\d+$/.test(key)) {
+        //   const data = key.split('-');
+        //   minWidth = data[0].trim();
+        //   maxWidth = data[1].trim();
+        //   mediaQueries.push({
+        //     minWidth: !isNaN(+minWidth) ? `${+minWidth}px` : minWidth,
+        //     maxWidth: !isNaN(+maxWidth) ? `${+maxWidth}px` : maxWidth,
+        //     properties
+        //   })
+        // }
       }
       el.mediaQueries = mediaQueries;
     }
@@ -156,6 +157,14 @@ export class ViewrSection extends Module {
         gap={{column: 15, row: 15}}
         templateColumns={[`repeat(12, 1fr)`]}
         padding={{top: '1.5rem', bottom: '1.5rem'}}
+        mediaQueries={[
+          {
+            maxWidth: '767px',
+            properties: {
+              templateColumns: [`repeat(12, 1fr)`]
+            }
+          }
+        ]}
       ></i-grid-layout>
     )
   }

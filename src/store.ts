@@ -20,3 +20,13 @@ export const setTheme = (value: ThemeType) => {
 export const getTheme = () => {
   return state.theme ?? 'light';
 }
+
+export const getDefaultDisplaySettings = () => {
+  return [{
+    maxWidth: 767,
+    properties: {
+      column: 1,
+      columnSpan: 12
+    }
+  }]
+}

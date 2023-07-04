@@ -52,9 +52,12 @@ declare module "@scom/scom-page-viewer/interface.ts" {
         tag?: any;
         module?: IPageBlockData;
         elements?: IPageElement[];
-        displaySettings?: {
-            [key: string]: IGrid;
-        };
+        displaySettings?: IDisplaySettings[];
+    }
+    export interface IDisplaySettings {
+        minWidth?: number | string;
+        maxWidth?: number | string;
+        properties: IGrid;
     }
     interface IGrid {
         column?: number;
@@ -221,6 +224,13 @@ declare module "@scom/scom-page-viewer/store.ts" {
     export const getRootDir: () => string;
     export const setTheme: (value: ThemeType) => void;
     export const getTheme: () => string;
+    export const getDefaultDisplaySettings: () => {
+        maxWidth: number;
+        properties: {
+            column: number;
+            columnSpan: number;
+        };
+    }[];
 }
 /// <amd-module name="@scom/scom-page-viewer/index.css.ts" />
 declare module "@scom/scom-page-viewer/index.css.ts" {

@@ -69,6 +69,15 @@ export class ViewrBody extends Module {
           maxWidth={maxWidth || '100%'}
           width="100%"
           margin={{top: y, bottom: y, left: x, right: x}}
+          padding={{left: '3rem', right: '3rem'}}
+          mediaQueries={[
+            {
+              maxWidth: '767px',
+              properties: {
+                padding: {left: '1rem', right: '1rem'}
+              }
+            }
+          ]}
         ></sc-page-viewer-section>);
       this.pnlSections.append(pageSection);
       await pageSection.setData(section);
