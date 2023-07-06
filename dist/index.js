@@ -587,7 +587,7 @@ define("@scom/scom-page-viewer/section.tsx", ["require", "exports", "@ijstech/co
                         section.style.width = '100%';
                         continue;
                     }
-                    const sectionData = sectionDatas.find(sec => section.id === sec.id);
+                    const sectionData = sectionDatas[i]; // sectionDatas.find(sec => section.id === sec.id);
                     const columnSpan = (sectionData === null || sectionData === void 0 ? void 0 : sectionData.columnSpan) || 1;
                     const widthNumber = columnSpan * gridColWidth + ((columnSpan - 1) * utils_1.GAP_WIDTH);
                     section.style.width = widthNumber ? `${widthNumber}px` : `${columnSpan * unitWidth}%`;

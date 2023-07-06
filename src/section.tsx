@@ -142,7 +142,7 @@ export class ViewrSection extends Module {
           section.style.width = '100%';
           continue;
         }
-        const sectionData = sectionDatas.find(sec => section.id === sec.id);
+        const sectionData = sectionDatas[i]; // sectionDatas.find(sec => section.id === sec.id);
         const columnSpan = sectionData?.columnSpan || 1;
         const widthNumber = columnSpan * gridColWidth + ((columnSpan - 1) * GAP_WIDTH);
         section.style.width = widthNumber ? `${widthNumber}px` : `${columnSpan * unitWidth}%`;
