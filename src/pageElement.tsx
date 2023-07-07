@@ -57,30 +57,30 @@ export class ViewrPageElement extends Module {
   };
 
   async setData(pageElement: IPageElement) {
-    if (!this.pnlElement) return;
-    this.pnlElement.clearInnerHTML();
-    this.data = pageElement;
-    const { type, elements } = this.data;
-    // this.pnlElement.id = id;
-    // const rootDir = getRootDir();
-    if (type === 'primitive') {
-      // let module: any = await this.getEmbedElement(rootDir, this.data.module.path);
-      let module:any = await application.createElement(this.data.module.path);
-      if (module) {
-        this.pnlElement.append(module);
-        this.module = module;
-        module.style.display = 'block';
-        module.maxWidth = '100%';
-        module.maxHeight = '100%';
-        this.observer.observe(module);
+      if (!this.pnlElement) return;
+      this.pnlElement.clearInnerHTML();
+      this.data = pageElement;
+      const { elements, module: moduleData } = this.data;
+      // this.pnlElement.id = id;
+      // const rootDir = getRootDir();
+      if (elements?.length) {
+        for (const element of elements) {
+          const pnlElm = (<sc-page-viewer-page-element id={element.id} display="block"></sc-page-viewer-page-element>);
+          this.pnlElement.append(pnlElm);
+          await pnlElm.setData(element);
+        }
+      } else if (moduleData?.path) {
+        // let module: any = await this.getEmbedElement(rootDir, this.data.module.path);
+        let module:any = await application.createElement(moduleData.path);
+        if (module) {
+          this.pnlElement.append(module);
+          this.module = module;
+          module.style.display = 'block';
+          module.maxWidth = '100%';
+          module.maxHeight = '100%';
+          this.observer.observe(module);
+        }
       }
-    } else {
-      for (const element of elements) {
-        const pnlElm = (<sc-page-viewer-page-element id={element.id} display="block"></sc-page-viewer-page-element>);
-        this.pnlElement.append(pnlElm);
-        await pnlElm.setData(element);
-      }
-    }
   }
 
   render() {

@@ -53,7 +53,7 @@ export interface IPageElement {
   id: string; // uuid
   column: number;
   columnSpan: number;
-  type?: 'primitive' | 'composite',
+  // type?: 'primitive' | 'composite',
   properties: any;
   tag?: any;
   module?: IPageBlockData; // follow the standard defined in secure page, if type === 'primitive'

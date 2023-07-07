@@ -47,7 +47,6 @@ declare module "@scom/scom-page-viewer/interface.ts" {
         id: string;
         column: number;
         columnSpan: number;
-        type?: 'primitive' | 'composite';
         properties: any;
         tag?: any;
         module?: IPageBlockData;
