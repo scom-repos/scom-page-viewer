@@ -410,12 +410,19 @@ define("@scom/scom-page-viewer/pageElement.tsx", ["require", "exports", "@ijstec
                 return;
             this.pnlElement.clearInnerHTML();
             this.data = pageElement;
-            const { type, elements } = this.data;
+            const { elements, module: moduleData } = this.data;
             // this.pnlElement.id = id;
             // const rootDir = getRootDir();
-            if (type === 'primitive') {
+            if (elements === null || elements === void 0 ? void 0 : elements.length) {
+                for (const element of elements) {
+                    const pnlElm = (this.$render("sc-page-viewer-page-element", { id: element.id, display: "block" }));
+                    this.pnlElement.append(pnlElm);
+                    await pnlElm.setData(element);
+                }
+            }
+            else if (moduleData === null || moduleData === void 0 ? void 0 : moduleData.path) {
                 // let module: any = await this.getEmbedElement(rootDir, this.data.module.path);
-                let module = await components_7.application.createElement(this.data.module.path);
+                let module = await components_7.application.createElement(moduleData.path);
                 if (module) {
                     this.pnlElement.append(module);
                     this.module = module;
@@ -423,13 +430,6 @@ define("@scom/scom-page-viewer/pageElement.tsx", ["require", "exports", "@ijstec
                     module.maxWidth = '100%';
                     module.maxHeight = '100%';
                     this.observer.observe(module);
-                }
-            }
-            else {
-                for (const element of elements) {
-                    const pnlElm = (this.$render("sc-page-viewer-page-element", { id: element.id, display: "block" }));
-                    this.pnlElement.append(pnlElm);
-                    await pnlElm.setData(element);
                 }
             }
         }
