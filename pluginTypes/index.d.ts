@@ -242,6 +242,14 @@ declare module "@scom/scom-page-viewer/index.css.ts" {
     const _default_2: string;
     export default _default_2;
 }
+/// <amd-module name="@scom/scom-page-viewer/utils.ts" />
+declare module "@scom/scom-page-viewer/utils.ts" {
+    import { IPageData } from "@scom/scom-page-viewer/interface.ts";
+    function getDataByIpfsPath(ipfsPath: string): Promise<IPageData>;
+    const DEFAULT_MAX_COLUMN = 12;
+    const GAP_WIDTH = 15;
+    export { getDataByIpfsPath, DEFAULT_MAX_COLUMN, GAP_WIDTH };
+}
 /// <amd-module name="@scom/scom-page-viewer/pageElement.tsx" />
 declare module "@scom/scom-page-viewer/pageElement.tsx" {
     import { Module, ControlElement, Container } from '@ijstech/components';
@@ -263,15 +271,6 @@ declare module "@scom/scom-page-viewer/pageElement.tsx" {
         setData(pageElement: IPageElement): Promise<void>;
         render(): any;
     }
-}
-/// <amd-module name="@scom/scom-page-viewer/utils.ts" />
-declare module "@scom/scom-page-viewer/utils.ts" {
-    const IPFS_SCOM_URL = "https://ipfs.scom.dev/ipfs";
-    function fetchFileContentByCid(ipfsCid: string): Promise<Response | undefined>;
-    function getSCConfigByCodeCid(codeCid: string): Promise<any>;
-    const DEFAULT_MAX_COLUMN = 12;
-    const GAP_WIDTH = 15;
-    export { IPFS_SCOM_URL, fetchFileContentByCid, getSCConfigByCodeCid, DEFAULT_MAX_COLUMN, GAP_WIDTH };
 }
 /// <amd-module name="@scom/scom-page-viewer/section.tsx" />
 declare module "@scom/scom-page-viewer/section.tsx" {

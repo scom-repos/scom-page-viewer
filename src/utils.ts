@@ -1,32 +1,19 @@
-const IPFS_SCOM_URL = "https://ipfs.scom.dev/ipfs";
+import { IPageData } from "./interface";
 
-async function fetchFileContentByCid(ipfsCid: string): Promise<Response | undefined> {
-  let response;
+async function getDataByIpfsPath(ipfsPath: string) {
+  let data: IPageData;
   try {
-    response = await fetch(`${IPFS_SCOM_URL}/${ipfsCid}`);
-  } catch (err) {
-    const IPFS_Gateway = 'https://ipfs.io/ipfs/{CID}';
-    response = await fetch(IPFS_Gateway.replace('{CID}', ipfsCid));
-  }
-  return response;
-};
-
-async function getSCConfigByCodeCid(codeCid: string) {
-  let scConfig;
-  try {
-    let scConfigRes = await fetchFileContentByCid(`${codeCid}/dist/scconfig.json`);
-    if (scConfigRes) scConfig = await scConfigRes.json();
-  } catch (err) { }
-  return scConfig;
+    let scconfig = await (await fetch(`/ipfs/${ipfsPath}`)).json();
+    data = scconfig._data;
+  } catch (err) {}
+  return data;
 }
 
 const DEFAULT_MAX_COLUMN = 12;
 const GAP_WIDTH = 15;
 
 export {
-  IPFS_SCOM_URL,
-  fetchFileContentByCid,
-  getSCConfigByCodeCid,
+  getDataByIpfsPath,
   DEFAULT_MAX_COLUMN,
   GAP_WIDTH
 }

@@ -4,6 +4,7 @@ import { ViewrBody } from './body';
 import { ViewerFooter } from './footer';
 import { setRootDir } from './store';
 import styleClass from './index.css';
+import { getDataByIpfsPath } from "./utils";
 export { ViewrBody } from './body';
 export { ViewrPageElement } from './pageElement';
 export { ViewrSection } from './section';
@@ -55,6 +56,9 @@ export default class Viewer extends Module {
   }
 
   async setData(data: IPageData) {
+    if (data.cid) {
+      data = await getDataByIpfsPath(data.cid);
+    }
     this._data = data;
     await this.renderPage(data);
     this.isLoaded = true;

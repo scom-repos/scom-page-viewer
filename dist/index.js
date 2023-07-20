@@ -362,6 +362,25 @@ define("@scom/scom-page-viewer/index.css.ts", ["require", "exports", "@ijstech/c
         }
     });
 });
+define("@scom/scom-page-viewer/utils.ts", ["require", "exports"], function (require, exports) {
+    "use strict";
+    Object.defineProperty(exports, "__esModule", { value: true });
+    exports.GAP_WIDTH = exports.DEFAULT_MAX_COLUMN = exports.getDataByIpfsPath = void 0;
+    async function getDataByIpfsPath(ipfsPath) {
+        let data;
+        try {
+            let scconfig = await (await fetch(`/ipfs/${ipfsPath}`)).json();
+            data = scconfig._data;
+        }
+        catch (err) { }
+        return data;
+    }
+    exports.getDataByIpfsPath = getDataByIpfsPath;
+    const DEFAULT_MAX_COLUMN = 12;
+    exports.DEFAULT_MAX_COLUMN = DEFAULT_MAX_COLUMN;
+    const GAP_WIDTH = 15;
+    exports.GAP_WIDTH = GAP_WIDTH;
+});
 define("@scom/scom-page-viewer/pageElement.tsx", ["require", "exports", "@ijstech/components", "@scom/scom-page-viewer/store.ts"], function (require, exports, components_7, store_1) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
@@ -441,42 +460,6 @@ define("@scom/scom-page-viewer/pageElement.tsx", ["require", "exports", "@ijstec
         (0, components_7.customElements)('sc-page-viewer-page-element')
     ], ViewrPageElement);
     exports.ViewrPageElement = ViewrPageElement;
-});
-define("@scom/scom-page-viewer/utils.ts", ["require", "exports"], function (require, exports) {
-    "use strict";
-    Object.defineProperty(exports, "__esModule", { value: true });
-    exports.GAP_WIDTH = exports.DEFAULT_MAX_COLUMN = exports.getSCConfigByCodeCid = exports.fetchFileContentByCid = exports.IPFS_SCOM_URL = void 0;
-    ///<amd-module name='@scom/scom-page-viewer/utils.ts'/> 
-    const IPFS_SCOM_URL = "https://ipfs.scom.dev/ipfs";
-    exports.IPFS_SCOM_URL = IPFS_SCOM_URL;
-    async function fetchFileContentByCid(ipfsCid) {
-        let response;
-        try {
-            response = await fetch(`${IPFS_SCOM_URL}/${ipfsCid}`);
-        }
-        catch (err) {
-            const IPFS_Gateway = 'https://ipfs.io/ipfs/{CID}';
-            response = await fetch(IPFS_Gateway.replace('{CID}', ipfsCid));
-        }
-        return response;
-    }
-    exports.fetchFileContentByCid = fetchFileContentByCid;
-    ;
-    async function getSCConfigByCodeCid(codeCid) {
-        let scConfig;
-        try {
-            let scConfigRes = await fetchFileContentByCid(`${codeCid}/dist/scconfig.json`);
-            if (scConfigRes)
-                scConfig = await scConfigRes.json();
-        }
-        catch (err) { }
-        return scConfig;
-    }
-    exports.getSCConfigByCodeCid = getSCConfigByCodeCid;
-    const DEFAULT_MAX_COLUMN = 12;
-    exports.DEFAULT_MAX_COLUMN = DEFAULT_MAX_COLUMN;
-    const GAP_WIDTH = 15;
-    exports.GAP_WIDTH = GAP_WIDTH;
 });
 define("@scom/scom-page-viewer/section.tsx", ["require", "exports", "@ijstech/components", "@scom/scom-page-viewer/utils.ts", "@scom/scom-page-viewer/store.ts"], function (require, exports, components_8, utils_1, store_2) {
     "use strict";
@@ -706,7 +689,7 @@ define("@scom/scom-page-viewer/sidebar.tsx", ["require", "exports", "@ijstech/co
     ], ViewerSidebar);
     exports.ViewerSidebar = ViewerSidebar;
 });
-define("@scom/scom-page-viewer", ["require", "exports", "@ijstech/components", "@scom/scom-page-viewer/store.ts", "@scom/scom-page-viewer/index.css.ts", "@scom/scom-page-viewer/body.tsx", "@scom/scom-page-viewer/pageElement.tsx", "@scom/scom-page-viewer/section.tsx", "@scom/scom-page-viewer/sidebar.tsx", "@scom/scom-page-viewer/paging.tsx"], function (require, exports, components_11, store_3, index_css_1, body_1, pageElement_1, section_1, sidebar_1, paging_1) {
+define("@scom/scom-page-viewer", ["require", "exports", "@ijstech/components", "@scom/scom-page-viewer/store.ts", "@scom/scom-page-viewer/index.css.ts", "@scom/scom-page-viewer/utils.ts", "@scom/scom-page-viewer/body.tsx", "@scom/scom-page-viewer/pageElement.tsx", "@scom/scom-page-viewer/section.tsx", "@scom/scom-page-viewer/sidebar.tsx", "@scom/scom-page-viewer/paging.tsx"], function (require, exports, components_11, store_3, index_css_1, utils_2, body_1, pageElement_1, section_1, sidebar_1, paging_1) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.ViewerPaging = exports.ViewerSidebar = exports.ViewrSection = exports.ViewrPageElement = exports.ViewrBody = void 0;
@@ -746,6 +729,9 @@ define("@scom/scom-page-viewer", ["require", "exports", "@ijstech/components", "
             }
         }
         async setData(data) {
+            if (data.cid) {
+                data = await (0, utils_2.getDataByIpfsPath)(data.cid);
+            }
             this._data = data;
             await this.renderPage(data);
             this.isLoaded = true;
