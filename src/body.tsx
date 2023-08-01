@@ -66,7 +66,8 @@ export class ViewrBody extends Module {
           id={section.id}
           display="block"
           background={{ image, color: backgroundColor }}
-          maxWidth={maxWidth || '100%'}
+          // maxWidth={maxWidth || '100%'}
+          containerSize={{width: maxWidth.toString()}}
           width="100%"
           margin={{top: y, bottom: y, left: x, right: x}}
           padding={{left: '3rem', right: '3rem'}}
