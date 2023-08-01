@@ -89,7 +89,7 @@ export default class Viewer extends Module {
       const defaultColor = this.getBackgroundColor();
       const { backgroundColor = defaultColor, margin, maxWidth } = this._data?.config || {};
       this.pnlContainer.background = {color: backgroundColor};
-      this.pnlContainer.maxWidth = maxWidth || 1280;
+      this.pnlContainer.maxWidth = '100%'; // maxWidth || 1280;
       const { x = 'auto', y = 8 } = margin || {};
       this.pnlContainer.margin = {top: y, bottom: y, left: x, right: x};
     }

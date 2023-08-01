@@ -181,7 +181,9 @@ define("@scom/scom-page-viewer/body.tsx", ["require", "exports", "@ijstech/compo
             for (const section of this.sections) {
                 const { image = '', backgroundColor = '', margin, maxWidth } = (section === null || section === void 0 ? void 0 : section.config) || {};
                 const { x = 'auto', y = 0 } = margin || {};
-                const pageSection = (this.$render("sc-page-viewer-section", { id: section.id, display: "block", background: { image, color: backgroundColor }, maxWidth: maxWidth || '100%', width: "100%", margin: { top: y, bottom: y, left: x, right: x }, padding: { left: '3rem', right: '3rem' }, mediaQueries: [
+                const pageSection = (this.$render("sc-page-viewer-section", { id: section.id, display: "block", background: { image, color: backgroundColor }, 
+                    // maxWidth={maxWidth || '100%'}
+                    containerSize: { width: maxWidth.toString() }, width: "100%", margin: { top: y, bottom: y, left: x, right: x }, padding: { left: '3rem', right: '3rem' }, mediaQueries: [
                         {
                             maxWidth: '767px',
                             properties: {
@@ -503,6 +505,7 @@ define("@scom/scom-page-viewer/section.tsx", ["require", "exports", "@ijstech/co
             if (this.pnlSection) {
                 this.pnlSection.maxWidth = sizeWidth;
                 this.pnlSection.maxHeight = sizeHeight;
+                this.pnlSection.margin = { left: 'auto', right: 'auto' };
             }
         }
         async setData(sectionData) {
@@ -776,7 +779,7 @@ define("@scom/scom-page-viewer", ["require", "exports", "@ijstech/components", "
                 const defaultColor = this.getBackgroundColor();
                 const { backgroundColor = defaultColor, margin, maxWidth } = ((_a = this._data) === null || _a === void 0 ? void 0 : _a.config) || {};
                 this.pnlContainer.background = { color: backgroundColor };
-                this.pnlContainer.maxWidth = maxWidth || 1280;
+                this.pnlContainer.maxWidth = '100%'; // maxWidth || 1280;
                 const { x = 'auto', y = 8 } = margin || {};
                 this.pnlContainer.margin = { top: y, bottom: y, left: x, right: x };
             }

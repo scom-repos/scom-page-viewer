@@ -51,6 +51,7 @@ export class ViewrSection extends Module {
     if (this.pnlSection) {
       this.pnlSection.maxWidth = sizeWidth;
       this.pnlSection.maxHeight = sizeHeight;
+      this.pnlSection.margin = { left: 'auto', right: 'auto' }
     }
   }
 
