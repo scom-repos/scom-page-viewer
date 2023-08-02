@@ -582,7 +582,7 @@ define("@scom/scom-page-viewer/section.tsx", ["require", "exports", "@ijstech/co
             }
         }
         render() {
-            return (this.$render("i-grid-layout", { id: "pnlSection", width: "100%", height: "100%", maxWidth: "100%", maxHeight: "100%", position: "relative", overflow: 'hidden', gap: { column: 15, row: 15 }, templateColumns: [`repeat(${utils_1.DEFAULT_MAX_COLUMN}, minmax(${utils_1.GAP_WIDTH}px, 1fr))`], padding: { top: '1.5rem', bottom: '1.5rem' }, mediaQueries: [
+            return (this.$render("i-grid-layout", { id: "pnlSection", width: "100%", height: "100%", maxWidth: "100%", maxHeight: "100%", position: "relative", overflow: "inherit", gap: { column: 15, row: 15 }, templateColumns: [`repeat(${utils_1.DEFAULT_MAX_COLUMN}, minmax(${utils_1.GAP_WIDTH}px, 1fr))`], padding: { top: '1.5rem', bottom: '1.5rem' }, mediaQueries: [
                     {
                         maxWidth: '767px',
                         properties: {
@@ -772,11 +772,11 @@ define("@scom/scom-page-viewer", ["require", "exports", "@ijstech/components", "
         }
         render() {
             return (this.$render("i-vstack", { id: "pnlContainer", class: `sc-page-viewer-container ${index_css_1.default}`, width: "100%", height: "100%" },
-                this.$render("i-panel", { stack: { grow: "1" }, overflow: "hidden" },
+                this.$render("i-panel", { stack: { grow: "1" }, overflow: "inherit" },
                     this.$render("i-vstack", { id: "pnlLoading", height: "100%", horizontalAlignment: "center", verticalAlignment: "center", padding: { top: "1rem", bottom: "1rem", left: "1rem", right: "1rem" }, visible: false },
                         this.$render("i-panel", { class: 'spinner' })),
                     this.$render("i-grid-layout", { id: "gridMain", height: "100%", templateColumns: ["1fr"] },
-                        this.$render("sc-page-viewer-body", { id: "viewerBody", overflow: "auto", onUpdatePage: this.renderPage.bind(this) })),
+                        this.$render("sc-page-viewer-body", { id: "viewerBody", overflow: "inherit", onUpdatePage: this.renderPage.bind(this) })),
                     this.$render("sc-page-viewer-footer", { id: "viewerFooter", visible: false }))));
         }
     };
