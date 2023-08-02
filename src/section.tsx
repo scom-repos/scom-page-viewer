@@ -161,7 +161,7 @@ export class ViewrSection extends Module {
         maxWidth="100%"
         maxHeight="100%"
         position="relative"
-        overflow={'hidden'}
+        overflow="inherit"
         gap={{column: 15, row: 15}}
         templateColumns={[`repeat(${DEFAULT_MAX_COLUMN}, minmax(${GAP_WIDTH}px, 1fr))`]}
         padding={{top: '1.5rem', bottom: '1.5rem'}}

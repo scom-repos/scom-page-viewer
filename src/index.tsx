@@ -102,7 +102,7 @@ export default class Viewer extends Module {
   render() {
     return (
       <i-vstack id="pnlContainer" class={`sc-page-viewer-container ${styleClass}`} width="100%" height="100%">
-        <i-panel stack={{ grow: "1" }} overflow="hidden">
+        <i-panel stack={{ grow: "1" }} overflow="inherit">
           <i-vstack
             id="pnlLoading"
             height="100%"
@@ -114,7 +114,7 @@ export default class Viewer extends Module {
             <i-panel class={'spinner'}></i-panel>
           </i-vstack>
           <i-grid-layout id="gridMain" height="100%" templateColumns={["1fr"]}>
-            <sc-page-viewer-body id="viewerBody" overflow="auto" onUpdatePage={this.renderPage.bind(this)}></sc-page-viewer-body>
+            <sc-page-viewer-body id="viewerBody" overflow="inherit" onUpdatePage={this.renderPage.bind(this)}></sc-page-viewer-body>
           </i-grid-layout>
           <sc-page-viewer-footer id="viewerFooter" visible={false}></sc-page-viewer-footer>
         </i-panel>
