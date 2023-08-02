@@ -59,7 +59,7 @@ export class ViewrBody extends Module {
     }
     // let anchors: { name: string, sectionElm: any }[] = [];
     for (const section of this.sections) {
-      const { image = '', backgroundColor = '', margin, maxWidth } = section?.config || {};
+      const { image = '', backgroundColor = '', margin, maxWidth = 1024 } = section?.config || {};
       const { x = 'auto', y = 0 } = margin || {};
       const pageSection = (
         <sc-page-viewer-section
