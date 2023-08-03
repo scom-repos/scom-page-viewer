@@ -1,8 +1,9 @@
-import { ThemeType } from "./interface";
+import { ThemeType, ViewerMode } from "./interface";
 
 export const state = {
   rootDir: '',
-  theme: 'light'
+  theme: 'light',
+  mode: ViewerMode.NORMAL
 }
 
 export const setRootDir = (value: string) => {
@@ -13,12 +14,12 @@ export const getRootDir = () => {
   return state.rootDir;
 }
 
-export const setTheme = (value: ThemeType) => {
-  state.theme = value ?? 'light';
+export const setMode = (value: ViewerMode) => {
+  state.mode = value ?? ViewerMode.NORMAL;
 }
 
-export const getTheme = () => {
-  return state.theme ?? 'light';
+export const getMode = () => {
+  return state.mode ?? ViewerMode.NORMAL;
 }
 
 export const getDefaultDisplaySettings = () => {
