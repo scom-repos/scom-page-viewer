@@ -1036,7 +1036,7 @@ define("@scom/scom-page-viewer", ["require", "exports", "@ijstech/components", "
                     this.$render("i-vstack", { id: "pnlLoading", height: "100%", horizontalAlignment: "center", verticalAlignment: "center", padding: { top: "1rem", bottom: "1rem", left: "1rem", right: "1rem" }, visible: false },
                         this.$render("i-panel", { class: 'spinner' })),
                     this.$render("i-grid-layout", { id: "gridMain", height: "100%", templateColumns: ["1fr"] },
-                        this.$render("sc-page-viewer-body", { id: "viewerBody", overflow: "inherit", onUpdatePage: this.renderPage.bind(this) }),
+                        this.$render("sc-page-viewer-body", { id: "viewerBody", overflow: { x: 'hidden', y: 'auto' }, onUpdatePage: this.renderPage.bind(this) }),
                         this.$render("sc-page-viewer-slide-body", { id: "viewerSlideBody", overflow: "hidden", onUpdatePage: this.renderPage.bind(this), visible: false })),
                     this.$render("sc-page-viewer-footer", { id: "viewerFooter", visible: false }))));
         }
