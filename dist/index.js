@@ -924,15 +924,16 @@ define("@scom/scom-page-viewer/sidebar.tsx", ["require", "exports", "@ijstech/co
     ], ViewerSidebar);
     exports.ViewerSidebar = ViewerSidebar;
 });
-define("@scom/scom-page-viewer", ["require", "exports", "@ijstech/components", "@scom/scom-page-viewer/interface.ts", "@scom/scom-page-viewer/store.ts", "@scom/scom-page-viewer/index.css.ts", "@scom/scom-page-viewer/utils.ts", "@scom/scom-page-viewer/body.tsx", "@scom/scom-page-viewer/pageElement.tsx", "@scom/scom-page-viewer/section.tsx", "@scom/scom-page-viewer/sidebar.tsx", "@scom/scom-page-viewer/paging.tsx"], function (require, exports, components_13, interface_2, store_3, index_css_1, utils_4, body_1, pageElement_1, section_1, sidebar_1, paging_1) {
+define("@scom/scom-page-viewer", ["require", "exports", "@ijstech/components", "@scom/scom-page-viewer/interface.ts", "@scom/scom-page-viewer/store.ts", "@scom/scom-page-viewer/index.css.ts", "@scom/scom-page-viewer/utils.ts", "@scom/scom-page-viewer/body.tsx", "@scom/scom-page-viewer/pageElement.tsx", "@scom/scom-page-viewer/section.tsx", "@scom/scom-page-viewer/sidebar.tsx", "@scom/scom-page-viewer/paging.tsx", "@scom/scom-page-viewer/interface.ts"], function (require, exports, components_13, interface_2, store_3, index_css_1, utils_4, body_1, pageElement_1, section_1, sidebar_1, paging_1, interface_3) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
-    exports.ViewerPaging = exports.ViewerSidebar = exports.ViewrSection = exports.ViewrPageElement = exports.ViewrBody = void 0;
+    exports.ViewerMode = exports.ViewerPaging = exports.ViewerSidebar = exports.ViewrSection = exports.ViewrPageElement = exports.ViewrBody = void 0;
     Object.defineProperty(exports, "ViewrBody", { enumerable: true, get: function () { return body_1.ViewrBody; } });
     Object.defineProperty(exports, "ViewrPageElement", { enumerable: true, get: function () { return pageElement_1.ViewrPageElement; } });
     Object.defineProperty(exports, "ViewrSection", { enumerable: true, get: function () { return section_1.ViewrSection; } });
     Object.defineProperty(exports, "ViewerSidebar", { enumerable: true, get: function () { return sidebar_1.ViewerSidebar; } });
     Object.defineProperty(exports, "ViewerPaging", { enumerable: true, get: function () { return paging_1.ViewerPaging; } });
+    Object.defineProperty(exports, "ViewerMode", { enumerable: true, get: function () { return interface_3.ViewerMode; } });
     const lightTheme = components_13.Styles.Theme.defaultTheme;
     const darkTheme = components_13.Styles.Theme.darkTheme;
     let Viewer = class Viewer extends components_13.Module {

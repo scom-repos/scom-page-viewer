@@ -407,6 +407,7 @@ declare module "@scom/scom-page-viewer" {
     export { ViewrSection } from "@scom/scom-page-viewer/section.tsx";
     export { ViewerSidebar } from "@scom/scom-page-viewer/sidebar.tsx";
     export { ViewerPaging } from "@scom/scom-page-viewer/paging.tsx";
+    export { ViewerMode } from "@scom/scom-page-viewer/interface.ts";
     global {
         namespace JSX {
             interface IntrinsicElements {

@@ -11,6 +11,7 @@ export { ViewrPageElement } from './pageElement';
 export { ViewrSection } from './section';
 export { ViewerSidebar } from './sidebar';
 export { ViewerPaging } from './paging';
+export { ViewerMode } from './interface';
 
 declare global {
   namespace JSX {
