@@ -114,7 +114,7 @@ export default class Viewer extends Module {
             <i-panel class={'spinner'}></i-panel>
           </i-vstack>
           <i-grid-layout id="gridMain" height="100%" templateColumns={["1fr"]}>
-            <sc-page-viewer-body id="viewerBody" overflow="inherit" onUpdatePage={this.renderPage.bind(this)}></sc-page-viewer-body>
+            <sc-page-viewer-body id="viewerBody" overflow={{ x: 'hidden', y: 'auto' }} onUpdatePage={this.renderPage.bind(this)}></sc-page-viewer-body>
           </i-grid-layout>
           <sc-page-viewer-footer id="viewerFooter" visible={false}></sc-page-viewer-footer>
         </i-panel>
