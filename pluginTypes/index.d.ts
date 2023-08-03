@@ -113,7 +113,11 @@ declare module "@scom/scom-page-viewer/interface.ts" {
         tag: any;
     }
     type ThemeType = 'dark' | 'light';
-    export { IPageData, ICodeInfoFileContent, IPageSectionConfig, ThemeType };
+    enum ViewerMode {
+        NORMAL = "normal",
+        SLIDESHOW = "slideshow"
+    }
+    export { IPageData, ICodeInfoFileContent, IPageSectionConfig, ThemeType, ViewerMode };
 }
 /// <amd-module name="@scom/scom-page-viewer/paging.css.ts" />
 declare module "@scom/scom-page-viewer/paging.css.ts" {
@@ -161,6 +165,15 @@ declare module "@scom/scom-page-viewer/body.css.ts" {
     const _default_1: string;
     export default _default_1;
 }
+/// <amd-module name="@scom/scom-page-viewer/utils.ts" />
+declare module "@scom/scom-page-viewer/utils.ts" {
+    import { IPageData } from "@scom/scom-page-viewer/interface.ts";
+    function getDataByIpfsPath(ipfsPath: string): Promise<IPageData>;
+    const DEFAULT_MAX_COLUMN = 12;
+    const GAP_WIDTH = 15;
+    function generateUUID(): string;
+    export { getDataByIpfsPath, DEFAULT_MAX_COLUMN, GAP_WIDTH, generateUUID };
+}
 /// <amd-module name="@scom/scom-page-viewer/body.tsx" />
 declare module "@scom/scom-page-viewer/body.tsx" {
     import { ControlElement, Module } from "@ijstech/components";
@@ -181,7 +194,6 @@ declare module "@scom/scom-page-viewer/body.tsx" {
         private pnlSections;
         private viewerPaging;
         onUpdatePage: pageChangeCallback;
-        generateUUID(): string;
         setSections(sections: IPageSection[]): Promise<void>;
         renderSections(): Promise<void>;
         clearSections(): void;
@@ -214,15 +226,16 @@ declare module "@scom/scom-page-viewer/footer.tsx" {
 }
 /// <amd-module name="@scom/scom-page-viewer/store.ts" />
 declare module "@scom/scom-page-viewer/store.ts" {
-    import { ThemeType } from "@scom/scom-page-viewer/interface.ts";
+    import { ViewerMode } from "@scom/scom-page-viewer/interface.ts";
     export const state: {
         rootDir: string;
         theme: string;
+        mode: ViewerMode;
     };
     export const setRootDir: (value: string) => void;
     export const getRootDir: () => string;
-    export const setTheme: (value: ThemeType) => void;
-    export const getTheme: () => string;
+    export const setMode: (value: ViewerMode) => void;
+    export const getMode: () => ViewerMode;
     export const getDefaultDisplaySettings: () => {
         maxWidth: number;
         properties: {
@@ -242,35 +255,10 @@ declare module "@scom/scom-page-viewer/index.css.ts" {
     const _default_2: string;
     export default _default_2;
 }
-/// <amd-module name="@scom/scom-page-viewer/utils.ts" />
-declare module "@scom/scom-page-viewer/utils.ts" {
-    import { IPageData } from "@scom/scom-page-viewer/interface.ts";
-    function getDataByIpfsPath(ipfsPath: string): Promise<IPageData>;
-    const DEFAULT_MAX_COLUMN = 12;
-    const GAP_WIDTH = 15;
-    export { getDataByIpfsPath, DEFAULT_MAX_COLUMN, GAP_WIDTH };
-}
-/// <amd-module name="@scom/scom-page-viewer/pageElement.tsx" />
-declare module "@scom/scom-page-viewer/pageElement.tsx" {
-    import { Module, ControlElement, Container } from '@ijstech/components';
-    import { IPageElement } from "@scom/scom-page-viewer/interface.ts";
-    global {
-        namespace JSX {
-            interface IntrinsicElements {
-                ['sc-page-viewer-page-element']: ControlElement;
-            }
-        }
-    }
-    export class ViewrPageElement extends Module {
-        private pnlElement;
-        private data;
-        private module;
-        private observerOptions;
-        private observer;
-        constructor(parent?: Container, options?: any);
-        setData(pageElement: IPageElement): Promise<void>;
-        render(): any;
-    }
+/// <amd-module name="@scom/scom-page-viewer/sliderBody.css.ts" />
+declare module "@scom/scom-page-viewer/sliderBody.css.ts" {
+    const _default_3: string;
+    export default _default_3;
 }
 /// <amd-module name="@scom/scom-page-viewer/section.tsx" />
 declare module "@scom/scom-page-viewer/section.tsx" {
@@ -310,10 +298,78 @@ declare module "@scom/scom-page-viewer/section.tsx" {
         render(): any;
     }
 }
+/// <amd-module name="@scom/scom-page-viewer/slideBody.tsx" />
+declare module "@scom/scom-page-viewer/slideBody.tsx" {
+    import { Container, ControlElement, Module } from "@ijstech/components";
+    import { IPageData, IPageSection } from "@scom/scom-page-viewer/interface.ts";
+    type pageChangeCallback = (page: IPageData) => void;
+    interface ViewerSlideBodyElement extends ControlElement {
+        onUpdatePage: pageChangeCallback;
+    }
+    global {
+        namespace JSX {
+            interface IntrinsicElements {
+                ['sc-page-viewer-slide-body']: ViewerSlideBodyElement;
+            }
+        }
+    }
+    export class ViewrSlideBody extends Module {
+        private pnlSections;
+        private pnlNavigation;
+        private pnlWrapper;
+        private currentSection;
+        private pnlProgress;
+        private wheelProgress;
+        private sectionLb;
+        private currentScrollY;
+        private sections;
+        private curSectIndex;
+        private navMapper;
+        private scrollTimer;
+        onUpdatePage: pageChangeCallback;
+        constructor(parent?: Container, options?: any);
+        setSections(sections: IPageSection[]): Promise<void>;
+        renderSections(): Promise<void>;
+        private renderNavigation;
+        private initEventListeners;
+        onHide(): void;
+        private onScrollHandler;
+        private updateProgress;
+        private resetProgress;
+        private onKeyHandler;
+        private goToNextSlide;
+        private goToPrevSlide;
+        private showSlide;
+        clearSections(): void;
+        render(): any;
+    }
+}
+/// <amd-module name="@scom/scom-page-viewer/pageElement.tsx" />
+declare module "@scom/scom-page-viewer/pageElement.tsx" {
+    import { Module, ControlElement, Container } from '@ijstech/components';
+    import { IPageElement } from "@scom/scom-page-viewer/interface.ts";
+    global {
+        namespace JSX {
+            interface IntrinsicElements {
+                ['sc-page-viewer-page-element']: ControlElement;
+            }
+        }
+    }
+    export class ViewrPageElement extends Module {
+        private pnlElement;
+        private data;
+        private module;
+        private observerOptions;
+        private observer;
+        constructor(parent?: Container, options?: any);
+        setData(pageElement: IPageElement): Promise<void>;
+        render(): any;
+    }
+}
 /// <amd-module name="@scom/scom-page-viewer/sidebar.css.ts" />
 declare module "@scom/scom-page-viewer/sidebar.css.ts" {
-    const _default_3: string;
-    export default _default_3;
+    const _default_4: string;
+    export default _default_4;
 }
 /// <amd-module name="@scom/scom-page-viewer/sidebar.tsx" />
 declare module "@scom/scom-page-viewer/sidebar.tsx" {
@@ -345,12 +401,13 @@ declare module "@scom/scom-page-viewer/sidebar.tsx" {
 /// <amd-module name="@scom/scom-page-viewer" />
 declare module "@scom/scom-page-viewer" {
     import { ControlElement, Module } from "@ijstech/components";
-    import { IPageData, ThemeType } from "@scom/scom-page-viewer/interface.ts";
+    import { IPageData, ThemeType, ViewerMode } from "@scom/scom-page-viewer/interface.ts";
     export { ViewrBody } from "@scom/scom-page-viewer/body.tsx";
     export { ViewrPageElement } from "@scom/scom-page-viewer/pageElement.tsx";
     export { ViewrSection } from "@scom/scom-page-viewer/section.tsx";
     export { ViewerSidebar } from "@scom/scom-page-viewer/sidebar.tsx";
     export { ViewerPaging } from "@scom/scom-page-viewer/paging.tsx";
+    export { ViewerMode } from "@scom/scom-page-viewer/interface.ts";
     global {
         namespace JSX {
             interface IntrinsicElements {
@@ -359,17 +416,21 @@ declare module "@scom/scom-page-viewer" {
         }
     }
     export default class Viewer extends Module {
-        private pnlLoading;
         private viewerFooter;
         private gridMain;
         private viewerBody;
+        private viewerSlideBody;
         private pnlContainer;
         private isLoaded;
         private _data;
         private _theme;
+        private _mode;
         get theme(): ThemeType;
         set theme(value: ThemeType);
+        get mode(): ViewerMode;
+        set mode(value: ViewerMode);
         onShow(options: any): Promise<void>;
+        onHide(): void;
         setData(data: IPageData): Promise<void>;
         setRootDir(value: string): void;
         private setTheme;
