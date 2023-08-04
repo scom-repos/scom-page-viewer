@@ -3,4 +3,3 @@ package-lock.json
 test/ref/*
 test/dist
 modules/pageblocks
-dist
