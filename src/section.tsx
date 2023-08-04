@@ -56,7 +56,18 @@ export class ViewrSection extends Module {
   }
 
   async setData(sectionData: IPageSection) {
-    const { elements = [], config = {} } = sectionData;
+    const { elements = [], config = {} as any } = sectionData;
+    const { backdropColor, backdropImage, backgroundColor, backgroundImage, fullWidth, sectionWidth } = config;
+    if (!fullWidth) {
+      if(backdropImage)
+          this.background.image = backdropImage;
+      else if (backdropColor)
+          this.background.color = backdropColor;
+    } else {
+        if (backgroundColor) this.background.color = backgroundColor;
+    }
+    if (backgroundColor) this.pnlSection.background.color = backgroundColor;
+    this.pnlSection.maxWidth = sectionWidth ?? '100%';
     this.sectionData = JSON.parse(JSON.stringify(sectionData));
     for (let i = 0; i < elements.length; i++) {
       const element = elements[i];

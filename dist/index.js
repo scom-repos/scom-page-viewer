@@ -350,6 +350,9 @@ define("@scom/scom-page-viewer/index.css.ts", ["require", "exports", "@ijstech/c
         }
     });
     exports.default = components_6.Styles.style({
+        backgroundPosition: "center",
+        backgroundRepeat: "repeat",
+        backgroundSize: "cover",
         $nest: {
             '.spinner': {
                 display: "inline-block",
@@ -493,6 +496,20 @@ define("@scom/scom-page-viewer/section.tsx", ["require", "exports", "@ijstech/co
         }
         async setData(sectionData) {
             const { elements = [], config = {} } = sectionData;
+            const { backdropColor, backdropImage, backgroundColor, backgroundImage, fullWidth, sectionWidth } = config;
+            if (!fullWidth) {
+                if (backdropImage)
+                    this.background.image = backdropImage;
+                else if (backdropColor)
+                    this.background.color = backdropColor;
+            }
+            else {
+                if (backgroundColor)
+                    this.background.color = backgroundColor;
+            }
+            if (backgroundColor)
+                this.pnlSection.background.color = backgroundColor;
+            this.pnlSection.maxWidth = sectionWidth !== null && sectionWidth !== void 0 ? sectionWidth : '100%';
             this.sectionData = JSON.parse(JSON.stringify(sectionData));
             for (let i = 0; i < elements.length; i++) {
                 const element = elements[i];
@@ -760,11 +777,15 @@ define("@scom/scom-page-viewer", ["require", "exports", "@ijstech/components", "
             return this.theme === 'light' ? lightTheme.background.main : darkTheme.background.main;
         }
         updateContainer() {
-            var _a;
+            var _a, _b;
             if (this.pnlContainer) {
                 const defaultColor = this.getBackgroundColor();
-                const { backgroundColor = defaultColor, margin, maxWidth } = ((_a = this._data) === null || _a === void 0 ? void 0 : _a.config) || {};
-                this.pnlContainer.background = { color: backgroundColor };
+                console.log('----------', (_a = this._data) === null || _a === void 0 ? void 0 : _a.config);
+                const { backgroundColor = defaultColor, backgroundImage, margin, maxWidth } = ((_b = this._data) === null || _b === void 0 ? void 0 : _b.config) || {};
+                if (backgroundImage)
+                    this.pnlContainer.background.image = backgroundImage;
+                else
+                    this.pnlContainer.background = { color: backgroundColor };
                 this.pnlContainer.maxWidth = '100%'; // maxWidth || 1280;
                 const { x = 'auto', y = 8 } = margin || {};
                 this.pnlContainer.margin = { top: y, bottom: y, left: x, right: x };

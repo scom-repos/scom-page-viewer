@@ -9,6 +9,10 @@ const spin = Styles.keyframes({
 })
 
 export default Styles.style({
+  backgroundPosition: "center",
+  backgroundRepeat: "repeat",
+  backgroundSize: "cover",
+
   $nest: {
     '.spinner': {
         display: "inline-block",
