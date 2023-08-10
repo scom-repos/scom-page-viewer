@@ -165,7 +165,7 @@ define("@scom/scom-page-viewer/utils.ts", ["require", "exports"], function (requ
             data = scconfig._data;
         }
         catch (err) { }
-        return data;
+        return data || {};
     }
     exports.getDataByIpfsPath = getDataByIpfsPath;
     const DEFAULT_MAX_COLUMN = 12;
