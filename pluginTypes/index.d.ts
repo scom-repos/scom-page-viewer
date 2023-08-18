@@ -19,6 +19,7 @@ declare module "@scom/scom-page-viewer/interface.ts" {
             x?: number | string;
             y?: number | string;
         };
+        textColor?: string;
     }
     interface IPageSectionConfig extends IPageConfig {
         align?: AlignType;
@@ -436,6 +437,7 @@ declare module "@scom/scom-page-viewer" {
         private setTheme;
         renderPage(page: IPageData): Promise<void>;
         private getBackgroundColor;
+        private getColor;
         private updateContainer;
         render(): any;
     }
