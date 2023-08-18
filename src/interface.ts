@@ -19,6 +19,7 @@ interface IPageConfig {
     x?: number|string;
     y?: number|string;
   };
+  textColor?: string;
 }
 
 interface IPageSectionConfig extends IPageConfig {
