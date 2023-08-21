@@ -377,6 +377,9 @@ define("@scom/scom-page-viewer/index.css.ts", ["require", "exports", "@ijstech/c
         }
     });
     exports.default = components_6.Styles.style({
+        backgroundPosition: "center",
+        backgroundRepeat: "repeat",
+        backgroundSize: "cover",
         $nest: {
             '.spinner': {
                 display: "inline-block",
@@ -469,6 +472,20 @@ define("@scom/scom-page-viewer/section.tsx", ["require", "exports", "@ijstech/co
         }
         async setData(sectionData) {
             const { elements = [], config = {} } = sectionData;
+            const { backdropColor, backdropImage, backgroundColor, backgroundImage, fullWidth, sectionWidth } = config;
+            if (!fullWidth) {
+                if (backdropImage)
+                    this.background.image = backdropImage;
+                else if (backdropColor)
+                    this.background.color = backdropColor;
+            }
+            else {
+                if (backgroundColor)
+                    this.background.color = backgroundColor;
+            }
+            if (backgroundColor)
+                this.pnlSection.background.color = backgroundColor;
+            this.pnlSection.maxWidth = sectionWidth !== null && sectionWidth !== void 0 ? sectionWidth : '100%';
             this.sectionData = JSON.parse(JSON.stringify(sectionData));
             for (let i = 0; i < elements.length; i++) {
                 const element = elements[i];
@@ -808,6 +825,7 @@ define("@scom/scom-page-viewer/pageElement.tsx", ["require", "exports", "@ijstec
                 }
             }
             else if (moduleData === null || moduleData === void 0 ? void 0 : moduleData.path) {
+                const { tag } = this.data;
                 // let module: any = await this.getEmbedElement(rootDir, this.data.module.path);
                 let module = await components_10.application.createElement(moduleData.path);
                 if (module) {
@@ -816,6 +834,10 @@ define("@scom/scom-page-viewer/pageElement.tsx", ["require", "exports", "@ijstec
                     module.style.display = 'block';
                     module.maxWidth = '100%';
                     module.maxHeight = '100%';
+                    if (tag) {
+                        const { pt, pb, pl, pr } = tag;
+                        module.padding = { top: pt || 0, bottom: pb || 0, left: pl || 0, right: pr || 0 };
+                    }
                     this.observer.observe(module);
                 }
             }
@@ -1026,8 +1048,11 @@ define("@scom/scom-page-viewer", ["require", "exports", "@ijstech/components", "
         updateContainer() {
             var _a;
             if (this.pnlContainer) {
-                const { backgroundColor = this.getBackgroundColor(), margin, maxWidth, textColor = this.getColor() } = ((_a = this._data) === null || _a === void 0 ? void 0 : _a.config) || {};
-                this.pnlContainer.background = { color: backgroundColor };
+                const { backgroundColor = this.getBackgroundColor(), backgroundImage, margin, maxWidth, textColor = this.getColor() } = ((_a = this._data) === null || _a === void 0 ? void 0 : _a.config) || {};
+                if (backgroundImage)
+                    this.pnlContainer.background.image = backgroundImage;
+                else
+                    this.pnlContainer.background = { color: backgroundColor };
                 this.pnlContainer.font = { color: textColor };
                 this.pnlContainer.maxWidth = '100%'; // maxWidth || 1280;
                 const { x = 'auto', y = 8 } = margin || {};
