@@ -45,8 +45,10 @@ const mikeyData = {
                               "backgroundInageUrl": ""
                           },
                           "tag": {
-                              "width": "100%",
-                              "height": 160
+                              "pt": 45,
+                              "pb": 34,
+                              "pl": 32,
+                              "pr": 51
                           }
                       }
                   ]

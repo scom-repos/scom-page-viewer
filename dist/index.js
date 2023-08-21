@@ -825,6 +825,7 @@ define("@scom/scom-page-viewer/pageElement.tsx", ["require", "exports", "@ijstec
                 }
             }
             else if (moduleData === null || moduleData === void 0 ? void 0 : moduleData.path) {
+                const { tag } = this.data;
                 // let module: any = await this.getEmbedElement(rootDir, this.data.module.path);
                 let module = await components_10.application.createElement(moduleData.path);
                 if (module) {
@@ -833,6 +834,10 @@ define("@scom/scom-page-viewer/pageElement.tsx", ["require", "exports", "@ijstec
                     module.style.display = 'block';
                     module.maxWidth = '100%';
                     module.maxHeight = '100%';
+                    if (tag) {
+                        const { pt, pb, pl, pr } = tag;
+                        module.padding = { top: pt || 0, bottom: pb || 0, left: pl || 0, right: pr || 0 };
+                    }
                     this.observer.observe(module);
                 }
             }
@@ -1038,11 +1043,10 @@ define("@scom/scom-page-viewer", ["require", "exports", "@ijstech/components", "
             return this.theme === 'light' ? lightTheme.background.main : darkTheme.background.main;
         }
         updateContainer() {
-            var _a, _b;
+            var _a;
             if (this.pnlContainer) {
                 const defaultColor = this.getBackgroundColor();
-                console.log('----------', (_a = this._data) === null || _a === void 0 ? void 0 : _a.config);
-                const { backgroundColor = defaultColor, backgroundImage, margin, maxWidth } = ((_b = this._data) === null || _b === void 0 ? void 0 : _b.config) || {};
+                const { backgroundColor = defaultColor, backgroundImage, margin, maxWidth } = ((_a = this._data) === null || _a === void 0 ? void 0 : _a.config) || {};
                 if (backgroundImage)
                     this.pnlContainer.background.image = backgroundImage;
                 else
