@@ -9,6 +9,7 @@ import {
 import { IPageData, IPageSection } from "./interface";
 import { ViewerPaging } from "./paging";
 import styleClass from "./body.css";
+import { generateUUID } from "./utils";
 const Theme = Styles.Theme.ThemeVars;
 
 type pageChangeCallback = (page: IPageData) => void;
@@ -33,13 +34,6 @@ export class ViewrBody extends Module {
   // private archorElm: HStack;
   public onUpdatePage: pageChangeCallback;
 
-  generateUUID() {
-    return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
-      var r = Math.random() * 16 | 0, v = c == 'x' ? r : (r & 0x3 | 0x8);
-      return v.toString(16);
-    });
-  }
-
   async setSections(sections: IPageSection[]) {
     this.sections = sections;
     if (this.pnlSections) this.pnlSections.clearInnerHTML();
@@ -51,7 +45,7 @@ export class ViewrBody extends Module {
     if ((!this.sections || (this.sections && this.sections.length == 0))) {
       this.sections = [
         {
-          id: this.generateUUID(),
+          id: generateUUID(),
           row: 0,
           elements: []
         }

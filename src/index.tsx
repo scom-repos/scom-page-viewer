@@ -1,15 +1,17 @@
 import { ControlElement, customElements, customModule, GridLayout, Module, Panel, Styles } from "@ijstech/components";
-import { IPageData, ThemeType } from './interface';
+import { IPageData, ThemeType, ViewerMode } from './interface';
 import { ViewrBody } from './body';
 import { ViewerFooter } from './footer';
-import { setRootDir } from './store';
+import { setMode, setRootDir } from './store';
 import styleClass from './index.css';
 import { getDataByIpfsPath } from "./utils";
+import { ViewrSlideBody } from "./slideBody";
 export { ViewrBody } from './body';
 export { ViewrPageElement } from './pageElement';
 export { ViewrSection } from './section';
 export { ViewerSidebar } from './sidebar';
 export { ViewerPaging } from './paging';
+export { ViewerMode } from './interface';
 
 declare global {
   namespace JSX {
@@ -25,14 +27,15 @@ const darkTheme = Styles.Theme.darkTheme;
 @customModule
 @customElements('i-scom-page-viewer')
 export default class Viewer extends Module {
-  private pnlLoading: Panel;
   private viewerFooter: ViewerFooter;
   private gridMain: GridLayout;
   private viewerBody: ViewrBody;
+  private viewerSlideBody: ViewrSlideBody;
   private pnlContainer: Panel;
   private isLoaded: boolean = false;
   private _data: IPageData;
   private _theme: ThemeType = 'light';
+  private _mode: ViewerMode = ViewerMode.NORMAL;
 
   get theme() {
     return this._theme ?? 'light';
@@ -42,9 +45,23 @@ export default class Viewer extends Module {
     this.setTheme(this.theme);
   }
 
+  get mode(): ViewerMode {
+    return this._mode ?? ViewerMode.NORMAL;
+  }
+  set mode(value: ViewerMode) {
+    this._mode = value;
+    setMode(value);
+    if (this._data) {
+      this.renderPage(this._data);
+    }
+  }
+
   async onShow(options: any) { 
     if (options?.theme) {
       this.setTheme(options.theme);
+    }
+    if (options?.mode) {
+      this._mode = options.mode;
     }
     if (!this.isLoaded) {
       this.gridMain.templateColumns = ["1fr"];
@@ -53,6 +70,11 @@ export default class Viewer extends Module {
     } else if (options?._data??options) {
       await this.renderPage(options?._data??options);
     }    
+  }
+
+  onHide(): void {
+    if (this.viewerSlideBody)
+      this.viewerSlideBody.onHide()
   }
 
   async setData(data: IPageData) {
@@ -81,7 +103,15 @@ export default class Viewer extends Module {
     this.viewerFooter.data = footer;
     this.viewerFooter.visible = !!header;
     this.updateContainer();
-    await this.viewerBody.setSections(sections);
+    if (this.mode === ViewerMode.NORMAL) {
+      await this.viewerBody.setSections(sections);
+      this.viewerBody.visible = true;
+      this.viewerSlideBody.visible = false;
+    } else {
+      await this.viewerSlideBody.setSections(sections);
+      this.viewerBody.visible = false;
+      this.viewerSlideBody.visible = true;
+    }
   }
 
   private getBackgroundColor() {
@@ -115,7 +145,8 @@ export default class Viewer extends Module {
             <i-panel class={'spinner'}></i-panel>
           </i-vstack>
           <i-grid-layout id="gridMain" height="100%" templateColumns={["1fr"]}>
-            <sc-page-viewer-body id="viewerBody" overflow="inherit" onUpdatePage={this.renderPage.bind(this)}></sc-page-viewer-body>
+            <sc-page-viewer-body id="viewerBody" overflow={{ x: 'hidden', y: 'auto' }} onUpdatePage={this.renderPage.bind(this)}></sc-page-viewer-body>
+            <sc-page-viewer-slide-body id="viewerSlideBody" overflow="hidden" onUpdatePage={this.renderPage.bind(this)} visible={false}></sc-page-viewer-slide-body>
           </i-grid-layout>
           <sc-page-viewer-footer id="viewerFooter" visible={false}></sc-page-viewer-footer>
         </i-panel>

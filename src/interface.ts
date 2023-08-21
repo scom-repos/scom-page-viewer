@@ -133,9 +133,15 @@ interface ISectionData {
 
 type ThemeType = 'dark' | 'light'
 
+enum ViewerMode {
+  NORMAL = 'normal',
+  SLIDESHOW = 'slideshow'
+}
+
 export {
   IPageData,
   ICodeInfoFileContent,
   IPageSectionConfig,
-  ThemeType
+  ThemeType,
+  ViewerMode
 }
