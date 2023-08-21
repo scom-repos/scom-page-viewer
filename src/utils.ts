@@ -6,7 +6,7 @@ async function getDataByIpfsPath(ipfsPath: string) {
     let scconfig = await (await fetch(`/ipfs/${ipfsPath}`)).json();
     data = scconfig._data;
   } catch (err) {}
-  return data;
+  return data || {} as IPageData;
 }
 
 const DEFAULT_MAX_COLUMN = 12;

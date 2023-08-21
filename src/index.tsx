@@ -118,6 +118,10 @@ export default class Viewer extends Module {
     return this.theme === 'light' ? lightTheme.background.main : darkTheme.background.main;
   }
 
+  private getColor() {
+    return this.theme === 'light' ? lightTheme.text.primary : darkTheme.text.primary;
+  }
+
   private updateContainer() {
     if (this.pnlContainer) {
       const defaultColor = this.getBackgroundColor();

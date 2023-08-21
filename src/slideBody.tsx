@@ -72,13 +72,14 @@ export class ViewrSlideBody extends Module {
     }
     for (let i = 0; i < this.sections.length; i++) {
       const section = this.sections[i];
-      const { image = '', backgroundColor = '', margin, maxWidth = 1024 } = section?.config || {};
+      const { image = '', backgroundColor = '', margin, maxWidth = 1024, textColor } = section?.config || {};
       const { x = 'auto', y = 0 } = margin || {};
       const pageSection = (
         <sc-page-viewer-section
           id={section.id}
           display="block"
           background={{ image, color: backgroundColor }}
+          font={{color: textColor}}
           containerSize={{width: maxWidth.toString()}}
           width="100%" minHeight="100vh" height="100%"
           margin={{top: y, bottom: y, left: x, right: x}}
