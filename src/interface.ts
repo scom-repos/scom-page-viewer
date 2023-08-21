@@ -14,6 +14,7 @@ interface IPageData {
 
 interface IPageConfig {
   backgroundColor?: string;
+  backgroundImage?: string;
   maxWidth?: number|string;
   margin?: {
     x?: number|string;
@@ -24,6 +25,8 @@ interface IPageConfig {
 interface IPageSectionConfig extends IPageConfig {
   align?: AlignType;
   image?: string;
+  backdropColor?: string;
+  fullWidth: boolean;
 }
 
 interface IPageBlockData {

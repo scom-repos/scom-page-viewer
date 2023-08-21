@@ -70,6 +70,7 @@ export class ViewrPageElement extends Module {
           await pnlElm.setData(element);
         }
       } else if (moduleData?.path) {
+        const { tag } = this.data
         // let module: any = await this.getEmbedElement(rootDir, this.data.module.path);
         let module:any = await application.createElement(moduleData.path);
         if (module) {
@@ -78,6 +79,10 @@ export class ViewrPageElement extends Module {
           module.style.display = 'block';
           module.maxWidth = '100%';
           module.maxHeight = '100%';
+          if (tag) {
+            const { pt, pb, pl, pr } = tag
+            module.padding = { top: pt || 0, bottom: pb || 0, left: pl || 0, right: pr || 0 }
+          }
           this.observer.observe(module);
         }
       }
