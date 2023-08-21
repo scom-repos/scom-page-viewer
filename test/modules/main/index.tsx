@@ -1,5 +1,5 @@
-import { Module, customModule } from "@ijstech/components";
-import Viewer from "@scom/scom-page-viewer";
+import { Module, customModule } from '@ijstech/components';
+import Viewer from '@scom/scom-page-viewer';
 
 const data = {
   mode: "slideshow",
@@ -237,119 +237,19 @@ const data = {
   }
 }
 
-const mikeyData = {
-  "sections": [
-      {
-          "id": "6876b0ab-a29c-4ed8-905e-51cd515fa26c",
-          "row": 0,
-          "name": "My banner",
-          "elements": [
-              {
-                  "id": "ff69df4f-ebb0-4446-adde-9bcb8a07f25d",
-                  "column": 1,
-                  "columnSpan": 7,
-                  "type": "composite",
-                  "properties": {
-                      "url": "https://placehold.co/600x400.png",
-                      "showHeader": false,
-                      "showFooter": false
-                  },
-                  "module": {},
-                  "tag": {
-                      "width": 257,
-                      "height": 257
-                  },
-                  "elements": [
-                      {
-                          "id": "da140da9-9701-4928-b0fd-c5af250d5817",
-                          "column": 1,
-                          "columnSpan": 7,
-                          "type": "primitive",
-                          "module": {
-                              "name": "Banner",
-                              "path": "scom-banner",
-                              "category": "composables"
-                          },
-                          "properties": {
-                              "title": "Page Banner Title",
-                              "description": "page banner description",
-                              "backgroundInageUrl": ""
-                          },
-                          "tag": {
-                              "pt": 45,
-                              "pb": 34,
-                              "pl": 32,
-                              "pr": 51
-                          }
-                      }
-                  ]
-              },
-              {
-                  "id": "45d5ae59-1930-4b3c-862a-a6e3fa44b037",
-                  "column": 8,
-                  "columnSpan": 5,
-                  "properties": {
-                      "showHeader": false,
-                      "showFooter": false
-                  },
-                  "module": {
-                      "name": "Image",
-                      "path": "scom-image",
-                      "category": "composables",
-                      "disableClicked": true
-                  },
-                  "tag": {
-                      "pt": 123,
-                      "pb": 23,
-                      "pl": 54,
-                      "pr": 23
-                  }
-              }
-          ],
-          "config": {
-              "margin": {
-                  "x": "auto",
-                  "y": "0px"
-              },
-              "sectionWidth": 1000,
-              "scrollToTop": false,
-              "backdropColor": "#46b800ff",
-              "fullWidth": false,
-              "backgroundColor": "#bdbdbdff",
-              "border": false,
-              "borderColor": ""
-          }
-      }
-  ],
-  "footer": {
-      "image": "",
-      "elements": []
-  },
-  "config": {
-      "backgroundColor": "#ff0000ff",
-      "margin": {
-          "x": "auto",
-          "y": "0"
-      },
-      "sectionWidth": 1000
-  }
-}
-
 @customModule
 export default class Main extends Module {
   private viewer: Viewer;
 
   init() {
     super.init();
-    this.viewer.onShow(mikeyData);
+    this.viewer.onShow(data);
     // this.viewer.setData(data._data as any);
   }
 
   render() {
-    return (
-      <i-panel>
-        <i-scom-page-viewer id="viewer"></i-scom-page-viewer>
-      </i-panel>
-    );
+    return <i-panel>
+      <i-scom-page-viewer id="viewer"></i-scom-page-viewer>
+    </i-panel>
   }
 }
