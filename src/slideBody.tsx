@@ -83,7 +83,6 @@ export class ViewrSlideBody extends Module {
           containerSize={{width: maxWidth.toString()}}
           width="100%" minHeight="100vh" height="100%"
           margin={{top: y, bottom: y, left: x, right: x}}
-          padding={{left: '3rem', right: '3rem'}}
           mediaQueries={[
             {
               maxWidth: '767px',

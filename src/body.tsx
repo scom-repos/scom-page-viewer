@@ -65,7 +65,6 @@ export class ViewrBody extends Module {
           containerSize={{width: maxWidth.toString()}}
           width="100%"
           margin={{top: y, bottom: y, left: x, right: x}}
-          padding={{left: '3rem', right: '3rem'}}
           mediaQueries={[
             {
               maxWidth: '767px',
