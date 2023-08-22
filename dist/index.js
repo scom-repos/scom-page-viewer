@@ -209,7 +209,7 @@ define("@scom/scom-page-viewer/body.tsx", ["require", "exports", "@ijstech/compo
                 const { x = 'auto', y = 0 } = margin || {};
                 const pageSection = (this.$render("sc-page-viewer-section", { id: section.id, display: "block", background: { image, color: backgroundColor }, font: { color: textColor }, 
                     // maxWidth={maxWidth || '100%'}
-                    containerSize: { width: maxWidth.toString() }, width: "100%", margin: { top: y, bottom: y, left: x, right: x }, padding: { left: '3rem', right: '3rem' }, mediaQueries: [
+                    containerSize: { width: maxWidth.toString() }, width: "100%", margin: { top: y, bottom: y, left: x, right: x }, mediaQueries: [
                         {
                             maxWidth: '767px',
                             properties: {
@@ -653,7 +653,7 @@ define("@scom/scom-page-viewer/slideBody.tsx", ["require", "exports", "@ijstech/
                 const section = this.sections[i];
                 const { image = '', backgroundColor = '', margin, maxWidth = 1024, textColor } = (section === null || section === void 0 ? void 0 : section.config) || {};
                 const { x = 'auto', y = 0 } = margin || {};
-                const pageSection = (this.$render("sc-page-viewer-section", { id: section.id, display: "block", background: { image, color: backgroundColor }, font: { color: textColor }, containerSize: { width: maxWidth.toString() }, width: "100%", minHeight: "100vh", height: "100%", margin: { top: y, bottom: y, left: x, right: x }, padding: { left: '3rem', right: '3rem' }, mediaQueries: [
+                const pageSection = (this.$render("sc-page-viewer-section", { id: section.id, display: "block", background: { image, color: backgroundColor }, font: { color: textColor }, containerSize: { width: maxWidth.toString() }, width: "100%", minHeight: "100vh", height: "100%", margin: { top: y, bottom: y, left: x, right: x }, mediaQueries: [
                         {
                             maxWidth: '767px',
                             properties: {
