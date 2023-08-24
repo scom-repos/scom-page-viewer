@@ -165,7 +165,7 @@ define("@scom/scom-page-viewer/utils.ts", ["require", "exports"], function (requ
             data = scconfig._data;
         }
         catch (err) { }
-        return data;
+        return data || {};
     }
     exports.getDataByIpfsPath = getDataByIpfsPath;
     const DEFAULT_MAX_COLUMN = 12;
@@ -205,11 +205,11 @@ define("@scom/scom-page-viewer/body.tsx", ["require", "exports", "@ijstech/compo
             }
             // let anchors: { name: string, sectionElm: any }[] = [];
             for (const section of this.sections) {
-                const { image = '', backgroundColor = '', margin, maxWidth = 1024, customTextSize, textSize } = (section === null || section === void 0 ? void 0 : section.config) || {};
+                const { image = '', backgroundColor = '', margin, maxWidth = 1024, textColor, customTextSize, textSize } = (section === null || section === void 0 ? void 0 : section.config) || {};
                 const { x = 'auto', y = 0 } = margin || {};
-                const pageSection = (this.$render("sc-page-viewer-section", { id: section.id, class: customTextSize && textSize ? `font-${textSize}` : '', display: "block", background: { image, color: backgroundColor }, 
+                const pageSection = (this.$render("sc-page-viewer-section", { id: section.id, class: customTextSize && textSize ? `font-${textSize}` : '', display: "block", background: { image, color: backgroundColor }, font: { color: textColor }, 
                     // maxWidth={maxWidth || '100%'}
-                    containerSize: { width: maxWidth.toString() }, width: "100%", margin: { top: y, bottom: y, left: x, right: x }, padding: { left: '3rem', right: '3rem' }, mediaQueries: [
+                    containerSize: { width: maxWidth.toString() }, width: "100%", margin: { top: y, bottom: y, left: x, right: x }, mediaQueries: [
                         {
                             maxWidth: '767px',
                             properties: {
@@ -651,9 +651,9 @@ define("@scom/scom-page-viewer/slideBody.tsx", ["require", "exports", "@ijstech/
             }
             for (let i = 0; i < this.sections.length; i++) {
                 const section = this.sections[i];
-                const { image = '', backgroundColor = '', margin, maxWidth = 1024 } = (section === null || section === void 0 ? void 0 : section.config) || {};
+                const { image = '', backgroundColor = '', margin, maxWidth = 1024, textColor } = (section === null || section === void 0 ? void 0 : section.config) || {};
                 const { x = 'auto', y = 0 } = margin || {};
-                const pageSection = (this.$render("sc-page-viewer-section", { id: section.id, display: "block", background: { image, color: backgroundColor }, containerSize: { width: maxWidth.toString() }, width: "100%", minHeight: "100vh", height: "100%", margin: { top: y, bottom: y, left: x, right: x }, padding: { left: '3rem', right: '3rem' }, mediaQueries: [
+                const pageSection = (this.$render("sc-page-viewer-section", { id: section.id, display: "block", background: { image, color: backgroundColor }, font: { color: textColor }, containerSize: { width: maxWidth.toString() }, width: "100%", minHeight: "100vh", height: "100%", margin: { top: y, bottom: y, left: x, right: x }, mediaQueries: [
                         {
                             maxWidth: '767px',
                             properties: {
@@ -1042,17 +1042,20 @@ define("@scom/scom-page-viewer", ["require", "exports", "@ijstech/components", "
         getBackgroundColor() {
             return this.theme === 'light' ? lightTheme.background.main : darkTheme.background.main;
         }
+        getColor() {
+            return this.theme === 'light' ? lightTheme.text.primary : darkTheme.text.primary;
+        }
         updateContainer() {
             var _a;
             if (this.pnlContainer) {
-                const defaultColor = this.getBackgroundColor();
-                const { backgroundColor = defaultColor, backgroundImage, margin, maxWidth, customTextSize, textSize } = ((_a = this._data) === null || _a === void 0 ? void 0 : _a.config) || {};
+                const { backgroundColor = this.getBackgroundColor(), backgroundImage, margin, maxWidth, textColor = this.getColor(), customTextSize, textSize } = ((_a = this._data) === null || _a === void 0 ? void 0 : _a.config) || {};
                 if (backgroundImage)
                     this.pnlContainer.background.image = backgroundImage;
                 if (customTextSize && textSize)
                     this.classList.add(`font-${textSize}`);
                 else
                     this.pnlContainer.background = { color: backgroundColor };
+                this.pnlContainer.font = { color: textColor };
                 this.pnlContainer.maxWidth = '100%'; // maxWidth || 1280;
                 const { x = 'auto', y = 8 } = margin || {};
                 this.pnlContainer.margin = { top: y, bottom: y, left: x, right: x };
