@@ -16,6 +16,8 @@ declare module "@scom/scom-page-viewer/interface.ts" {
         backgroundColor?: string;
         backgroundImage?: string;
         maxWidth?: number | string;
+        customTextSize?: boolean;
+        textSize?: string;
         margin?: {
             x?: number | string;
             y?: number | string;

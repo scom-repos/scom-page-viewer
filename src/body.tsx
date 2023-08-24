@@ -53,11 +53,12 @@ export class ViewrBody extends Module {
     }
     // let anchors: { name: string, sectionElm: any }[] = [];
     for (const section of this.sections) {
-      const { image = '', backgroundColor = '', margin, maxWidth = 1024 } = section?.config || {};
+      const { image = '', backgroundColor = '', margin, maxWidth = 1024, customTextSize, textSize } = section?.config || {};
       const { x = 'auto', y = 0 } = margin || {};
       const pageSection = (
         <sc-page-viewer-section
           id={section.id}
+          class={customTextSize && textSize ? `font-${textSize}` : ''}
           display="block"
           background={{ image, color: backgroundColor }}
           // maxWidth={maxWidth || '100%'}
