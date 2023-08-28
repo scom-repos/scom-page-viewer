@@ -124,10 +124,11 @@ export default class Viewer extends Module {
 
   private updateContainer() {
     if (this.pnlContainer) {
-      const { backgroundColor = this.getBackgroundColor(), backgroundImage, margin, maxWidth, textColor = this.getColor(), customTextSize, textSize } = this._data?.config || {};
+      const { backgroundColor = this.getBackgroundColor(), customBackgroundColor, backgroundImage, margin, maxWidth, textColor = this.getColor(), customTextSize, textSize } = this._data?.config || {};
       if (backgroundImage) this.pnlContainer.style.backgroundImage = `url(${backgroundImage})`;
+      if (customBackgroundColor && backgroundColor) this.pnlContainer.style.backgroundColor = backgroundColor;
       if (customTextSize && textSize) this.classList.add(`font-${textSize}`)
-      else this.pnlContainer.background = {color: backgroundColor};
+
       this.pnlContainer.font = {color: textColor};
       this.pnlContainer.maxWidth = '100%'; // maxWidth || 1280;
       const { x = 'auto', y = 8 } = margin || {};

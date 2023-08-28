@@ -1048,13 +1048,13 @@ define("@scom/scom-page-viewer", ["require", "exports", "@ijstech/components", "
         updateContainer() {
             var _a;
             if (this.pnlContainer) {
-                const { backgroundColor = this.getBackgroundColor(), backgroundImage, margin, maxWidth, textColor = this.getColor(), customTextSize, textSize } = ((_a = this._data) === null || _a === void 0 ? void 0 : _a.config) || {};
+                const { backgroundColor = this.getBackgroundColor(), customBackgroundColor, backgroundImage, margin, maxWidth, textColor = this.getColor(), customTextSize, textSize } = ((_a = this._data) === null || _a === void 0 ? void 0 : _a.config) || {};
                 if (backgroundImage)
                     this.pnlContainer.style.backgroundImage = `url(${backgroundImage})`;
+                if (customBackgroundColor && backgroundColor)
+                    this.pnlContainer.style.backgroundColor = backgroundColor;
                 if (customTextSize && textSize)
                     this.classList.add(`font-${textSize}`);
-                else
-                    this.pnlContainer.background = { color: backgroundColor };
                 this.pnlContainer.font = { color: textColor };
                 this.pnlContainer.maxWidth = '100%'; // maxWidth || 1280;
                 const { x = 'auto', y = 8 } = margin || {};
