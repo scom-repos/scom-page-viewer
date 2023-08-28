@@ -14,6 +14,7 @@ declare module "@scom/scom-page-viewer/interface.ts" {
     }
     interface IPageConfig {
         backgroundColor?: string;
+        customBackgroundColor?: boolean;
         backgroundImage?: string;
         maxWidth?: number | string;
         customTextSize?: boolean;
@@ -22,6 +23,7 @@ declare module "@scom/scom-page-viewer/interface.ts" {
             x?: number | string;
             y?: number | string;
         };
+        customTextColor?: boolean;
         textColor?: string;
     }
     interface IPageSectionConfig extends IPageConfig {
