@@ -55,6 +55,8 @@ export class ViewrBody extends Module {
     for (const section of this.sections) {
       const { image = '', backgroundColor = '', margin, maxWidth = 1024, textColor, customTextSize, textSize } = section?.config || {};
       const { x = 'auto', y = 0 } = margin || {};
+      const {top = 0, bottom = 0, left = 0, right = 0} = padding || {};
+      console.dir(padding)
       const pageSection = (
         <sc-page-viewer-section
           id={section.id}
@@ -66,6 +68,7 @@ export class ViewrBody extends Module {
           containerSize={{width: maxWidth.toString()}}
           width="100%"
           margin={{top: y, bottom: y, left: x, right: x}}
+          padding={{top, bottom, left, right}}
           mediaQueries={[
             {
               maxWidth: '767px',

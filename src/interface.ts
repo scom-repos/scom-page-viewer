@@ -32,6 +32,12 @@ interface IPageSectionConfig extends IPageConfig {
   image?: string;
   backdropColor?: string;
   fullWidth: boolean;
+  padding?: {
+    top?: number|string;
+    bottom?: number|string;
+    left?: number|string;
+    right?: number|string;
+  }
 }
 
 interface IPageBlockData {
