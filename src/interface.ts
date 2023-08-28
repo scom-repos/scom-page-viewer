@@ -23,6 +23,7 @@ interface IPageConfig {
     x?: number|string;
     y?: number|string;
   };
+  customTextColor?: boolean;
   textColor?: string;
 }
 

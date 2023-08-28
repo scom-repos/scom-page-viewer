@@ -23,6 +23,7 @@ declare module "@scom/scom-page-viewer/interface.ts" {
             x?: number | string;
             y?: number | string;
         };
+        customTextColor?: boolean;
         textColor?: string;
     }
     interface IPageSectionConfig extends IPageConfig {
