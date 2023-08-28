@@ -237,13 +237,133 @@ const data = {
   }
 }
 
+
+const mikeyData = {
+  sections: [
+    {
+      id: "6876b0ab-a29c-4ed8-905e-51cd515fa26c",
+      row: 0,
+      name: "My banner",
+      elements: [
+        {
+          id: "ff69df4f-ebb0-4446-adde-9bcb8a07f25d",
+          column: 1,
+          columnSpan: 7,
+          type: "composite",
+          properties: {
+            url: "https://placehold.co/600x400.png",
+            showHeader: false,
+            showFooter: false,
+          },
+          module: {},
+          tag: {
+            width: 257,
+            height: 257,
+          },
+          elements: [
+            {
+              id: "da140da9-9701-4928-b0fd-c5af250d5817",
+              column: 1,
+              columnSpan: 7,
+              type: "primitive",
+              module: {
+                name: "Banner",
+                path: "scom-banner",
+                category: "composables",
+              },
+              properties: {
+                title: "Page Banner Title",
+                description: "page banner description",
+                backgroundInageUrl: "",
+              },
+              tag: {
+                pt: 45,
+                pb: 34,
+                pl: 32,
+                pr: 51,
+              },
+            },
+          ],
+        },
+        {
+          id: "45d5ae59-1930-4b3c-862a-a6e3fa44b037",
+          column: 8,
+          columnSpan: 5,
+          properties: {
+            showHeader: false,
+            showFooter: false,
+          },
+          module: {
+            name: "Image",
+            path: "scom-image",
+            category: "composables",
+            disableClicked: true,
+          },
+          tag: {
+            pt: 123,
+            pb: 23,
+            pl: 54,
+            pr: 23,
+          },
+        },
+      ],
+      config: {
+        backdropColor: "#46b800ff",
+        backdropImage: undefined,
+        backgroundImage: undefined,
+        border: false,
+        borderColor: "",
+        customBackdrop: false,
+        customBackgroundColor: false,
+        customTextColor: false,
+        customTextSize: true,
+        fullWidth: false,
+        margin: {
+          x: "auto",
+          y: "0px",
+        },
+        pb: undefined,
+        pl: undefined,
+        plr: undefined,
+        pr: undefined,
+        pt: undefined,
+        ptb: undefined,
+        scrollToTop: false,
+        sectionWidth: 1000,
+        backgroundColor: "#bdbdbdff",
+        textColor: "#000000de",
+        textSize: "xl",
+      },
+    },
+  ],
+  footer: {
+    image: "",
+    elements: [],
+  },
+  config: {
+    backgroundColor: "#ff0000ff",
+    customBackgroundColor: false,
+    customTextColor: false,
+    customTextSize: true,
+    margin: {
+      x: "auto",
+      y: "0",
+    },
+    plr: undefined,
+    ptb: undefined,
+    scrollToTop: false,
+    sectionWidth: 1000,
+    textColor: "#000000de",
+    textSize: "xs",
+  },
+};
 @customModule
 export default class Main extends Module {
   private viewer: Viewer;
 
   init() {
     super.init();
-    this.viewer.onShow(data);
+    this.viewer.onShow(mikeyData);
     // this.viewer.setData(data._data as any);
   }
 

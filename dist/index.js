@@ -1051,12 +1051,16 @@ define("@scom/scom-page-viewer", ["require", "exports", "@ijstech/components", "
         updateContainer() {
             var _a;
             if (this.pnlContainer) {
-                const { backgroundColor = this.getBackgroundColor(), backgroundImage, margin, maxWidth, textColor = this.getColor(), customTextSize, textSize } = ((_a = this._data) === null || _a === void 0 ? void 0 : _a.config) || {};
+                const { customBackgroundColor, backgroundColor, backgroundImage, margin, maxWidth, customTextColor, textColor, customTextSize, textSize } = ((_a = this._data) === null || _a === void 0 ? void 0 : _a.config) || {};
                 if (backgroundImage)
-                    this.pnlContainer.background.image = backgroundImage;
-                else
-                    this.pnlContainer.background = { color: backgroundColor };
-                this.pnlContainer.font = { color: textColor };
+                    this.pnlContainer.style.backgroundImage = `url(${backgroundImage})`;
+                this.pnlContainer.style.backgroundColor =
+                    customBackgroundColor && backgroundColor
+                        ? backgroundColor
+                        : this.getBackgroundColor();
+                this.pnlContainer.font = { color: customTextColor && textColor ? textColor : this.getColor() };
+                if (customTextSize && textSize)
+                    this.classList.add(`font-${textSize}`);
                 this.pnlContainer.maxWidth = '100%'; // maxWidth || 1280;
                 const { x = 'auto', y = 8 } = margin || {};
                 this.pnlContainer.margin = { top: y, bottom: y, left: x, right: x };

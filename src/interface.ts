@@ -14,6 +14,7 @@ interface IPageData {
 
 interface IPageConfig {
   backgroundColor?: string;
+  customBackgroundColor?: boolean;
   backgroundImage?: string;
   maxWidth?: number|string;
   customTextSize?: boolean;
@@ -22,6 +23,7 @@ interface IPageConfig {
     x?: number|string;
     y?: number|string;
   };
+  customTextColor?: boolean;
   textColor?: string;
 }
 
