@@ -1050,7 +1050,7 @@ define("@scom/scom-page-viewer", ["require", "exports", "@ijstech/components", "
             if (this.pnlContainer) {
                 const { backgroundColor = this.getBackgroundColor(), backgroundImage, margin, maxWidth, textColor = this.getColor(), customTextSize, textSize } = ((_a = this._data) === null || _a === void 0 ? void 0 : _a.config) || {};
                 if (backgroundImage)
-                    this.pnlContainer.background.image = backgroundImage;
+                    this.pnlContainer.style.backgroundImage = `url(${backgroundImage})`;
                 if (customTextSize && textSize)
                     this.classList.add(`font-${textSize}`);
                 else

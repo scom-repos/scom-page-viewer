@@ -125,7 +125,7 @@ export default class Viewer extends Module {
   private updateContainer() {
     if (this.pnlContainer) {
       const { backgroundColor = this.getBackgroundColor(), backgroundImage, margin, maxWidth, textColor = this.getColor(), customTextSize, textSize } = this._data?.config || {};
-      if (backgroundImage) this.pnlContainer.background.image = backgroundImage;
+      if (backgroundImage) this.pnlContainer.style.backgroundImage = `url(${backgroundImage})`;
       if (customTextSize && textSize) this.classList.add(`font-${textSize}`)
       else this.pnlContainer.background = {color: backgroundColor};
       this.pnlContainer.font = {color: textColor};
