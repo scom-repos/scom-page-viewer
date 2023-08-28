@@ -205,11 +205,10 @@ define("@scom/scom-page-viewer/body.tsx", ["require", "exports", "@ijstech/compo
             }
             // let anchors: { name: string, sectionElm: any }[] = [];
             for (const section of this.sections) {
-                const { image = '', backgroundColor = '', margin, maxWidth = 1024, textColor, padding } = (section === null || section === void 0 ? void 0 : section.config) || {};
+                const { image = '', backgroundColor = '', margin, maxWidth = 1024, textColor, padding, customTextSize, textSize } = (section === null || section === void 0 ? void 0 : section.config) || {};
                 const { x = 'auto', y = 0 } = margin || {};
                 const { top = 0, bottom = 0, left = 0, right = 0 } = padding || {};
-                console.dir(padding);
-                const pageSection = (this.$render("sc-page-viewer-section", { id: section.id, display: "block", background: { image, color: backgroundColor }, font: { color: textColor }, 
+                const pageSection = (this.$render("sc-page-viewer-section", { id: section.id, display: "block", class: "i-page-section", background: { image, color: backgroundColor }, font: { color: textColor }, 
                     // maxWidth={maxWidth || '100%'}
                     containerSize: { width: maxWidth.toString() }, width: "100%", margin: { top: y, bottom: y, left: x, right: x }, padding: { top, bottom, left, right }, mediaQueries: [
                         {
@@ -220,6 +219,8 @@ define("@scom/scom-page-viewer/body.tsx", ["require", "exports", "@ijstech/compo
                         }
                     ] }));
                 this.pnlSections.append(pageSection);
+                if (customTextSize && textSize)
+                    pageSection.classList.add(`font-${textSize}`);
                 await pageSection.setData(section);
                 // const anchorName = section.anchorName;
                 // if (anchorName) {
@@ -1050,7 +1051,7 @@ define("@scom/scom-page-viewer", ["require", "exports", "@ijstech/components", "
         updateContainer() {
             var _a;
             if (this.pnlContainer) {
-                const { backgroundColor = this.getBackgroundColor(), backgroundImage, margin, maxWidth, textColor = this.getColor() } = ((_a = this._data) === null || _a === void 0 ? void 0 : _a.config) || {};
+                const { backgroundColor = this.getBackgroundColor(), backgroundImage, margin, maxWidth, textColor = this.getColor(), customTextSize, textSize } = ((_a = this._data) === null || _a === void 0 ? void 0 : _a.config) || {};
                 if (backgroundImage)
                     this.pnlContainer.background.image = backgroundImage;
                 else
@@ -1059,6 +1060,8 @@ define("@scom/scom-page-viewer", ["require", "exports", "@ijstech/components", "
                 this.pnlContainer.maxWidth = '100%'; // maxWidth || 1280;
                 const { x = 'auto', y = 8 } = margin || {};
                 this.pnlContainer.margin = { top: y, bottom: y, left: x, right: x };
+                if (customTextSize && textSize)
+                    this.pnlContainer.classList.add(`font-${textSize}`);
             }
         }
         render() {

@@ -16,6 +16,8 @@ interface IPageConfig {
   backgroundColor?: string;
   backgroundImage?: string;
   maxWidth?: number|string;
+  customTextSize?: boolean;
+  textSize?: string;
   margin?: {
     x?: number|string;
     y?: number|string;
@@ -28,6 +30,8 @@ interface IPageSectionConfig extends IPageConfig {
   image?: string;
   backdropColor?: string;
   fullWidth: boolean;
+  customTextSize?: boolean,
+  textSize?: string
   padding?: {
     top?: number|string;
     bottom?: number|string;

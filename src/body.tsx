@@ -53,14 +53,15 @@ export class ViewrBody extends Module {
     }
     // let anchors: { name: string, sectionElm: any }[] = [];
     for (const section of this.sections) {
-      const { image = '', backgroundColor = '', margin, maxWidth = 1024, textColor, padding } = section?.config || {};
+      const { image = '', backgroundColor = '', margin, maxWidth = 1024, textColor, padding, customTextSize, textSize } = section?.config || {};
       const { x = 'auto', y = 0 } = margin || {};
       const {top = 0, bottom = 0, left = 0, right = 0} = padding || {};
-      console.dir(padding)
+      
       const pageSection = (
         <sc-page-viewer-section
           id={section.id}
           display="block"
+          class="i-page-section"
           background={{ image, color: backgroundColor }}
           font={{color: textColor}}
           // maxWidth={maxWidth || '100%'}
@@ -78,6 +79,8 @@ export class ViewrBody extends Module {
           ]}
         ></sc-page-viewer-section>);
       this.pnlSections.append(pageSection);
+      if(customTextSize && textSize)
+        pageSection.classList.add(`font-${textSize}`)
       await pageSection.setData(section);
       // const anchorName = section.anchorName;
       // if (anchorName) {
