@@ -449,13 +449,26 @@ define("@scom/scom-page-viewer/section.tsx", ["require", "exports", "@ijstech/co
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.ViewrSection = void 0;
+    const lightTheme = components_8.Styles.Theme.defaultTheme;
+    const darkTheme = components_8.Styles.Theme.darkTheme;
     let ViewrSection = class ViewrSection extends components_8.Module {
+        constructor() {
+            super(...arguments);
+            this._theme = 'light';
+        }
         get size() {
             return this._size || {};
         }
         set size(value) {
             this._size = value;
             this.updateContainerSize();
+        }
+        get theme() {
+            var _a;
+            return (_a = this._theme) !== null && _a !== void 0 ? _a : 'light';
+        }
+        set theme(value) {
+            this._theme = value;
         }
         clear() {
             this.pnlSection.clearInnerHTML();
@@ -473,21 +486,31 @@ define("@scom/scom-page-viewer/section.tsx", ["require", "exports", "@ijstech/co
                 this.pnlSection.margin = { left: 'auto', right: 'auto' };
             }
         }
+        getBackgroundColor() {
+            return this.theme === 'light' ? lightTheme.background.main : darkTheme.background.main;
+        }
         async setData(sectionData) {
             const { elements = [], config = {} } = sectionData;
-            const { backdropColor, backdropImage, backgroundColor, backgroundImage, fullWidth, sectionWidth } = config;
-            if (!fullWidth) {
+            const { customBackdrop, backdropImage, backdropColor, customBackgroundColor, backgroundColor, fullWidth, sectionWidth } = config;
+            console.log('========= section config: ', config);
+            if (!fullWidth && customBackdrop) {
+                // if (border) {
+                //     this.pnlRowWrap.border = { width: 2, style: 'solid', color: borderColor || Theme.divider }
+                // } else {
+                //     this.pnlRowWrap.border.width = 0
+                // }
                 if (backdropImage)
                     this.background.image = backdropImage;
                 else if (backdropColor)
                     this.background.color = backdropColor;
             }
             else {
-                if (backgroundColor)
-                    this.background.color = backgroundColor;
+                this.background.image = '';
+                this.background.color = '';
             }
-            if (backgroundColor)
-                this.pnlSection.background.color = backgroundColor;
+            this.pnlSection.background.color = customBackgroundColor && backgroundColor
+                ? backgroundColor
+                : this.getBackgroundColor();
             this.pnlSection.maxWidth = sectionWidth !== null && sectionWidth !== void 0 ? sectionWidth : '100%';
             this.sectionData = JSON.parse(JSON.stringify(sectionData));
             for (let i = 0; i < elements.length; i++) {
@@ -1049,9 +1072,10 @@ define("@scom/scom-page-viewer", ["require", "exports", "@ijstech/components", "
             return this.theme === 'light' ? lightTheme.text.primary : darkTheme.text.primary;
         }
         updateContainer() {
-            var _a;
+            var _a, _b;
             if (this.pnlContainer) {
                 const { customBackgroundColor, backgroundColor, backgroundImage, margin, maxWidth, customTextColor, textColor, customTextSize, textSize } = ((_a = this._data) === null || _a === void 0 ? void 0 : _a.config) || {};
+                console.log('------------------ page config: ', (_b = this._data) === null || _b === void 0 ? void 0 : _b.config);
                 if (backgroundImage)
                     this.pnlContainer.style.backgroundImage = `url(${backgroundImage})`;
                 this.pnlContainer.style.backgroundColor =

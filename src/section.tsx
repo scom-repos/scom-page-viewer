@@ -57,16 +57,24 @@ export class ViewrSection extends Module {
 
   async setData(sectionData: IPageSection) {
     const { elements = [], config = {} as any } = sectionData;
-    const { backdropColor, backdropImage, backgroundColor, backgroundImage, fullWidth, sectionWidth } = config;
-    if (!fullWidth) {
-      if(backdropImage)
-          this.background.image = backdropImage;
-      else if (backdropColor)
-          this.background.color = backdropColor;
+    const { customBackdrop, backdropImage, backdropColor, customBackgroundColor, backgroundColor, fullWidth, sectionWidth } = config;
+
+    if (!fullWidth && customBackdrop) {
+      // if (border) {
+      //     this.pnlRowWrap.border = { width: 2, style: 'solid', color: borderColor || Theme.divider }
+      // } else {
+      //     this.pnlRowWrap.border.width = 0
+      // }
+        if (backdropImage) this.background.image = backdropImage;
+        else if (backdropColor) this.background.color = backdropColor;
     } else {
-        if (backgroundColor) this.background.color = backgroundColor;
+      this.background.image = '';
+      this.background.color = '';
     }
-    if (backgroundColor) this.pnlSection.background.color = backgroundColor;
+
+    this.pnlSection.background.color =
+      customBackgroundColor && backgroundColor ? backgroundColor : "";
+
     this.pnlSection.maxWidth = sectionWidth ?? '100%';
     this.sectionData = JSON.parse(JSON.stringify(sectionData));
     for (let i = 0; i < elements.length; i++) {

@@ -279,7 +279,7 @@ declare module "@scom/scom-page-viewer/sliderBody.css.ts" {
 /// <amd-module name="@scom/scom-page-viewer/section.tsx" />
 declare module "@scom/scom-page-viewer/section.tsx" {
     import { ControlElement, Module } from "@ijstech/components";
-    import { IPageSection } from "@scom/scom-page-viewer/interface.ts";
+    import { IPageSection, ThemeType } from "@scom/scom-page-viewer/interface.ts";
     global {
         namespace JSX {
             interface IntrinsicElements {
@@ -295,6 +295,7 @@ declare module "@scom/scom-page-viewer/section.tsx" {
     }
     export class ViewrSection extends Module {
         private pnlSection;
+        private _theme;
         private _size;
         private sectionData;
         get size(): {
@@ -305,9 +306,12 @@ declare module "@scom/scom-page-viewer/section.tsx" {
             width?: string;
             height?: string;
         });
+        get theme(): ThemeType;
+        set theme(value: ThemeType);
         clear(): void;
         init(): Promise<void>;
         updateContainerSize(): void;
+        private getBackgroundColor;
         setData(sectionData: IPageSection): Promise<void>;
         private updateElementConfig;
         private updateAlign;
