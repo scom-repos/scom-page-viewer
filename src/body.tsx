@@ -62,11 +62,11 @@ export class ViewrBody extends Module {
           display="block"
           class="i-page-section"
           font={{color: `var(--custom-text-color, var(--text-primary))`}}
-          // maxWidth={maxWidth || '100%'}
           containerSize={{width: maxWidth.toString()}}
-          width="100%"
           margin={{top: y, bottom: y, left: x, right: x}}
-          padding={{ top: '1rem', bottom: '1rem', left: '1rem', right: '1rem' }}
+          // maxWidth={maxWidth || '100%'}
+          // width="100%"
+          // padding={{ top: '1rem', bottom: '1rem', left: '1rem', right: '1rem' }}
           mediaQueries={[
             {
               maxWidth: '767px',
