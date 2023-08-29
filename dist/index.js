@@ -483,10 +483,14 @@ define("@scom/scom-page-viewer/section.tsx", ["require", "exports", "@ijstech/co
             const { elements = [], config = {} } = sectionData;
             const { customBackdrop, backdropImage, backdropColor, customBackgroundColor, backgroundColor, fullWidth, padding, sectionWidth, border, borderColor } = config;
             if (!fullWidth && customBackdrop) {
-                if (backdropImage)
+                if (backdropImage) {
+                    this.width = "100%";
                     this.background.image = backdropImage;
-                else if (backdropColor)
+                }
+                else if (backdropColor) {
+                    this.width = "100%";
                     this.background.color = backdropColor;
+                }
             }
             else {
                 this.background.image = '';
