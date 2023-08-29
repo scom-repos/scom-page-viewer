@@ -205,12 +205,11 @@ define("@scom/scom-page-viewer/body.tsx", ["require", "exports", "@ijstech/compo
             }
             // let anchors: { name: string, sectionElm: any }[] = [];
             for (const section of this.sections) {
-                const { image = '', backgroundColor = '', margin, maxWidth = 1024, textColor, padding, customTextSize, textSize } = (section === null || section === void 0 ? void 0 : section.config) || {};
+                const { image = '', backgroundColor = '', margin, maxWidth = 1024, customTextColor, textColor = '', customTextSize, textSize } = (section === null || section === void 0 ? void 0 : section.config) || {};
                 const { x = 'auto', y = 0 } = margin || {};
-                const { top = 0, bottom = 0, left = 0, right = 0 } = padding || {};
-                const pageSection = (this.$render("sc-page-viewer-section", { id: section.id, display: "block", class: "i-page-section", background: { image, color: backgroundColor }, font: { color: textColor }, 
+                const pageSection = (this.$render("sc-page-viewer-section", { id: section.id, display: "block", class: "i-page-section", background: { image, color: backgroundColor }, font: { color: customTextColor && textColor }, 
                     // maxWidth={maxWidth || '100%'}
-                    containerSize: { width: maxWidth.toString() }, width: "100%", margin: { top: y, bottom: y, left: x, right: x }, padding: { top, bottom, left, right }, mediaQueries: [
+                    containerSize: { width: maxWidth.toString() }, width: "100%", margin: { top: y, bottom: y, left: x, right: x }, padding: { top: '1rem', bottom: '1rem', left: '1rem', right: '1rem' }, mediaQueries: [
                         {
                             maxWidth: '767px',
                             properties: {
@@ -449,6 +448,7 @@ define("@scom/scom-page-viewer/section.tsx", ["require", "exports", "@ijstech/co
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.ViewrSection = void 0;
+    const Theme = components_8.Styles.Theme.ThemeVars;
     let ViewrSection = class ViewrSection extends components_8.Module {
         get size() {
             return this._size || {};
@@ -475,13 +475,8 @@ define("@scom/scom-page-viewer/section.tsx", ["require", "exports", "@ijstech/co
         }
         async setData(sectionData) {
             const { elements = [], config = {} } = sectionData;
-            const { customBackdrop, backdropImage, backdropColor, customBackgroundColor, backgroundColor, fullWidth, sectionWidth } = config;
+            const { customBackdrop, backdropImage, backdropColor, customBackgroundColor, backgroundColor, fullWidth, padding, sectionWidth, border, borderColor } = config;
             if (!fullWidth && customBackdrop) {
-                // if (border) {
-                //     this.pnlRowWrap.border = { width: 2, style: 'solid', color: borderColor || Theme.divider }
-                // } else {
-                //     this.pnlRowWrap.border.width = 0
-                // }
                 if (backdropImage)
                     this.background.image = backdropImage;
                 else if (backdropColor)
@@ -491,6 +486,14 @@ define("@scom/scom-page-viewer/section.tsx", ["require", "exports", "@ijstech/co
                 this.background.image = '';
                 this.background.color = '';
             }
+            if (!fullWidth && border) {
+                this.pnlSection.border = { width: 2, style: 'solid', color: borderColor || Theme.divider };
+            }
+            else {
+                this.pnlSection.border.width = 0;
+            }
+            const { top = 0, bottom = 0, left = 0, right = 0 } = padding || {};
+            this.pnlSection.padding = { top, bottom, left, right };
             this.pnlSection.background.color =
                 customBackgroundColor && backgroundColor ? backgroundColor : "";
             this.pnlSection.maxWidth = sectionWidth !== null && sectionWidth !== void 0 ? sectionWidth : '100%';
