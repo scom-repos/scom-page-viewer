@@ -205,10 +205,10 @@ define("@scom/scom-page-viewer/body.tsx", ["require", "exports", "@ijstech/compo
             }
             // let anchors: { name: string, sectionElm: any }[] = [];
             for (const section of this.sections) {
-                const { image = '', backgroundColor = '', margin, maxWidth = 1024, textColor, padding, customTextSize, textSize } = (section === null || section === void 0 ? void 0 : section.config) || {};
+                const { image = '', customBackgroundColor, backgroundColor = '', margin, maxWidth = 1024, customTextColor, textColor, padding, customTextSize, textSize } = (section === null || section === void 0 ? void 0 : section.config) || {};
                 const { x = 'auto', y = 0 } = margin || {};
                 const { top = 0, bottom = 0, left = 0, right = 0 } = padding || {};
-                const pageSection = (this.$render("sc-page-viewer-section", { id: section.id, display: "block", class: "i-page-section", background: { image, color: backgroundColor }, font: { color: textColor }, 
+                const pageSection = (this.$render("sc-page-viewer-section", { id: section.id, display: "block", class: "i-page-section", font: { color: `var(--custom-text-color, var(--text-primary))` }, 
                     // maxWidth={maxWidth || '100%'}
                     containerSize: { width: maxWidth.toString() }, width: "100%", margin: { top: y, bottom: y, left: x, right: x }, padding: { top, bottom, left, right }, mediaQueries: [
                         {
@@ -218,6 +218,10 @@ define("@scom/scom-page-viewer/body.tsx", ["require", "exports", "@ijstech/compo
                             }
                         }
                     ] }));
+                if (customTextColor && textColor)
+                    pageSection.style.setProperty('--custom-text-color', textColor);
+                if (customBackgroundColor && backgroundColor)
+                    pageSection.style.setProperty('--custom-background-color', backgroundColor);
                 this.pnlSections.append(pageSection);
                 if (customTextSize && textSize)
                     pageSection.classList.add(`font-${textSize}`);
@@ -489,7 +493,7 @@ define("@scom/scom-page-viewer/section.tsx", ["require", "exports", "@ijstech/co
             }
             else {
                 this.background.image = '';
-                this.background.color = '';
+                this.background.color = `var(--custom-background-color, var(--background-main))`;
             }
             this.pnlSection.background.color =
                 customBackgroundColor && backgroundColor ? backgroundColor : "";
@@ -659,9 +663,9 @@ define("@scom/scom-page-viewer/slideBody.tsx", ["require", "exports", "@ijstech/
             }
             for (let i = 0; i < this.sections.length; i++) {
                 const section = this.sections[i];
-                const { image = '', backgroundColor = '', margin, maxWidth = 1024, textColor } = (section === null || section === void 0 ? void 0 : section.config) || {};
+                const { image = '', backgroundColor = '', margin, maxWidth = 1024, customTextColor, textColor, customBackgroundColor } = (section === null || section === void 0 ? void 0 : section.config) || {};
                 const { x = 'auto', y = 0 } = margin || {};
-                const pageSection = (this.$render("sc-page-viewer-section", { id: section.id, display: "block", background: { image, color: backgroundColor }, font: { color: textColor }, containerSize: { width: maxWidth.toString() }, width: "100%", minHeight: "100vh", height: "100%", margin: { top: y, bottom: y, left: x, right: x }, mediaQueries: [
+                const pageSection = (this.$render("sc-page-viewer-section", { id: section.id, display: "block", background: { image, color: `var(--custom-background-color, var(--background-main))` }, font: { color: `var(--custom-text-color, var(--text-primary))` }, containerSize: { width: maxWidth.toString() }, width: "100%", minHeight: "100vh", height: "100%", margin: { top: y, bottom: y, left: x, right: x }, mediaQueries: [
                         {
                             maxWidth: '767px',
                             properties: {
@@ -669,6 +673,10 @@ define("@scom/scom-page-viewer/slideBody.tsx", ["require", "exports", "@ijstech/
                             }
                         }
                     ] }));
+                if (customTextColor && textColor)
+                    pageSection.style.setProperty('--custom-text-color', textColor);
+                if (customBackgroundColor && backgroundColor)
+                    pageSection.style.setProperty('--custom-background-color', backgroundColor);
                 this.pnlSections.append(pageSection);
                 await pageSection.setData(section);
             }
