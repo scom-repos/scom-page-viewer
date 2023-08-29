@@ -81,6 +81,7 @@ export class ViewrSection extends Module {
     this.pnlSection.background.color =
       customBackgroundColor && backgroundColor ? backgroundColor : "";
 
+    if (fullWidth) this.width = "100%";
     this.pnlSection.maxWidth = sectionWidth ?? '100%';
     this.sectionData = JSON.parse(JSON.stringify(sectionData));
     for (let i = 0; i < elements.length; i++) {

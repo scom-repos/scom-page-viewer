@@ -207,9 +207,11 @@ define("@scom/scom-page-viewer/body.tsx", ["require", "exports", "@ijstech/compo
             for (const section of this.sections) {
                 const { image = '', customBackgroundColor, backgroundColor = '', margin, maxWidth = 1024, customTextColor, textColor, customTextSize, textSize } = (section === null || section === void 0 ? void 0 : section.config) || {};
                 const { x = 'auto', y = 0 } = margin || {};
-                const pageSection = (this.$render("sc-page-viewer-section", { id: section.id, display: "block", class: "i-page-section", font: { color: `var(--custom-text-color, var(--text-primary))` }, 
+                const pageSection = (this.$render("sc-page-viewer-section", { id: section.id, display: "block", class: "i-page-section", font: { color: `var(--custom-text-color, var(--text-primary))` }, containerSize: { width: maxWidth.toString() }, margin: { top: y, bottom: y, left: x, right: x }, 
                     // maxWidth={maxWidth || '100%'}
-                    containerSize: { width: maxWidth.toString() }, width: "100%", margin: { top: y, bottom: y, left: x, right: x }, padding: { top: '1rem', bottom: '1rem', left: '1rem', right: '1rem' }, mediaQueries: [
+                    // width="100%"
+                    // padding={{ top: '1rem', bottom: '1rem', left: '1rem', right: '1rem' }}
+                    mediaQueries: [
                         {
                             maxWidth: '767px',
                             properties: {
@@ -500,6 +502,8 @@ define("@scom/scom-page-viewer/section.tsx", ["require", "exports", "@ijstech/co
             this.pnlSection.padding = { top, bottom, left, right };
             this.pnlSection.background.color =
                 customBackgroundColor && backgroundColor ? backgroundColor : "";
+            if (fullWidth)
+                this.width = "100%";
             this.pnlSection.maxWidth = sectionWidth !== null && sectionWidth !== void 0 ? sectionWidth : '100%';
             this.sectionData = JSON.parse(JSON.stringify(sectionData));
             for (let i = 0; i < elements.length; i++) {
