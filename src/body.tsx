@@ -53,16 +53,15 @@ export class ViewrBody extends Module {
     }
     // let anchors: { name: string, sectionElm: any }[] = [];
     for (const section of this.sections) {
-      const { image = '', backgroundColor = '', margin, maxWidth = 1024, customTextColor, textColor = '', customTextSize, textSize } = section?.config || {};
-      const { x = 'auto', y = 0 } = margin || {};
-      
+    const { image = '', customBackgroundColor, backgroundColor = '', margin, maxWidth = 1024, customTextColor, textColor, customTextSize, textSize } = section?.config || {};
+    const { x = 'auto', y = 0 } = margin || {};
+
       const pageSection = (
         <sc-page-viewer-section
           id={section.id}
           display="block"
           class="i-page-section"
-          background={{ image, color: backgroundColor }}
-          font={{ color: customTextColor && textColor }}
+          font={{color: `var(--custom-text-color, var(--text-primary))`}}
           // maxWidth={maxWidth || '100%'}
           containerSize={{width: maxWidth.toString()}}
           width="100%"
@@ -77,6 +76,10 @@ export class ViewrBody extends Module {
             }
           ]}
         ></sc-page-viewer-section>);
+      if (customTextColor && textColor)
+        pageSection.style.setProperty('--custom-text-color', textColor);
+      if (customBackgroundColor && backgroundColor)
+        pageSection.style.setProperty('--custom-background-color', backgroundColor);
       this.pnlSections.append(pageSection);
       if(customTextSize && textSize)
         pageSection.classList.add(`font-${textSize}`)

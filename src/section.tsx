@@ -66,7 +66,7 @@ export class ViewrSection extends Module {
         else if (backdropColor) this.background.color = backdropColor;
     } else {
       this.background.image = '';
-      this.background.color = '';
+      this.background.color = `var(--custom-background-color, var(--background-main))`;
     }
 
     if (!fullWidth && border) {
