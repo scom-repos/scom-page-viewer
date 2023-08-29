@@ -53,9 +53,9 @@ export class ViewrBody extends Module {
     }
     // let anchors: { name: string, sectionElm: any }[] = [];
     for (const section of this.sections) {
-      const { image = '', customBackgroundColor, backgroundColor = '', margin, maxWidth = 1024, customTextColor, textColor, padding, customTextSize, textSize } = section?.config || {};
-      const { x = 'auto', y = 0 } = margin || {};
-      const { top = 0, bottom = 0, left = 0, right = 0 } = padding || {};
+    const { image = '', customBackgroundColor, backgroundColor = '', margin, maxWidth = 1024, customTextColor, textColor, customTextSize, textSize } = section?.config || {};
+    const { x = 'auto', y = 0 } = margin || {};
+
       const pageSection = (
         <sc-page-viewer-section
           id={section.id}
@@ -66,7 +66,7 @@ export class ViewrBody extends Module {
           containerSize={{width: maxWidth.toString()}}
           width="100%"
           margin={{top: y, bottom: y, left: x, right: x}}
-          padding={{top, bottom, left, right}}
+          padding={{ top: '1rem', bottom: '1rem', left: '1rem', right: '1rem' }}
           mediaQueries={[
             {
               maxWidth: '767px',

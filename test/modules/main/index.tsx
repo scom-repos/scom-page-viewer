@@ -311,11 +311,11 @@ const mikeyData = {
         backdropColor: "#46b800ff",
         backdropImage: undefined,
         backgroundImage: undefined,
-        border: false,
-        borderColor: "",
+        border: true,
+        borderColor: "purple",
         customBackdrop: true,
         customBackgroundColor: true,
-        customTextColor: false,
+        customTextColor: true,
         customTextSize: true,
         fullWidth: false,
         margin: {
@@ -328,7 +328,7 @@ const mikeyData = {
         scrollToTop: false,
         sectionWidth: 1000,
         backgroundColor: "#bdbdbdff",
-        textColor: "#000000de",
+        textColor: "red",
         textSize: "xl",
       },
     },
@@ -340,7 +340,7 @@ const mikeyData = {
   config: {
     backgroundColor: "#ff0000ff",
     customBackgroundColor: false,
-    customTextColor: false,
+    customTextColor: true,
     customTextSize: true,
     margin: {
       x: "auto",
@@ -350,7 +350,7 @@ const mikeyData = {
     ptb: undefined,
     scrollToTop: false,
     sectionWidth: 1000,
-    textColor: "#000000de",
+    textColor: "green",
     textSize: "xs",
   },
 };

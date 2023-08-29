@@ -1,7 +1,9 @@
-import { Control, ControlElement, customElements, GridLayout, Module } from "@ijstech/components";
+import { Control, ControlElement, customElements, GridLayout, Module, Styles } from "@ijstech/components";
 import { IPageSectionConfig, IPageElement, IPageSection, IDisplaySettings } from "./interface";
 import { DEFAULT_MAX_COLUMN, GAP_WIDTH } from "./utils";
 import { getDefaultDisplaySettings, maxContainerWidths } from "./store";
+
+const Theme = Styles.Theme.ThemeVars;
 
 declare global {
   namespace JSX {
@@ -57,20 +59,24 @@ export class ViewrSection extends Module {
 
   async setData(sectionData: IPageSection) {
     const { elements = [], config = {} as any } = sectionData;
-    const { customBackdrop, backdropImage, backdropColor, customBackgroundColor, backgroundColor, fullWidth, sectionWidth } = config;
+    const { customBackdrop, backdropImage, backdropColor, customBackgroundColor, backgroundColor, fullWidth, padding, sectionWidth, border, borderColor } = config;
 
     if (!fullWidth && customBackdrop) {
-      // if (border) {
-      //     this.pnlRowWrap.border = { width: 2, style: 'solid', color: borderColor || Theme.divider }
-      // } else {
-      //     this.pnlRowWrap.border.width = 0
-      // }
         if (backdropImage) this.background.image = backdropImage;
         else if (backdropColor) this.background.color = backdropColor;
     } else {
       this.background.image = '';
       this.background.color = `var(--custom-background-color, var(--background-main))`;
     }
+
+    if (!fullWidth && border) {
+      this.pnlSection.border = { width: 2, style: 'solid', color: borderColor || Theme.divider }
+    } else {
+      this.pnlSection.border.width = 0
+    }
+
+    const { top = 0, bottom = 0, left = 0, right = 0 } = padding || {};
+    this.pnlSection.padding = { top, bottom, left, right }
 
     this.pnlSection.background.color =
       customBackgroundColor && backgroundColor ? backgroundColor : "";

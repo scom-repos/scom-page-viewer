@@ -131,7 +131,6 @@ export default class Viewer extends Module {
         customBackgroundColor && backgroundColor
           ? backgroundColor
           : this.getBackgroundColor();
-
       this.pnlContainer.font =  { color: customTextColor && textColor ? textColor : this.getColor() }
 
       if (customTextSize && textSize) this.classList.add(`font-${textSize}`)
