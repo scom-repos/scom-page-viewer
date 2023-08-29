@@ -55,7 +55,7 @@ export class ViewrBody extends Module {
     for (const section of this.sections) {
       const { image = '', backgroundColor = '', margin, maxWidth = 1024, textColor, padding, customTextSize, textSize } = section?.config || {};
       const { x = 'auto', y = 0 } = margin || {};
-      const {top = 0, bottom = 0, left = 0, right = 0} = padding || {};
+      const { top = 0, bottom = 0, left = 0, right = 0 } = padding || {};
       
       const pageSection = (
         <sc-page-viewer-section
