@@ -1091,8 +1091,12 @@ define("@scom/scom-page-viewer", ["require", "exports", "@ijstech/components", "
             var _a;
             if (this.pnlContainer) {
                 const { customBackgroundColor, backgroundColor, backgroundImage, margin, maxWidth, customTextColor, textColor, customTextSize, textSize } = ((_a = this._data) === null || _a === void 0 ? void 0 : _a.config) || {};
-                if (backgroundImage)
-                    this.pnlContainer.style.backgroundImage = `url(${backgroundImage})`;
+                if (backgroundImage) {
+                    const ipfsUrl = 'https://ipfs.scom.dev/ipfs';
+                    this.pnlContainer.style.backgroundImage = `url("${ipfsUrl}/${backgroundImage}")`;
+                }
+                else
+                    this.pnlContainer.style.backgroundImage = '';
                 this.pnlContainer.style.backgroundColor = 'var(--custom-background-color, var(--background-main))';
                 this.pnlContainer.font = { color: 'var(--custom-text-color, var(--text-primary))' };
                 if (customTextSize && textSize)
