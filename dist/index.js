@@ -186,8 +186,9 @@ define("@scom/scom-page-viewer/body.tsx", ["require", "exports", "@ijstech/compo
     exports.ViewrBody = void 0;
     const Theme = components_4.Styles.Theme.ThemeVars;
     let ViewrBody = class ViewrBody extends components_4.Module {
-        async setSections(sections) {
+        async setSections(sections, config) {
             this.sections = sections;
+            this.pageConfig = config;
             if (this.pnlSections)
                 this.pnlSections.clearInnerHTML();
             await this.renderSections();
@@ -207,9 +208,8 @@ define("@scom/scom-page-viewer/body.tsx", ["require", "exports", "@ijstech/compo
             for (const section of this.sections) {
                 const { image = '', customBackgroundColor, backgroundColor = '', margin, maxWidth = 1024, customTextColor, textColor, customTextSize, textSize } = (section === null || section === void 0 ? void 0 : section.config) || {};
                 const { x = 'auto', y = 0 } = margin || {};
-                const pageSection = (this.$render("sc-page-viewer-section", { id: section.id, display: "block", class: "i-page-section", font: { color: `var(--custom-text-color, var(--text-primary))` }, containerSize: { width: maxWidth.toString() }, margin: { top: y, bottom: y, left: x, right: x }, 
+                const pageSection = (this.$render("sc-page-viewer-section", { id: section.id, display: "block", class: "i-page-section", font: { color: `var(--custom-text-color, var(--text-primary))` }, containerSize: { width: maxWidth.toString() }, margin: { top: y, bottom: y, left: x, right: x }, width: "100%", 
                     // maxWidth={maxWidth || '100%'}
-                    // width="100%"
                     // padding={{ top: '1rem', bottom: '1rem', left: '1rem', right: '1rem' }}
                     mediaQueries: [
                         {
@@ -226,7 +226,7 @@ define("@scom/scom-page-viewer/body.tsx", ["require", "exports", "@ijstech/compo
                 this.pnlSections.append(pageSection);
                 if (customTextSize && textSize)
                     pageSection.classList.add(`font-${textSize}`);
-                await pageSection.setData(section);
+                await pageSection.setData(section, this.pageConfig);
                 // const anchorName = section.anchorName;
                 // if (anchorName) {
                 //   anchors.push({
@@ -479,7 +479,7 @@ define("@scom/scom-page-viewer/section.tsx", ["require", "exports", "@ijstech/co
                 this.pnlSection.margin = { left: 'auto', right: 'auto' };
             }
         }
-        async setData(sectionData) {
+        async setData(sectionData, pageConfig) {
             const { elements = [], config = {} } = sectionData;
             const { customBackdrop, backdropImage, backdropColor, customBackgroundColor, backgroundColor, fullWidth, padding, sectionWidth, border, borderColor } = config;
             if (!fullWidth && customBackdrop) {
@@ -506,9 +506,15 @@ define("@scom/scom-page-viewer/section.tsx", ["require", "exports", "@ijstech/co
             this.pnlSection.padding = { top, bottom, left, right };
             this.pnlSection.background.color =
                 customBackgroundColor && backgroundColor ? backgroundColor : "";
-            if (fullWidth)
+            if (fullWidth) {
                 this.width = "100%";
-            this.pnlSection.maxWidth = sectionWidth !== null && sectionWidth !== void 0 ? sectionWidth : '100%';
+            }
+            this.pnlSection.maxWidth =
+                !fullWidth
+                    ? pageConfig && pageConfig.sectionWidth
+                        ? pageConfig.sectionWidth
+                        : '100%'
+                    : '100%';
             this.sectionData = JSON.parse(JSON.stringify(sectionData));
             for (let i = 0; i < elements.length; i++) {
                 const element = elements[i];
@@ -1052,7 +1058,7 @@ define("@scom/scom-page-viewer", ["require", "exports", "@ijstech/components", "
         }
         async renderPage(page) {
             var _a, _b;
-            const { header, footer, sections } = page;
+            const { header, footer, sections, config } = page;
             this.viewerFooter.data = footer;
             this.viewerFooter.visible = !!header;
             if ((_a = page.config) === null || _a === void 0 ? void 0 : _a.customBackgroundColor)
@@ -1065,7 +1071,7 @@ define("@scom/scom-page-viewer", ["require", "exports", "@ijstech/components", "
                 this.style.removeProperty('--custom-text-color');
             this.updateContainer();
             if (this.mode === interface_2.ViewerMode.NORMAL) {
-                await this.viewerBody.setSections(sections);
+                await this.viewerBody.setSections(sections, config);
                 this.viewerBody.visible = true;
                 this.viewerSlideBody.visible = false;
             }

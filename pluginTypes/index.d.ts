@@ -13,6 +13,7 @@ declare module "@scom/scom-page-viewer/interface.ts" {
         config?: IPageConfig;
     }
     interface IPageConfig {
+        sectionWidth?: number | string;
         backgroundColor?: string;
         customBackgroundColor?: boolean;
         backgroundImage?: string;
@@ -133,7 +134,7 @@ declare module "@scom/scom-page-viewer/interface.ts" {
         NORMAL = "normal",
         SLIDESHOW = "slideshow"
     }
-    export { IPageData, ICodeInfoFileContent, IPageSectionConfig, ThemeType, ViewerMode };
+    export { IPageData, ICodeInfoFileContent, IPageSectionConfig, IPageConfig, ThemeType, ViewerMode };
 }
 /// <amd-module name="@scom/scom-page-viewer/paging.css.ts" />
 declare module "@scom/scom-page-viewer/paging.css.ts" {
@@ -193,7 +194,7 @@ declare module "@scom/scom-page-viewer/utils.ts" {
 /// <amd-module name="@scom/scom-page-viewer/body.tsx" />
 declare module "@scom/scom-page-viewer/body.tsx" {
     import { ControlElement, Module } from "@ijstech/components";
-    import { IPageData, IPageSection } from "@scom/scom-page-viewer/interface.ts";
+    import { IPageData, IPageSection, IPageConfig } from "@scom/scom-page-viewer/interface.ts";
     type pageChangeCallback = (page: IPageData) => void;
     interface ViewerBodyElement extends ControlElement {
         onUpdatePage: pageChangeCallback;
@@ -207,10 +208,11 @@ declare module "@scom/scom-page-viewer/body.tsx" {
     }
     export class ViewrBody extends Module {
         private sections;
+        private pageConfig;
         private pnlSections;
         private viewerPaging;
         onUpdatePage: pageChangeCallback;
-        setSections(sections: IPageSection[]): Promise<void>;
+        setSections(sections: IPageSection[], config?: IPageConfig): Promise<void>;
         renderSections(): Promise<void>;
         clearSections(): void;
         setPaging(pages: IPageData[], currPage: IPageData): Promise<void>;
@@ -279,7 +281,7 @@ declare module "@scom/scom-page-viewer/sliderBody.css.ts" {
 /// <amd-module name="@scom/scom-page-viewer/section.tsx" />
 declare module "@scom/scom-page-viewer/section.tsx" {
     import { ControlElement, Module } from "@ijstech/components";
-    import { IPageSection } from "@scom/scom-page-viewer/interface.ts";
+    import { IPageSection, IPageConfig } from "@scom/scom-page-viewer/interface.ts";
     global {
         namespace JSX {
             interface IntrinsicElements {
@@ -308,7 +310,7 @@ declare module "@scom/scom-page-viewer/section.tsx" {
         clear(): void;
         init(): Promise<void>;
         updateContainerSize(): void;
-        setData(sectionData: IPageSection): Promise<void>;
+        setData(sectionData: IPageSection, pageConfig: IPageConfig): Promise<void>;
         private updateElementConfig;
         private updateAlign;
         render(): any;

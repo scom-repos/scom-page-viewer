@@ -6,7 +6,7 @@ import {
   VStack,
   HStack
 } from "@ijstech/components";
-import { IPageData, IPageSection } from "./interface";
+import { IPageData, IPageSection, IPageConfig } from "./interface";
 import { ViewerPaging } from "./paging";
 import styleClass from "./body.css";
 import { generateUUID } from "./utils";
@@ -29,13 +29,15 @@ declare global {
 @customElements('sc-page-viewer-body')
 export class ViewrBody extends Module {
   private sections: IPageSection[];
+  private pageConfig: IPageConfig;
   private pnlSections: VStack;
   private viewerPaging: ViewerPaging;
   // private archorElm: HStack;
   public onUpdatePage: pageChangeCallback;
 
-  async setSections(sections: IPageSection[]) {
+  async setSections(sections: IPageSection[], config?: IPageConfig) {
     this.sections = sections;
+    this.pageConfig = config;
     if (this.pnlSections) this.pnlSections.clearInnerHTML();
     await this.renderSections();
   }
@@ -64,8 +66,8 @@ export class ViewrBody extends Module {
           font={{color: `var(--custom-text-color, var(--text-primary))`}}
           containerSize={{width: maxWidth.toString()}}
           margin={{top: y, bottom: y, left: x, right: x}}
+          width="100%"
           // maxWidth={maxWidth || '100%'}
-          // width="100%"
           // padding={{ top: '1rem', bottom: '1rem', left: '1rem', right: '1rem' }}
           mediaQueries={[
             {
@@ -83,7 +85,7 @@ export class ViewrBody extends Module {
       this.pnlSections.append(pageSection);
       if(customTextSize && textSize)
         pageSection.classList.add(`font-${textSize}`)
-      await pageSection.setData(section);
+      await pageSection.setData(section, this.pageConfig);
       // const anchorName = section.anchorName;
       // if (anchorName) {
       //   anchors.push({
