@@ -127,11 +127,8 @@ export default class Viewer extends Module {
       const { customBackgroundColor, backgroundColor, backgroundImage, margin, maxWidth,  customTextColor, textColor, customTextSize, textSize } = this._data?.config || {};
       if (backgroundImage) this.pnlContainer.style.backgroundImage = `url(${backgroundImage})`;
       
-      this.pnlContainer.style.backgroundColor =
-        customBackgroundColor && backgroundColor
-          ? backgroundColor
-          : this.getBackgroundColor();
-      this.pnlContainer.font =  { color: customTextColor && textColor ? textColor : this.getColor() }
+      this.pnlContainer.style.backgroundColor = 'var(--custom-background-color, var(--background-main))';
+      this.pnlContainer.font = { color: 'var(--custom-text-color, var(--text-primary))' };
 
       if (customTextSize && textSize) this.classList.add(`font-${textSize}`)
 
