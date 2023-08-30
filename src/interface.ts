@@ -13,6 +13,7 @@ interface IPageData {
 }
 
 interface IPageConfig {
+  sectionWidth?: number|string;
   backgroundColor?: string;
   customBackgroundColor?: boolean;
   backgroundImage?: string;
@@ -155,6 +156,7 @@ export {
   IPageData,
   ICodeInfoFileContent,
   IPageSectionConfig,
+  IPageConfig,
   ThemeType,
   ViewerMode
 }

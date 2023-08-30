@@ -1,5 +1,5 @@
 import { Control, ControlElement, customElements, GridLayout, Module, Styles } from "@ijstech/components";
-import { IPageSectionConfig, IPageElement, IPageSection, IDisplaySettings } from "./interface";
+import { IPageSectionConfig, IPageElement, IPageSection, IDisplaySettings, IPageConfig } from "./interface";
 import { DEFAULT_MAX_COLUMN, GAP_WIDTH } from "./utils";
 import { getDefaultDisplaySettings, maxContainerWidths } from "./store";
 
@@ -57,7 +57,7 @@ export class ViewrSection extends Module {
     }
   }
 
-  async setData(sectionData: IPageSection) {
+  async setData(sectionData: IPageSection, pageConfig: IPageConfig) {
     const { elements = [], config = {} as any } = sectionData;
     const { customBackdrop, backdropImage, backdropColor, customBackgroundColor, backgroundColor, fullWidth, padding, sectionWidth, border, borderColor } = config;
 
@@ -86,8 +86,13 @@ export class ViewrSection extends Module {
     this.pnlSection.background.color =
       customBackgroundColor && backgroundColor ? backgroundColor : "";
 
-    if (fullWidth) this.width = "100%";
-    this.pnlSection.maxWidth = sectionWidth ?? '100%';
+    if (fullWidth) { this.width = "100%"; }
+    this.pnlSection.maxWidth =
+      !fullWidth
+        ? pageConfig && pageConfig.sectionWidth
+          ? pageConfig.sectionWidth
+          : '100%'
+        : '100%'
     this.sectionData = JSON.parse(JSON.stringify(sectionData));
     for (let i = 0; i < elements.length; i++) {
       const element = elements[i];

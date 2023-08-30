@@ -99,12 +99,12 @@ export default class Viewer extends Module {
   }
 
   async renderPage(page: IPageData) {
-    const { header, footer, sections } = page;
+    const { header, footer, sections, config } = page;
     this.viewerFooter.data = footer;
     this.viewerFooter.visible = !!header;
     this.updateContainer();
     if (this.mode === ViewerMode.NORMAL) {
-      await this.viewerBody.setSections(sections);
+      await this.viewerBody.setSections(sections, config);
       this.viewerBody.visible = true;
       this.viewerSlideBody.visible = false;
     } else {
