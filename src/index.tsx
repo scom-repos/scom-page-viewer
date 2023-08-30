@@ -102,6 +102,14 @@ export default class Viewer extends Module {
     const { header, footer, sections, config } = page;
     this.viewerFooter.data = footer;
     this.viewerFooter.visible = !!header;
+    if (page.config?.customBackgroundColor)
+      this.style.setProperty('--custom-background-color', page.config.backgroundColor)
+    else
+      this.style.removeProperty('--custom-background-color');
+    if (page.config?.customTextColor)
+      this.style.setProperty('--custom-text-color', page.config.textColor)
+    else
+      this.style.removeProperty('--custom-text-color');
     this.updateContainer();
     if (this.mode === ViewerMode.NORMAL) {
       await this.viewerBody.setSections(sections, config);
@@ -127,11 +135,8 @@ export default class Viewer extends Module {
       const { customBackgroundColor, backgroundColor, backgroundImage, margin, maxWidth,  customTextColor, textColor, customTextSize, textSize } = this._data?.config || {};
       if (backgroundImage) this.pnlContainer.style.backgroundImage = `url(${backgroundImage})`;
       
-      this.pnlContainer.style.backgroundColor =
-        customBackgroundColor && backgroundColor
-          ? backgroundColor
-          : this.getBackgroundColor();
-      this.pnlContainer.font =  { color: customTextColor && textColor ? textColor : this.getColor() }
+      this.pnlContainer.style.backgroundColor = 'var(--custom-background-color, var(--background-main))';
+      this.pnlContainer.font = { color: 'var(--custom-text-color, var(--text-primary))' };
 
       if (customTextSize && textSize) this.classList.add(`font-${textSize}`)
 

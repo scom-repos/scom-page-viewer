@@ -1057,9 +1057,18 @@ define("@scom/scom-page-viewer", ["require", "exports", "@ijstech/components", "
             }
         }
         async renderPage(page) {
+            var _a, _b;
             const { header, footer, sections, config } = page;
             this.viewerFooter.data = footer;
             this.viewerFooter.visible = !!header;
+            if ((_a = page.config) === null || _a === void 0 ? void 0 : _a.customBackgroundColor)
+                this.style.setProperty('--custom-background-color', page.config.backgroundColor);
+            else
+                this.style.removeProperty('--custom-background-color');
+            if ((_b = page.config) === null || _b === void 0 ? void 0 : _b.customTextColor)
+                this.style.setProperty('--custom-text-color', page.config.textColor);
+            else
+                this.style.removeProperty('--custom-text-color');
             this.updateContainer();
             if (this.mode === interface_2.ViewerMode.NORMAL) {
                 await this.viewerBody.setSections(sections, config);
@@ -1084,11 +1093,8 @@ define("@scom/scom-page-viewer", ["require", "exports", "@ijstech/components", "
                 const { customBackgroundColor, backgroundColor, backgroundImage, margin, maxWidth, customTextColor, textColor, customTextSize, textSize } = ((_a = this._data) === null || _a === void 0 ? void 0 : _a.config) || {};
                 if (backgroundImage)
                     this.pnlContainer.style.backgroundImage = `url(${backgroundImage})`;
-                this.pnlContainer.style.backgroundColor =
-                    customBackgroundColor && backgroundColor
-                        ? backgroundColor
-                        : this.getBackgroundColor();
-                this.pnlContainer.font = { color: customTextColor && textColor ? textColor : this.getColor() };
+                this.pnlContainer.style.backgroundColor = 'var(--custom-background-color, var(--background-main))';
+                this.pnlContainer.font = { color: 'var(--custom-text-color, var(--text-primary))' };
                 if (customTextSize && textSize)
                     this.classList.add(`font-${textSize}`);
                 this.pnlContainer.maxWidth = '100%'; // maxWidth || 1280;
