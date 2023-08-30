@@ -62,8 +62,13 @@ export class ViewrSection extends Module {
     const { customBackdrop, backdropImage, backdropColor, customBackgroundColor, backgroundColor, fullWidth, padding, sectionWidth, border, borderColor } = config;
 
     if (!fullWidth && customBackdrop) {
-        if (backdropImage) this.background.image = backdropImage;
-        else if (backdropColor) this.background.color = backdropColor;
+        if (backdropImage) {
+          this.width = "100%";
+          this.background.image = backdropImage;
+        } else if (backdropColor) {
+          this.width = "100%";
+          this.background.color = backdropColor;
+        }
     } else {
       this.background.image = '';
       this.background.color = `var(--custom-background-color, var(--background-main))`;
