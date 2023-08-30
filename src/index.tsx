@@ -133,7 +133,12 @@ export default class Viewer extends Module {
   private updateContainer() {
     if (this.pnlContainer) {
       const { customBackgroundColor, backgroundColor, backgroundImage, margin, maxWidth,  customTextColor, textColor, customTextSize, textSize } = this._data?.config || {};
-      if (backgroundImage) this.pnlContainer.style.backgroundImage = `url(${backgroundImage})`;
+      if (backgroundImage) {
+        const ipfsUrl = 'https://ipfs.scom.dev/ipfs'
+        this.pnlContainer.style.backgroundImage = `url("${ipfsUrl}/${backgroundImage}")`;
+      }
+      else
+        this.pnlContainer.style.backgroundImage = '';
       
       this.pnlContainer.style.backgroundColor = 'var(--custom-background-color, var(--background-main))';
       this.pnlContainer.font = { color: 'var(--custom-text-color, var(--text-primary))' };
