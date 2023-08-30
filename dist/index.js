@@ -1051,9 +1051,18 @@ define("@scom/scom-page-viewer", ["require", "exports", "@ijstech/components", "
             }
         }
         async renderPage(page) {
+            var _a, _b;
             const { header, footer, sections } = page;
             this.viewerFooter.data = footer;
             this.viewerFooter.visible = !!header;
+            if ((_a = page.config) === null || _a === void 0 ? void 0 : _a.customBackgroundColor)
+                this.style.setProperty('--custom-background-color', page.config.backgroundColor);
+            else
+                this.style.removeProperty('--custom-background-color');
+            if ((_b = page.config) === null || _b === void 0 ? void 0 : _b.customTextColor)
+                this.style.setProperty('--custom-text-color', page.config.textColor);
+            else
+                this.style.removeProperty('--custom-text-color');
             this.updateContainer();
             if (this.mode === interface_2.ViewerMode.NORMAL) {
                 await this.viewerBody.setSections(sections);

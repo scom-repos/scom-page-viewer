@@ -102,6 +102,14 @@ export default class Viewer extends Module {
     const { header, footer, sections } = page;
     this.viewerFooter.data = footer;
     this.viewerFooter.visible = !!header;
+    if (page.config?.customBackgroundColor)
+      this.style.setProperty('--custom-background-color', page.config.backgroundColor)
+    else
+      this.style.removeProperty('--custom-background-color');
+    if (page.config?.customTextColor)
+      this.style.setProperty('--custom-text-color', page.config.textColor)
+    else
+      this.style.removeProperty('--custom-text-color');
     this.updateContainer();
     if (this.mode === ViewerMode.NORMAL) {
       await this.viewerBody.setSections(sections);
