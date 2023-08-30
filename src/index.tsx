@@ -37,6 +37,11 @@ export default class Viewer extends Module {
   private _theme: ThemeType = 'light';
   private _mode: ViewerMode = ViewerMode.NORMAL;
 
+  async init(){
+    await super.init();
+    this.style.setProperty('--custom-background-color', '#ffffff');
+    this.style.setProperty('--custom-text-color', '#000000');
+  };
   get theme() {
     return this._theme ?? 'light';
   }

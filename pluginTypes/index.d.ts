@@ -441,6 +441,7 @@ declare module "@scom/scom-page-viewer" {
         private _data;
         private _theme;
         private _mode;
+        init(): Promise<void>;
         get theme(): ThemeType;
         set theme(value: ThemeType);
         get mode(): ViewerMode;
