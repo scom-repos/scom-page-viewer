@@ -992,12 +992,6 @@ define("@scom/scom-page-viewer", ["require", "exports", "@ijstech/components", "
             this._theme = 'light';
             this._mode = interface_2.ViewerMode.NORMAL;
         }
-        async init() {
-            await super.init();
-            this.style.setProperty('--custom-background-color', '#ffffff');
-            this.style.setProperty('--custom-text-color', '#000000');
-        }
-        ;
         get theme() {
             var _a;
             return (_a = this._theme) !== null && _a !== void 0 ? _a : 'light';
