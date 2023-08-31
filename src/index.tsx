@@ -32,6 +32,7 @@ export default class Viewer extends Module {
   private viewerBody: ViewrBody;
   private viewerSlideBody: ViewrSlideBody;
   private pnlContainer: Panel;
+  private pnlLoading: Panel;
   private isLoaded: boolean = false;
   private _data: IPageData;
   private _theme: ThemeType = 'light';
@@ -64,12 +65,16 @@ export default class Viewer extends Module {
       this._mode = options.mode;
     }
     if (!this.isLoaded) {
+      if (this.pnlLoading) this.pnlLoading.visible = true;
+      this.gridMain.visible = false;
       this.gridMain.templateColumns = ["1fr"];
       setRootDir(options?.rootDir);
       await this.setData(options?._data??options);
+      if (this.pnlLoading) this.pnlLoading.visible = false;
+      this.gridMain.visible = true;
     } else if (options?._data??options) {
       await this.renderPage(options?._data??options);
-    }    
+    }
   }
 
   onHide(): void {
@@ -78,12 +83,16 @@ export default class Viewer extends Module {
   }
 
   async setData(data: IPageData) {
+    if (this.pnlLoading) this.pnlLoading.visible = true;
+    this.gridMain.visible = false;
     if (data.cid) {
       data = await getDataByIpfsPath(data.cid);
     }
     this._data = data;
     await this.renderPage(data);
     this.isLoaded = true;
+    if (this.pnlLoading) this.pnlLoading.visible = false;
+    this.gridMain.visible = true;
   }
 
   setRootDir(value: string) {
