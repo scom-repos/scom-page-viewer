@@ -63,7 +63,7 @@ export class ViewrSection extends Module {
     this.background.color = 'var(--custom-background-color, var(--background-main))';
 
     if(sectionWidth !== undefined) {
-      this.pnlSection.width = sectionWidth;
+      // this.pnlSection.width = sectionWidth;
       this.pnlSection.maxWidth = sectionWidth;
     }
 

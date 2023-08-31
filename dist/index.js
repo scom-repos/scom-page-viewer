@@ -189,7 +189,6 @@ define("@scom/scom-page-viewer/body.tsx", ["require", "exports", "@ijstech/compo
         async setSections(sections, config) {
             this.sections = sections;
             this.pageConfig = config;
-            console.log('setSection config');
             if (this.pnlSections)
                 this.pnlSections.clearInnerHTML();
             await this.renderSections();
@@ -485,7 +484,7 @@ define("@scom/scom-page-viewer/section.tsx", ["require", "exports", "@ijstech/co
             const { customBackdrop, backdropImage, backdropColor, customBackgroundColor, backgroundColor, fullWidth, padding, sectionWidth, border, borderColor } = config;
             this.background.color = 'var(--custom-background-color, var(--background-main))';
             if (sectionWidth !== undefined) {
-                this.pnlSection.width = sectionWidth;
+                // this.pnlSection.width = sectionWidth;
                 this.pnlSection.maxWidth = sectionWidth;
             }
             if (fullWidth) {
@@ -1090,7 +1089,6 @@ define("@scom/scom-page-viewer", ["require", "exports", "@ijstech/components", "
             const { header, footer, sections, config } = page;
             this.viewerFooter.data = footer;
             this.viewerFooter.visible = !!header;
-            console.log('render page config', page.config);
             if ((_a = page.config) === null || _a === void 0 ? void 0 : _a.customBackgroundColor)
                 this.style.setProperty('--custom-background-color', page.config.backgroundColor);
             else
