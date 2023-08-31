@@ -624,7 +624,7 @@ define("@scom/scom-page-viewer/section.tsx", ["require", "exports", "@ijstech/co
                     {
                         maxWidth: '767px',
                         properties: {
-                            templateColumns: [`repeat(${utils_2.DEFAULT_MAX_COLUMN}, minmax(${utils_2.GAP_WIDTH}px, 1fr))`]
+                            templateColumns: [`repeat(${utils_2.DEFAULT_MAX_COLUMN}, minmax(0px, 1fr))`]
                         }
                     }
                 ] }));
