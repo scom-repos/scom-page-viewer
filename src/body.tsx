@@ -38,7 +38,6 @@ export class ViewrBody extends Module {
   async setSections(sections: IPageSection[], config?: IPageConfig) {
     this.sections = sections;
     this.pageConfig = config;
-    console.log('setSection config');
     if (this.pnlSections) this.pnlSections.clearInnerHTML();
     await this.renderSections();
   }
