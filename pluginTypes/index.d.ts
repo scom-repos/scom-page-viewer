@@ -439,6 +439,7 @@ declare module "@scom/scom-page-viewer" {
         private viewerBody;
         private viewerSlideBody;
         private pnlContainer;
+        private pnlLoading;
         private isLoaded;
         private _data;
         private _theme;

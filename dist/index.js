@@ -1043,9 +1043,15 @@ define("@scom/scom-page-viewer", ["require", "exports", "@ijstech/components", "
                 this._mode = options.mode;
             }
             if (!this.isLoaded) {
+                if (this.pnlLoading)
+                    this.pnlLoading.visible = true;
+                this.gridMain.visible = false;
                 this.gridMain.templateColumns = ["1fr"];
                 (0, store_3.setRootDir)(options === null || options === void 0 ? void 0 : options.rootDir);
                 await this.setData((_a = options === null || options === void 0 ? void 0 : options._data) !== null && _a !== void 0 ? _a : options);
+                if (this.pnlLoading)
+                    this.pnlLoading.visible = false;
+                this.gridMain.visible = true;
             }
             else if ((_b = options === null || options === void 0 ? void 0 : options._data) !== null && _b !== void 0 ? _b : options) {
                 await this.renderPage((_c = options === null || options === void 0 ? void 0 : options._data) !== null && _c !== void 0 ? _c : options);
@@ -1056,12 +1062,18 @@ define("@scom/scom-page-viewer", ["require", "exports", "@ijstech/components", "
                 this.viewerSlideBody.onHide();
         }
         async setData(data) {
+            if (this.pnlLoading)
+                this.pnlLoading.visible = true;
+            this.gridMain.visible = false;
             if (data.cid) {
                 data = await (0, utils_4.getDataByIpfsPath)(data.cid);
             }
             this._data = data;
             await this.renderPage(data);
             this.isLoaded = true;
+            if (this.pnlLoading)
+                this.pnlLoading.visible = false;
+            this.gridMain.visible = true;
         }
         setRootDir(value) {
             (0, store_3.setRootDir)(value);
