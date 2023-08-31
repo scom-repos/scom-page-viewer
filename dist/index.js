@@ -484,7 +484,7 @@ define("@scom/scom-page-viewer/section.tsx", ["require", "exports", "@ijstech/co
             const { customBackdrop, backdropImage, backdropColor, customBackgroundColor, backgroundColor, fullWidth, padding, sectionWidth, border, borderColor } = config;
             this.background.color = 'var(--custom-background-color, var(--background-main))';
             if (sectionWidth !== undefined) {
-                this.pnlSection.width = sectionWidth;
+                // this.pnlSection.width = sectionWidth;
                 this.pnlSection.maxWidth = sectionWidth;
             }
             if (fullWidth) {
