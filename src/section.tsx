@@ -60,39 +60,60 @@ export class ViewrSection extends Module {
   async setData(sectionData: IPageSection, pageConfig: IPageConfig) {
     const { elements = [], config = {} as any } = sectionData;
     const { customBackdrop, backdropImage, backdropColor, customBackgroundColor, backgroundColor, fullWidth, padding, sectionWidth, border, borderColor } = config;
+    this.background.color = 'var(--custom-background-color, var(--background-main))';
 
-    if (!fullWidth && customBackdrop) {
-        if (backdropImage) {
-          this.width = "100%";
-          this.background.image = backdropImage;
-        } else if (backdropColor) {
-          this.width = "100%";
-          this.background.color = backdropColor;
+    if(sectionWidth !== undefined) {
+      this.pnlSection.width = sectionWidth;
+      this.pnlSection.maxWidth = sectionWidth;
+    }
+
+    if(fullWidth) {
+      if(customBackgroundColor && backgroundColor) {
+        this.style.setProperty('--custom-background-color', backgroundColor);
+        this.pnlSection.style.setProperty('--custom-background-color', backgroundColor);
+      }
+      else {
+        this.style.removeProperty('--custom-background-color');
+        this.pnlSection.style.removeProperty('--custom-background-color');
+      }
+    }
+    else {
+      if(customBackdrop) {
+        if(backdropImage) {
+          const ipfsUrl = `https://ipfs.scom.dev/ipfs`;
+          this.style.setProperty('--custom-background-color', `url("${ipfsUrl}/${backdropImage}")`);
         }
-    } else {
-      this.background.image = '';
-      this.background.color = `var(--custom-background-color, var(--background-main))`;
+        else if(backdropColor) {
+          this.style.setProperty('--custom-background-color', backdropColor);
+        }
+      }
+      else {
+        this.style.removeProperty('--custom-background-color');
+      }
+      if(customBackgroundColor) {
+        // Add background image later
+        if(backgroundColor) {
+          this.pnlSection.style.setProperty('--custom-background-color', backgroundColor);
+        }
+      }
+      else {
+        this.pnlSection.style.removeProperty('--custom-background-color');
+      }
     }
 
-    if (!fullWidth && border) {
-      this.pnlSection.border = { width: 2, style: 'solid', color: borderColor || Theme.divider }
-    } else {
-      this.pnlSection.border.width = 0
+    if(border && borderColor) {
+      this.pnlSection.border = {
+        width: 2,
+        style: 'solid',
+        color: borderColor,
+        radius: 10
+      }
     }
 
-    const { top = 0, bottom = 0, left = 0, right = 0 } = padding || {};
-    this.pnlSection.padding = { top, bottom, left, right }
+    if(padding) {
+      this.pnlSection.padding = padding;
+    }
 
-    this.pnlSection.background.color =
-      customBackgroundColor && backgroundColor ? backgroundColor : "";
-
-    if (fullWidth) { this.width = "100%"; }
-    this.pnlSection.maxWidth =
-      !fullWidth
-        ? pageConfig && pageConfig.sectionWidth
-          ? pageConfig.sectionWidth
-          : '100%'
-        : '100%'
     this.sectionData = JSON.parse(JSON.stringify(sectionData));
     for (let i = 0; i < elements.length; i++) {
       const element = elements[i];
@@ -192,7 +213,7 @@ export class ViewrSection extends Module {
     return (
       <i-grid-layout
         id="pnlSection"
-        width="100%"
+        background={{color: 'var(--custom-background-color, var(--background-main))'}}
         height="100%"
         maxWidth="100%"
         maxHeight="100%"

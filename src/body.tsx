@@ -65,6 +65,7 @@ export class ViewrBody extends Module {
           id={section.id}
           display="block"
           class="i-page-section"
+          background={{color: "var(--custom-background-color, var(--background-main))"}}
           font={{color: `var(--custom-text-color, var(--text-primary))`}}
           containerSize={{width: maxWidth.toString()}}
           margin={{top: y, bottom: y, left: x, right: x}}
