@@ -226,7 +226,7 @@ export class ViewrSection extends Module {
           {
             maxWidth: '767px',
             properties: {
-              templateColumns: [`repeat(${DEFAULT_MAX_COLUMN}, minmax(${GAP_WIDTH}px, 1fr))`]
+              templateColumns: [`repeat(${DEFAULT_MAX_COLUMN}, minmax(0px, 1fr))`]
             }
           }
         ]}
