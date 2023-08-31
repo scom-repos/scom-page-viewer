@@ -38,11 +38,13 @@ export class ViewrBody extends Module {
   async setSections(sections: IPageSection[], config?: IPageConfig) {
     this.sections = sections;
     this.pageConfig = config;
+    console.log('setSection config');
     if (this.pnlSections) this.pnlSections.clearInnerHTML();
     await this.renderSections();
   }
 
   async renderSections() {
+
     this.clearSections();
     if ((!this.sections || (this.sections && this.sections.length == 0))) {
       this.sections = [
@@ -63,6 +65,7 @@ export class ViewrBody extends Module {
           id={section.id}
           display="block"
           class="i-page-section"
+          background={{color: "var(--custom-background-color, var(--background-main))"}}
           font={{color: `var(--custom-text-color, var(--text-primary))`}}
           containerSize={{width: maxWidth.toString()}}
           margin={{top: y, bottom: y, left: x, right: x}}

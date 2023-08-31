@@ -189,6 +189,7 @@ define("@scom/scom-page-viewer/body.tsx", ["require", "exports", "@ijstech/compo
         async setSections(sections, config) {
             this.sections = sections;
             this.pageConfig = config;
+            console.log('setSection config');
             if (this.pnlSections)
                 this.pnlSections.clearInnerHTML();
             await this.renderSections();
@@ -208,7 +209,7 @@ define("@scom/scom-page-viewer/body.tsx", ["require", "exports", "@ijstech/compo
             for (const section of this.sections) {
                 const { image = '', customBackgroundColor, backgroundColor = '', margin, maxWidth = 1024, customTextColor, textColor, customTextSize, textSize } = (section === null || section === void 0 ? void 0 : section.config) || {};
                 const { x = 'auto', y = 0 } = margin || {};
-                const pageSection = (this.$render("sc-page-viewer-section", { id: section.id, display: "block", class: "i-page-section", font: { color: `var(--custom-text-color, var(--text-primary))` }, containerSize: { width: maxWidth.toString() }, margin: { top: y, bottom: y, left: x, right: x }, width: "100%", 
+                const pageSection = (this.$render("sc-page-viewer-section", { id: section.id, display: "block", class: "i-page-section", background: { color: "var(--custom-background-color, var(--background-main))" }, font: { color: `var(--custom-text-color, var(--text-primary))` }, containerSize: { width: maxWidth.toString() }, margin: { top: y, bottom: y, left: x, right: x }, width: "100%", 
                     // maxWidth={maxWidth || '100%'}
                     // padding={{ top: '1rem', bottom: '1rem', left: '1rem', right: '1rem' }}
                     mediaQueries: [
@@ -482,39 +483,55 @@ define("@scom/scom-page-viewer/section.tsx", ["require", "exports", "@ijstech/co
         async setData(sectionData, pageConfig) {
             const { elements = [], config = {} } = sectionData;
             const { customBackdrop, backdropImage, backdropColor, customBackgroundColor, backgroundColor, fullWidth, padding, sectionWidth, border, borderColor } = config;
-            if (!fullWidth && customBackdrop) {
-                if (backdropImage) {
-                    this.width = "100%";
-                    this.background.image = backdropImage;
-                }
-                else if (backdropColor) {
-                    this.width = "100%";
-                    this.background.color = backdropColor;
-                }
+            this.background.color = 'var(--custom-background-color, var(--background-main))';
+            if (sectionWidth !== undefined) {
+                this.pnlSection.width = sectionWidth;
+                this.pnlSection.maxWidth = sectionWidth;
             }
-            else {
-                this.background.image = '';
-                this.background.color = `var(--custom-background-color, var(--background-main))`;
-            }
-            if (!fullWidth && border) {
-                this.pnlSection.border = { width: 2, style: 'solid', color: borderColor || Theme.divider };
-            }
-            else {
-                this.pnlSection.border.width = 0;
-            }
-            const { top = 0, bottom = 0, left = 0, right = 0 } = padding || {};
-            this.pnlSection.padding = { top, bottom, left, right };
-            this.pnlSection.background.color =
-                customBackgroundColor && backgroundColor ? backgroundColor : "";
             if (fullWidth) {
-                this.width = "100%";
+                if (customBackgroundColor && backgroundColor) {
+                    this.style.setProperty('--custom-background-color', backgroundColor);
+                    this.pnlSection.style.setProperty('--custom-background-color', backgroundColor);
+                }
+                else {
+                    this.style.removeProperty('--custom-background-color');
+                    this.pnlSection.style.removeProperty('--custom-background-color');
+                }
             }
-            this.pnlSection.maxWidth =
-                !fullWidth
-                    ? pageConfig && pageConfig.sectionWidth
-                        ? pageConfig.sectionWidth
-                        : '100%'
-                    : '100%';
+            else {
+                if (customBackdrop) {
+                    if (backdropImage) {
+                        const ipfsUrl = `https://ipfs.scom.dev/ipfs`;
+                        this.style.setProperty('--custom-background-color', `url("${ipfsUrl}/${backdropImage}")`);
+                    }
+                    else if (backdropColor) {
+                        this.style.setProperty('--custom-background-color', backdropColor);
+                    }
+                }
+                else {
+                    this.style.removeProperty('--custom-background-color');
+                }
+                if (customBackgroundColor) {
+                    // Add background image later
+                    if (backgroundColor) {
+                        this.pnlSection.style.setProperty('--custom-background-color', backgroundColor);
+                    }
+                }
+                else {
+                    this.pnlSection.style.removeProperty('--custom-background-color');
+                }
+            }
+            if (border && borderColor) {
+                this.pnlSection.border = {
+                    width: 2,
+                    style: 'solid',
+                    color: borderColor,
+                    radius: 10
+                };
+            }
+            if (padding) {
+                this.pnlSection.padding = padding;
+            }
             this.sectionData = JSON.parse(JSON.stringify(sectionData));
             for (let i = 0; i < elements.length; i++) {
                 const element = elements[i];
@@ -604,7 +621,7 @@ define("@scom/scom-page-viewer/section.tsx", ["require", "exports", "@ijstech/co
             }
         }
         render() {
-            return (this.$render("i-grid-layout", { id: "pnlSection", width: "100%", height: "100%", maxWidth: "100%", maxHeight: "100%", position: "relative", overflow: "inherit", gap: { column: 15, row: 15 }, templateColumns: [`repeat(${utils_2.DEFAULT_MAX_COLUMN}, minmax(${utils_2.GAP_WIDTH}px, 1fr))`], padding: { top: '1.5rem', bottom: '1.5rem' }, mediaQueries: [
+            return (this.$render("i-grid-layout", { id: "pnlSection", background: { color: 'var(--custom-background-color, var(--background-main))' }, height: "100%", maxWidth: "100%", maxHeight: "100%", position: "relative", overflow: "inherit", gap: { column: 15, row: 15 }, templateColumns: [`repeat(${utils_2.DEFAULT_MAX_COLUMN}, minmax(${utils_2.GAP_WIDTH}px, 1fr))`], padding: { top: '1.5rem', bottom: '1.5rem' }, mediaQueries: [
                     {
                         maxWidth: '767px',
                         properties: {
@@ -1061,6 +1078,7 @@ define("@scom/scom-page-viewer", ["require", "exports", "@ijstech/components", "
             const { header, footer, sections, config } = page;
             this.viewerFooter.data = footer;
             this.viewerFooter.visible = !!header;
+            console.log('render page config', page.config);
             if ((_a = page.config) === null || _a === void 0 ? void 0 : _a.customBackgroundColor)
                 this.style.setProperty('--custom-background-color', page.config.backgroundColor);
             else

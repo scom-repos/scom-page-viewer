@@ -102,6 +102,7 @@ export default class Viewer extends Module {
     const { header, footer, sections, config } = page;
     this.viewerFooter.data = footer;
     this.viewerFooter.visible = !!header;
+    console.log('render page config', page.config);
     if (page.config?.customBackgroundColor)
       this.style.setProperty('--custom-background-color', page.config.backgroundColor)
     else
