@@ -2,6 +2,7 @@ import { Control, ControlElement, customElements, GridLayout, Module, Styles } f
 import { IPageSectionConfig, IPageElement, IPageSection, IDisplaySettings, IPageConfig } from "./interface";
 import { DEFAULT_MAX_COLUMN, GAP_WIDTH } from "./utils";
 import { getDefaultDisplaySettings, maxContainerWidths } from "./store";
+import classes from './section.css';
 
 const Theme = Styles.Theme.ThemeVars;
 
@@ -45,6 +46,7 @@ export class ViewrSection extends Module {
   async init() {
     super.init();
     this.size = this.getAttribute('containerSize', true, {});
+    this.classList.add(classes);
   }
 
   updateContainerSize() {

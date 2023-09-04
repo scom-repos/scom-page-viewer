@@ -206,7 +206,7 @@ define("@scom/scom-page-viewer/body.tsx", ["require", "exports", "@ijstech/compo
             }
             // let anchors: { name: string, sectionElm: any }[] = [];
             for (const section of this.sections) {
-                const { image = '', customBackgroundColor, backgroundColor = '', margin, maxWidth = 1024, customTextColor, textColor, customTextSize, textSize } = (section === null || section === void 0 ? void 0 : section.config) || {};
+                const { image = '', customBackgroundColor, backgroundColor = '', margin, maxWidth = 1024, customTextColor, textColor, customTextSize, textSize, padding } = (section === null || section === void 0 ? void 0 : section.config) || {};
                 const { x = 'auto', y = 0 } = margin || {};
                 const pageSection = (this.$render("sc-page-viewer-section", { id: section.id, display: "block", class: "i-page-section", background: { color: "var(--custom-background-color, var(--background-main))" }, font: { color: `var(--custom-text-color, var(--text-primary))` }, containerSize: { width: maxWidth.toString() }, margin: { top: y, bottom: y, left: x, right: x }, width: "100%", 
                     // maxWidth={maxWidth || '100%'}
@@ -226,6 +226,32 @@ define("@scom/scom-page-viewer/body.tsx", ["require", "exports", "@ijstech/compo
                 this.pnlSections.append(pageSection);
                 if (customTextSize && textSize)
                     pageSection.classList.add(`font-${textSize}`);
+                if (padding && (padding.top !== undefined || padding.bottom !== undefined || padding.left !== undefined || padding.right !== undefined)) {
+                    if (padding.top !== undefined) {
+                        pageSection.style.setProperty('--custom-padding-top', `${padding.top}px`);
+                    }
+                    else {
+                        pageSection.style.setProperty('--custom-padding-top', '0px');
+                    }
+                    if (padding.bottom !== undefined) {
+                        pageSection.style.setProperty('--custom-padding-bottom', `${padding.bottom}px`);
+                    }
+                    else {
+                        pageSection.style.setProperty('--custom-padding-bottom', '0px');
+                    }
+                    if (padding.left !== undefined) {
+                        pageSection.style.setProperty('--custom-padding-left', `${padding.left}px`);
+                    }
+                    else {
+                        pageSection.style.setProperty('--custom-padding-left', '0px');
+                    }
+                    if (padding.right !== undefined) {
+                        pageSection.style.setProperty('--custom-padding-right', `${padding.right}px`);
+                    }
+                    else {
+                        pageSection.style.setProperty('--custom-padding-right', '0px');
+                    }
+                }
                 await pageSection.setData(section, this.pageConfig);
                 // const anchorName = section.anchorName;
                 // if (anchorName) {
@@ -450,12 +476,23 @@ define("@scom/scom-page-viewer/sliderBody.css.ts", ["require", "exports", "@ijst
         }
     });
 });
-define("@scom/scom-page-viewer/section.tsx", ["require", "exports", "@ijstech/components", "@scom/scom-page-viewer/utils.ts", "@scom/scom-page-viewer/store.ts"], function (require, exports, components_8, utils_2, store_1) {
+define("@scom/scom-page-viewer/section.css.ts", ["require", "exports", "@ijstech/components"], function (require, exports, components_8) {
+    "use strict";
+    Object.defineProperty(exports, "__esModule", { value: true });
+    const Theme = components_8.Styles.Theme.ThemeVars;
+    exports.default = components_8.Styles.style({
+        paddingTop: 'var(--custom-padding-top, 0)',
+        paddingBottom: 'var(--custom-padding-bottom, 0)',
+        paddingLeft: 'var(--custom-padding-left, 0)',
+        paddingRight: 'var(--custom-padding-right, 0)'
+    });
+});
+define("@scom/scom-page-viewer/section.tsx", ["require", "exports", "@ijstech/components", "@scom/scom-page-viewer/utils.ts", "@scom/scom-page-viewer/store.ts", "@scom/scom-page-viewer/section.css.ts"], function (require, exports, components_9, utils_2, store_1, section_css_1) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.ViewrSection = void 0;
-    const Theme = components_8.Styles.Theme.ThemeVars;
-    let ViewrSection = class ViewrSection extends components_8.Module {
+    const Theme = components_9.Styles.Theme.ThemeVars;
+    let ViewrSection = class ViewrSection extends components_9.Module {
         get size() {
             return this._size || {};
         }
@@ -469,6 +506,7 @@ define("@scom/scom-page-viewer/section.tsx", ["require", "exports", "@ijstech/co
         async init() {
             super.init();
             this.size = this.getAttribute('containerSize', true, {});
+            this.classList.add(section_css_1.default);
         }
         updateContainerSize() {
             const sizeWidth = this.size.width || 'none';
@@ -482,6 +520,7 @@ define("@scom/scom-page-viewer/section.tsx", ["require", "exports", "@ijstech/co
         async setData(sectionData, pageConfig) {
             const { elements = [], config = {} } = sectionData;
             const { customBackdrop, backdropImage, backdropColor, customBackgroundColor, backgroundColor, fullWidth, padding, sectionWidth, border, borderColor } = config;
+            console.log('config', sectionData);
             this.background.color = 'var(--custom-background-color, var(--background-main))';
             if (sectionWidth !== undefined) {
                 // this.pnlSection.width = sectionWidth;
@@ -631,16 +670,16 @@ define("@scom/scom-page-viewer/section.tsx", ["require", "exports", "@ijstech/co
         }
     };
     ViewrSection = __decorate([
-        (0, components_8.customElements)('sc-page-viewer-section')
+        (0, components_9.customElements)('sc-page-viewer-section')
     ], ViewrSection);
     exports.ViewrSection = ViewrSection;
 });
-define("@scom/scom-page-viewer/slideBody.tsx", ["require", "exports", "@ijstech/components", "@scom/scom-page-viewer/utils.ts", "@scom/scom-page-viewer/sliderBody.css.ts"], function (require, exports, components_9, utils_3, sliderBody_css_1) {
+define("@scom/scom-page-viewer/slideBody.tsx", ["require", "exports", "@ijstech/components", "@scom/scom-page-viewer/utils.ts", "@scom/scom-page-viewer/sliderBody.css.ts"], function (require, exports, components_10, utils_3, sliderBody_css_1) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.ViewrSlideBody = void 0;
-    const Theme = components_9.Styles.Theme.ThemeVars;
-    let ViewrSlideBody = class ViewrSlideBody extends components_9.Module {
+    const Theme = components_10.Styles.Theme.ThemeVars;
+    let ViewrSlideBody = class ViewrSlideBody extends components_10.Module {
         constructor(parent, options) {
             super(parent, options);
             this.currentScrollY = 0;
@@ -811,15 +850,15 @@ define("@scom/scom-page-viewer/slideBody.tsx", ["require", "exports", "@ijstech/
         }
     };
     ViewrSlideBody = __decorate([
-        (0, components_9.customElements)('sc-page-viewer-slide-body')
+        (0, components_10.customElements)('sc-page-viewer-slide-body')
     ], ViewrSlideBody);
     exports.ViewrSlideBody = ViewrSlideBody;
 });
-define("@scom/scom-page-viewer/pageElement.tsx", ["require", "exports", "@ijstech/components", "@scom/scom-page-viewer/store.ts"], function (require, exports, components_10, store_2) {
+define("@scom/scom-page-viewer/pageElement.tsx", ["require", "exports", "@ijstech/components", "@scom/scom-page-viewer/store.ts"], function (require, exports, components_11, store_2) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.ViewrPageElement = void 0;
-    let ViewrPageElement = class ViewrPageElement extends components_10.Module {
+    let ViewrPageElement = class ViewrPageElement extends components_11.Module {
         constructor(parent, options) {
             super(parent, options);
             this.module = null;
@@ -876,7 +915,7 @@ define("@scom/scom-page-viewer/pageElement.tsx", ["require", "exports", "@ijstec
             else if (moduleData === null || moduleData === void 0 ? void 0 : moduleData.path) {
                 const { tag } = this.data;
                 // let module: any = await this.getEmbedElement(rootDir, this.data.module.path);
-                let module = await components_10.application.createElement(moduleData.path);
+                let module = await components_11.application.createElement(moduleData.path);
                 if (module) {
                     this.pnlElement.append(module);
                     this.module = module;
@@ -896,15 +935,15 @@ define("@scom/scom-page-viewer/pageElement.tsx", ["require", "exports", "@ijstec
         }
     };
     ViewrPageElement = __decorate([
-        (0, components_10.customElements)('sc-page-viewer-page-element')
+        (0, components_11.customElements)('sc-page-viewer-page-element')
     ], ViewrPageElement);
     exports.ViewrPageElement = ViewrPageElement;
 });
-define("@scom/scom-page-viewer/sidebar.css.ts", ["require", "exports", "@ijstech/components"], function (require, exports, components_11) {
+define("@scom/scom-page-viewer/sidebar.css.ts", ["require", "exports", "@ijstech/components"], function (require, exports, components_12) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
-    const Theme = components_11.Styles.Theme.ThemeVars;
-    exports.default = components_11.Styles.style({
+    const Theme = components_12.Styles.Theme.ThemeVars;
+    exports.default = components_12.Styles.style({
         borderRight: `1px solid ${Theme.divider}`,
         $nest: {
             'i-tree-node.is-checked > .i-tree-node_children': {
@@ -928,11 +967,11 @@ define("@scom/scom-page-viewer/sidebar.css.ts", ["require", "exports", "@ijstech
         }
     });
 });
-define("@scom/scom-page-viewer/sidebar.tsx", ["require", "exports", "@ijstech/components", "@scom/scom-page-viewer/sidebar.css.ts"], function (require, exports, components_12, sidebar_css_1) {
+define("@scom/scom-page-viewer/sidebar.tsx", ["require", "exports", "@ijstech/components", "@scom/scom-page-viewer/sidebar.css.ts"], function (require, exports, components_13, sidebar_css_1) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.ViewerSidebar = void 0;
-    let ViewerSidebar = class ViewerSidebar extends components_12.Module {
+    let ViewerSidebar = class ViewerSidebar extends components_13.Module {
         constructor() {
             super(...arguments);
             this._treeData = [];
@@ -991,11 +1030,11 @@ define("@scom/scom-page-viewer/sidebar.tsx", ["require", "exports", "@ijstech/co
         }
     };
     ViewerSidebar = __decorate([
-        (0, components_12.customElements)('sc-page-viewer-sidebar')
+        (0, components_13.customElements)('sc-page-viewer-sidebar')
     ], ViewerSidebar);
     exports.ViewerSidebar = ViewerSidebar;
 });
-define("@scom/scom-page-viewer", ["require", "exports", "@ijstech/components", "@scom/scom-page-viewer/interface.ts", "@scom/scom-page-viewer/store.ts", "@scom/scom-page-viewer/index.css.ts", "@scom/scom-page-viewer/utils.ts", "@scom/scom-page-viewer/body.tsx", "@scom/scom-page-viewer/pageElement.tsx", "@scom/scom-page-viewer/section.tsx", "@scom/scom-page-viewer/sidebar.tsx", "@scom/scom-page-viewer/paging.tsx", "@scom/scom-page-viewer/interface.ts"], function (require, exports, components_13, interface_2, store_3, index_css_1, utils_4, body_1, pageElement_1, section_1, sidebar_1, paging_1, interface_3) {
+define("@scom/scom-page-viewer", ["require", "exports", "@ijstech/components", "@scom/scom-page-viewer/interface.ts", "@scom/scom-page-viewer/store.ts", "@scom/scom-page-viewer/index.css.ts", "@scom/scom-page-viewer/utils.ts", "@scom/scom-page-viewer/body.tsx", "@scom/scom-page-viewer/pageElement.tsx", "@scom/scom-page-viewer/section.tsx", "@scom/scom-page-viewer/sidebar.tsx", "@scom/scom-page-viewer/paging.tsx", "@scom/scom-page-viewer/interface.ts"], function (require, exports, components_14, interface_2, store_3, index_css_1, utils_4, body_1, pageElement_1, section_1, sidebar_1, paging_1, interface_3) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.ViewerMode = exports.ViewerPaging = exports.ViewerSidebar = exports.ViewrSection = exports.ViewrPageElement = exports.ViewrBody = void 0;
@@ -1005,9 +1044,9 @@ define("@scom/scom-page-viewer", ["require", "exports", "@ijstech/components", "
     Object.defineProperty(exports, "ViewerSidebar", { enumerable: true, get: function () { return sidebar_1.ViewerSidebar; } });
     Object.defineProperty(exports, "ViewerPaging", { enumerable: true, get: function () { return paging_1.ViewerPaging; } });
     Object.defineProperty(exports, "ViewerMode", { enumerable: true, get: function () { return interface_3.ViewerMode; } });
-    const lightTheme = components_13.Styles.Theme.defaultTheme;
-    const darkTheme = components_13.Styles.Theme.darkTheme;
-    let Viewer = class Viewer extends components_13.Module {
+    const lightTheme = components_14.Styles.Theme.defaultTheme;
+    const darkTheme = components_14.Styles.Theme.darkTheme;
+    let Viewer = class Viewer extends components_14.Module {
         constructor() {
             super(...arguments);
             this.isLoaded = false;
@@ -1085,7 +1124,7 @@ define("@scom/scom-page-viewer", ["require", "exports", "@ijstech/components", "
             }
         }
         async renderPage(page) {
-            var _a, _b;
+            var _a, _b, _c, _d, _e, _f, _g, _h;
             const { header, footer, sections, config } = page;
             this.viewerFooter.data = footer;
             this.viewerFooter.visible = !!header;
@@ -1097,6 +1136,14 @@ define("@scom/scom-page-viewer", ["require", "exports", "@ijstech/components", "
                 this.style.setProperty('--custom-text-color', page.config.textColor);
             else
                 this.style.removeProperty('--custom-text-color');
+            if (((_c = page.config) === null || _c === void 0 ? void 0 : _c.plr) !== undefined) {
+                this.style.setProperty('--custom-padding-left', `${(_d = page.config) === null || _d === void 0 ? void 0 : _d.plr}px`);
+                this.style.setProperty('--custom-padding-right', `${(_e = page.config) === null || _e === void 0 ? void 0 : _e.plr}px`);
+            }
+            if (((_f = page.config) === null || _f === void 0 ? void 0 : _f.ptb) !== undefined) {
+                this.style.setProperty('--custom-padding-top', `${(_g = page.config) === null || _g === void 0 ? void 0 : _g.ptb}px`);
+                this.style.setProperty('--custom-padding-bottom', `${(_h = page.config) === null || _h === void 0 ? void 0 : _h.ptb}px`);
+            }
             this.updateContainer();
             if (this.mode === interface_2.ViewerMode.NORMAL) {
                 await this.viewerBody.setSections(sections, config);
@@ -1148,8 +1195,8 @@ define("@scom/scom-page-viewer", ["require", "exports", "@ijstech/components", "
         }
     };
     Viewer = __decorate([
-        components_13.customModule,
-        (0, components_13.customElements)('i-scom-page-viewer')
+        components_14.customModule,
+        (0, components_14.customElements)('i-scom-page-viewer')
     ], Viewer);
     exports.default = Viewer;
 });
