@@ -20,6 +20,8 @@ declare module "@scom/scom-page-viewer/interface.ts" {
         maxWidth?: number | string;
         customTextSize?: boolean;
         textSize?: string;
+        plr?: number;
+        ptb?: number;
         margin?: {
             x?: number | string;
             y?: number | string;
@@ -278,6 +280,11 @@ declare module "@scom/scom-page-viewer/sliderBody.css.ts" {
     const _default_3: string;
     export default _default_3;
 }
+/// <amd-module name="@scom/scom-page-viewer/section.css.ts" />
+declare module "@scom/scom-page-viewer/section.css.ts" {
+    const _default_4: string;
+    export default _default_4;
+}
 /// <amd-module name="@scom/scom-page-viewer/section.tsx" />
 declare module "@scom/scom-page-viewer/section.tsx" {
     import { ControlElement, Module } from "@ijstech/components";
@@ -386,8 +393,8 @@ declare module "@scom/scom-page-viewer/pageElement.tsx" {
 }
 /// <amd-module name="@scom/scom-page-viewer/sidebar.css.ts" />
 declare module "@scom/scom-page-viewer/sidebar.css.ts" {
-    const _default_4: string;
-    export default _default_4;
+    const _default_5: string;
+    export default _default_5;
 }
 /// <amd-module name="@scom/scom-page-viewer/sidebar.tsx" />
 declare module "@scom/scom-page-viewer/sidebar.tsx" {

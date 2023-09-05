@@ -56,7 +56,7 @@ export class ViewrBody extends Module {
     }
     // let anchors: { name: string, sectionElm: any }[] = [];
     for (const section of this.sections) {
-    const { image = '', customBackgroundColor, backgroundColor = '', margin, maxWidth = 1024, customTextColor, textColor, customTextSize, textSize } = section?.config || {};
+    const { image = '', customBackgroundColor, backgroundColor = '', margin, maxWidth = 1024, customTextColor, textColor, customTextSize, textSize, padding } = section?.config || {};
     const { x = 'auto', y = 0 } = margin || {};
 
       const pageSection = (
@@ -87,6 +87,34 @@ export class ViewrBody extends Module {
       this.pnlSections.append(pageSection);
       if(customTextSize && textSize)
         pageSection.classList.add(`font-${textSize}`)
+
+      if(padding && (padding.top !== undefined || padding.bottom !== undefined || padding.left !== undefined || padding.right !== undefined)) {
+        if(padding.top !== undefined) {
+          pageSection.style.setProperty('--custom-padding-top', `${padding.top}px`);
+        }
+        else {
+          pageSection.style.setProperty('--custom-padding-top', '0px')
+        }
+        if(padding.bottom !== undefined) {
+          pageSection.style.setProperty('--custom-padding-bottom', `${padding.bottom}px`);
+        }
+        else {
+          pageSection.style.setProperty('--custom-padding-bottom', '0px')
+        }
+        if(padding.left !== undefined) {
+          pageSection.style.setProperty('--custom-padding-left', `${padding.left}px`);
+        }
+        else {
+          pageSection.style.setProperty('--custom-padding-left', '0px')
+        }
+        if(padding.right !== undefined) {
+          pageSection.style.setProperty('--custom-padding-right', `${padding.right}px`);
+        }
+        else {
+          pageSection.style.setProperty('--custom-padding-right', '0px')
+        }
+      }
+
       await pageSection.setData(section, this.pageConfig);
       // const anchorName = section.anchorName;
       // if (anchorName) {

@@ -20,6 +20,8 @@ interface IPageConfig {
   maxWidth?: number|string;
   customTextSize?: boolean;
   textSize?: string;
+  plr?: number;
+  ptb?: number;
   margin?: {
     x?: number|string;
     y?: number|string;

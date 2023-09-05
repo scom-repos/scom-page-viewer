@@ -119,6 +119,14 @@ export default class Viewer extends Module {
       this.style.setProperty('--custom-text-color', page.config.textColor)
     else
       this.style.removeProperty('--custom-text-color');
+    if(page.config?.plr !== undefined) {
+      this.style.setProperty('--custom-padding-left', `${page.config?.plr}px`);
+      this.style.setProperty('--custom-padding-right', `${page.config?.plr}px`);
+    }
+    if(page.config?.ptb !== undefined) {
+      this.style.setProperty('--custom-padding-top', `${page.config?.ptb}px`);
+      this.style.setProperty('--custom-padding-bottom', `${page.config?.ptb}px`);
+    }
     this.updateContainer();
     if (this.mode === ViewerMode.NORMAL) {
       await this.viewerBody.setSections(sections, config);
