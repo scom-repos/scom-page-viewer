@@ -520,7 +520,6 @@ define("@scom/scom-page-viewer/section.tsx", ["require", "exports", "@ijstech/co
         async setData(sectionData, pageConfig) {
             const { elements = [], config = {} } = sectionData;
             const { customBackdrop, backdropImage, backdropColor, customBackgroundColor, backgroundColor, fullWidth, padding, sectionWidth, border, borderColor } = config;
-            console.log('config', sectionData);
             this.background.color = 'var(--custom-background-color, var(--background-main))';
             if (sectionWidth !== undefined) {
                 // this.pnlSection.width = sectionWidth;
