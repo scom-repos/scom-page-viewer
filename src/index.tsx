@@ -111,7 +111,7 @@ export default class Viewer extends Module {
     const { header, footer, sections, config } = page;
     this.viewerFooter.data = footer;
     this.viewerFooter.visible = !!header;
-    if (page.config?.customBackgroundColor)
+    if (page.config?.customBackground)
       this.style.setProperty('--custom-background-color', page.config.backgroundColor)
     else
       this.style.removeProperty('--custom-background-color');
@@ -149,7 +149,7 @@ export default class Viewer extends Module {
 
   private updateContainer() {
     if (this.pnlContainer) {
-      const { customBackgroundColor, backgroundColor, backgroundImage, margin, maxWidth,  customTextColor, textColor, customTextSize, textSize } = this._data?.config || {};
+      const { customBackground, backgroundColor, backgroundImage, margin, maxWidth,  customTextColor, textColor, customTextSize, textSize } = this._data?.config || {};
       if (backgroundImage) {
         const ipfsUrl = 'https://ipfs.scom.dev/ipfs'
         this.pnlContainer.style.backgroundImage = `url("${ipfsUrl}/${backgroundImage}")`;

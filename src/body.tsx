@@ -56,7 +56,7 @@ export class ViewrBody extends Module {
     }
     // let anchors: { name: string, sectionElm: any }[] = [];
     for (const section of this.sections) {
-    const { image = '', customBackgroundColor, backgroundColor = '', margin, maxWidth = 1024, customTextColor, textColor, customTextSize, textSize, padding } = section?.config || {};
+    const { image = '', customBackground, backgroundColor = '', margin, maxWidth = 1024, customTextColor, textColor, customTextSize, textSize, padding } = section?.config || {};
     const { x = 'auto', y = 0 } = margin || {};
 
       const pageSection = (
@@ -82,7 +82,7 @@ export class ViewrBody extends Module {
         ></sc-page-viewer-section>);
       if (customTextColor && textColor)
         pageSection.style.setProperty('--custom-text-color', textColor);
-      if (customBackgroundColor && backgroundColor)
+      if (customBackground && backgroundColor)
         pageSection.style.setProperty('--custom-background-color', backgroundColor);
       this.pnlSections.append(pageSection);
       if(customTextSize && textSize)

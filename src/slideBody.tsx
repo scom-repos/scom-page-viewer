@@ -72,7 +72,7 @@ export class ViewrSlideBody extends Module {
     }
     for (let i = 0; i < this.sections.length; i++) {
       const section = this.sections[i];
-      const { image = '', backgroundColor = '', margin, maxWidth = 1024, customTextColor, textColor, customBackgroundColor } = section?.config || {};
+      const { image = '', backgroundColor = '', margin, maxWidth = 1024, customTextColor, textColor, customBackground } = section?.config || {};
       const { x = 'auto', y = 0 } = margin || {};
       const pageSection = (
         <sc-page-viewer-section
@@ -94,7 +94,7 @@ export class ViewrSlideBody extends Module {
         ></sc-page-viewer-section>);
       if (customTextColor && textColor)
         pageSection.style.setProperty('--custom-text-color', textColor);
-      if (customBackgroundColor && backgroundColor)
+      if (customBackground && backgroundColor)
         pageSection.style.setProperty('--custom-background-color', backgroundColor);
       this.pnlSections.append(pageSection);
       await pageSection.setData(section);
