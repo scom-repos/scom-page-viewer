@@ -15,7 +15,7 @@ interface IPageData {
 interface IPageConfig {
   sectionWidth?: number|string;
   backgroundColor?: string;
-  customBackgroundColor?: boolean;
+  customBackground?: boolean;
   backgroundImage?: string;
   maxWidth?: number|string;
   customTextSize?: boolean;

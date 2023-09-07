@@ -61,7 +61,7 @@ export class ViewrSection extends Module {
 
   async setData(sectionData: IPageSection, pageConfig: IPageConfig) {
     const { elements = [], config = {} as any } = sectionData;
-    const { customBackdrop, backdropImage, backdropColor, customBackgroundColor, backgroundColor, fullWidth, padding, sectionWidth, border, borderColor } = config;
+    const { customBackdrop, backdropImage, backdropColor, customBackground, backgroundColor, fullWidth, padding, sectionWidth, border, borderColor } = config;
     this.background.color = 'var(--custom-background-color, var(--background-main))';
 
     if(sectionWidth !== undefined) {
@@ -70,7 +70,7 @@ export class ViewrSection extends Module {
     }
 
     if(fullWidth) {
-      if(customBackgroundColor && backgroundColor) {
+      if(customBackground && backgroundColor) {
         this.style.setProperty('--custom-background-color', backgroundColor);
         this.pnlSection.style.setProperty('--custom-background-color', backgroundColor);
       }
@@ -92,7 +92,7 @@ export class ViewrSection extends Module {
       else {
         this.style.removeProperty('--custom-background-color');
       }
-      if(customBackgroundColor) {
+      if(customBackground) {
         // Add background image later
         if(backgroundColor) {
           this.pnlSection.style.setProperty('--custom-background-color', backgroundColor);

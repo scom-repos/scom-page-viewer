@@ -206,7 +206,7 @@ define("@scom/scom-page-viewer/body.tsx", ["require", "exports", "@ijstech/compo
             }
             // let anchors: { name: string, sectionElm: any }[] = [];
             for (const section of this.sections) {
-                const { image = '', customBackgroundColor, backgroundColor = '', margin, maxWidth = 1024, customTextColor, textColor, customTextSize, textSize, padding } = (section === null || section === void 0 ? void 0 : section.config) || {};
+                const { image = '', customBackground, backgroundColor = '', margin, maxWidth = 1024, customTextColor, textColor, customTextSize, textSize, padding } = (section === null || section === void 0 ? void 0 : section.config) || {};
                 const { x = 'auto', y = 0 } = margin || {};
                 const pageSection = (this.$render("sc-page-viewer-section", { id: section.id, display: "block", class: "i-page-section", background: { color: "var(--custom-background-color, var(--background-main))" }, font: { color: `var(--custom-text-color, var(--text-primary))` }, containerSize: { width: maxWidth.toString() }, margin: { top: y, bottom: y, left: x, right: x }, width: "100%", 
                     // maxWidth={maxWidth || '100%'}
@@ -221,7 +221,7 @@ define("@scom/scom-page-viewer/body.tsx", ["require", "exports", "@ijstech/compo
                     ] }));
                 if (customTextColor && textColor)
                     pageSection.style.setProperty('--custom-text-color', textColor);
-                if (customBackgroundColor && backgroundColor)
+                if (customBackground && backgroundColor)
                     pageSection.style.setProperty('--custom-background-color', backgroundColor);
                 this.pnlSections.append(pageSection);
                 if (customTextSize && textSize)
@@ -519,14 +519,14 @@ define("@scom/scom-page-viewer/section.tsx", ["require", "exports", "@ijstech/co
         }
         async setData(sectionData, pageConfig) {
             const { elements = [], config = {} } = sectionData;
-            const { customBackdrop, backdropImage, backdropColor, customBackgroundColor, backgroundColor, fullWidth, padding, sectionWidth, border, borderColor } = config;
+            const { customBackdrop, backdropImage, backdropColor, customBackground, backgroundColor, fullWidth, padding, sectionWidth, border, borderColor } = config;
             this.background.color = 'var(--custom-background-color, var(--background-main))';
             if (sectionWidth !== undefined) {
                 // this.pnlSection.width = sectionWidth;
                 this.pnlSection.maxWidth = sectionWidth;
             }
             if (fullWidth) {
-                if (customBackgroundColor && backgroundColor) {
+                if (customBackground && backgroundColor) {
                     this.style.setProperty('--custom-background-color', backgroundColor);
                     this.pnlSection.style.setProperty('--custom-background-color', backgroundColor);
                 }
@@ -548,7 +548,7 @@ define("@scom/scom-page-viewer/section.tsx", ["require", "exports", "@ijstech/co
                 else {
                     this.style.removeProperty('--custom-background-color');
                 }
-                if (customBackgroundColor) {
+                if (customBackground) {
                     // Add background image later
                     if (backgroundColor) {
                         this.pnlSection.style.setProperty('--custom-background-color', backgroundColor);
@@ -734,7 +734,7 @@ define("@scom/scom-page-viewer/slideBody.tsx", ["require", "exports", "@ijstech/
             }
             for (let i = 0; i < this.sections.length; i++) {
                 const section = this.sections[i];
-                const { image = '', backgroundColor = '', margin, maxWidth = 1024, customTextColor, textColor, customBackgroundColor } = (section === null || section === void 0 ? void 0 : section.config) || {};
+                const { image = '', backgroundColor = '', margin, maxWidth = 1024, customTextColor, textColor, customBackground } = (section === null || section === void 0 ? void 0 : section.config) || {};
                 const { x = 'auto', y = 0 } = margin || {};
                 const pageSection = (this.$render("sc-page-viewer-section", { id: section.id, display: "block", background: { image, color: `var(--custom-background-color, var(--background-main))` }, font: { color: `var(--custom-text-color, var(--text-primary))` }, containerSize: { width: maxWidth.toString() }, width: "100%", minHeight: "100vh", height: "100%", margin: { top: y, bottom: y, left: x, right: x }, mediaQueries: [
                         {
@@ -746,7 +746,7 @@ define("@scom/scom-page-viewer/slideBody.tsx", ["require", "exports", "@ijstech/
                     ] }));
                 if (customTextColor && textColor)
                     pageSection.style.setProperty('--custom-text-color', textColor);
-                if (customBackgroundColor && backgroundColor)
+                if (customBackground && backgroundColor)
                     pageSection.style.setProperty('--custom-background-color', backgroundColor);
                 this.pnlSections.append(pageSection);
                 await pageSection.setData(section);
@@ -1127,7 +1127,7 @@ define("@scom/scom-page-viewer", ["require", "exports", "@ijstech/components", "
             const { header, footer, sections, config } = page;
             this.viewerFooter.data = footer;
             this.viewerFooter.visible = !!header;
-            if ((_a = page.config) === null || _a === void 0 ? void 0 : _a.customBackgroundColor)
+            if ((_a = page.config) === null || _a === void 0 ? void 0 : _a.customBackground)
                 this.style.setProperty('--custom-background-color', page.config.backgroundColor);
             else
                 this.style.removeProperty('--custom-background-color');
@@ -1164,7 +1164,7 @@ define("@scom/scom-page-viewer", ["require", "exports", "@ijstech/components", "
         updateContainer() {
             var _a;
             if (this.pnlContainer) {
-                const { customBackgroundColor, backgroundColor, backgroundImage, margin, maxWidth, customTextColor, textColor, customTextSize, textSize } = ((_a = this._data) === null || _a === void 0 ? void 0 : _a.config) || {};
+                const { customBackground, backgroundColor, backgroundImage, margin, maxWidth, customTextColor, textColor, customTextSize, textSize } = ((_a = this._data) === null || _a === void 0 ? void 0 : _a.config) || {};
                 if (backgroundImage) {
                     const ipfsUrl = 'https://ipfs.scom.dev/ipfs';
                     this.pnlContainer.style.backgroundImage = `url("${ipfsUrl}/${backgroundImage}")`;
