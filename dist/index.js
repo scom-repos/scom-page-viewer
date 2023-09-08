@@ -519,19 +519,27 @@ define("@scom/scom-page-viewer/section.tsx", ["require", "exports", "@ijstech/co
         }
         async setData(sectionData, pageConfig) {
             const { elements = [], config = {} } = sectionData;
-            const { customBackdrop, backdropImage, backdropColor, customBackground, backgroundColor, fullWidth, padding, sectionWidth, border, borderColor } = config;
+            const { customBackdrop, backdropImage, backdropColor, customBackground, backgroundImage, backgroundColor, fullWidth, padding, sectionWidth, border, borderColor } = config;
             this.background.color = 'var(--custom-background-color, var(--background-main))';
             if (sectionWidth !== undefined) {
                 // this.pnlSection.width = sectionWidth;
                 this.pnlSection.maxWidth = sectionWidth;
             }
             if (fullWidth) {
-                if (customBackground && backgroundColor) {
-                    this.style.setProperty('--custom-background-color', backgroundColor);
-                    this.pnlSection.style.setProperty('--custom-background-color', backgroundColor);
+                if (customBackground) {
+                    if (backgroundImage) {
+                        const ipfsUrl = `https://ipfs.scom.dev/ipfs`;
+                        this.style.setProperty('--custom-background-color', `url("${ipfsUrl}/${backgroundImage}")`);
+                        this.style.backgroundImage = `url("${ipfsUrl}/${backgroundImage}")`;
+                    }
+                    else if (backdropColor) {
+                        this.style.setProperty('--custom-background-color', backgroundColor);
+                        this.pnlSection.style.setProperty('--custom-background-color', backgroundColor);
+                    }
                 }
                 else {
                     this.style.removeProperty('--custom-background-color');
+                    this.style.backgroundImage = '';
                     this.pnlSection.style.removeProperty('--custom-background-color');
                 }
             }
@@ -549,13 +557,18 @@ define("@scom/scom-page-viewer/section.tsx", ["require", "exports", "@ijstech/co
                     this.style.removeProperty('--custom-background-color');
                 }
                 if (customBackground) {
-                    // Add background image later
-                    if (backgroundColor) {
+                    if (backgroundImage) {
+                        const ipfsUrl = `https://ipfs.scom.dev/ipfs`;
+                        this.pnlSection.style.setProperty('--custom-background-color', `url("${ipfsUrl}/${backgroundImage}")`);
+                        this.pnlSection.style.backgroundImage = `url("${ipfsUrl}/${backgroundImage}")`;
+                    }
+                    else if (backgroundColor) {
                         this.pnlSection.style.setProperty('--custom-background-color', backgroundColor);
                     }
                 }
                 else {
                     this.pnlSection.style.removeProperty('--custom-background-color');
+                    this.pnlSection.style.backgroundImage = '';
                 }
             }
             if (border && borderColor) {
