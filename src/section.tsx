@@ -61,7 +61,7 @@ export class ViewrSection extends Module {
 
   async setData(sectionData: IPageSection, pageConfig: IPageConfig) {
     const { elements = [], config = {} as any } = sectionData;
-    const { customBackdrop, backdropImage, backdropColor, customBackground, backgroundColor, fullWidth, padding, sectionWidth, border, borderColor } = config;
+    const { customBackdrop, backdropImage, backdropColor, customBackground, backgroundImage, backgroundColor, fullWidth, padding, sectionWidth, border, borderColor } = config;
     this.background.color = 'var(--custom-background-color, var(--background-main))';
 
     if(sectionWidth !== undefined) {
@@ -70,36 +70,42 @@ export class ViewrSection extends Module {
     }
 
     if(fullWidth) {
-      if(customBackground && backgroundColor) {
-        this.style.setProperty('--custom-background-color', backgroundColor);
-        this.pnlSection.style.setProperty('--custom-background-color', backgroundColor);
-      }
-      else {
+      if(customBackground) {
+        if(backgroundImage) {
+          const ipfsUrl = `https://ipfs.scom.dev/ipfs`;
+          this.style.setProperty('--custom-background-color', `url("${ipfsUrl}/${backgroundImage}")`);
+          this.style.backgroundImage = `url("${ipfsUrl}/${backgroundImage}")`;
+        } else if(backdropColor) {
+          this.style.setProperty('--custom-background-color', backgroundColor);
+          this.pnlSection.style.setProperty('--custom-background-color', backgroundColor);
+        }
+      } else {
         this.style.removeProperty('--custom-background-color');
+        this.style.backgroundImage = '';
         this.pnlSection.style.removeProperty('--custom-background-color');
       }
-    }
-    else {
+    } else {
       if(customBackdrop) {
         if(backdropImage) {
           const ipfsUrl = `https://ipfs.scom.dev/ipfs`;
           this.style.setProperty('--custom-background-color', `url("${ipfsUrl}/${backdropImage}")`);
-        }
-        else if(backdropColor) {
+        } else if(backdropColor) {
           this.style.setProperty('--custom-background-color', backdropColor);
         }
-      }
-      else {
+      } else {
         this.style.removeProperty('--custom-background-color');
       }
       if(customBackground) {
-        // Add background image later
-        if(backgroundColor) {
+        if(backgroundImage) {
+          const ipfsUrl = `https://ipfs.scom.dev/ipfs`;
+          this.pnlSection.style.setProperty('--custom-background-color', `url("${ipfsUrl}/${backgroundImage}")`);
+          this.pnlSection.style.backgroundImage = `url("${ipfsUrl}/${backgroundImage}")`
+        } else if(backgroundColor) {
           this.pnlSection.style.setProperty('--custom-background-color', backgroundColor);
         }
-      }
-      else {
+      } else {
         this.pnlSection.style.removeProperty('--custom-background-color');
+        this.pnlSection.style.backgroundImage = '';
       }
     }
 
