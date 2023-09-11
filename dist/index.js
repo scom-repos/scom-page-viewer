@@ -532,7 +532,7 @@ define("@scom/scom-page-viewer/section.tsx", ["require", "exports", "@ijstech/co
                         this.style.setProperty('--custom-background-color', `url("${ipfsUrl}/${backgroundImage}")`);
                         this.style.backgroundImage = `url("${ipfsUrl}/${backgroundImage}")`;
                     }
-                    else if (backdropColor) {
+                    else if (backgroundColor) {
                         this.style.setProperty('--custom-background-color', backgroundColor);
                         this.pnlSection.style.setProperty('--custom-background-color', backgroundColor);
                     }
