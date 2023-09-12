@@ -206,62 +206,67 @@ define("@scom/scom-page-viewer/body.tsx", ["require", "exports", "@ijstech/compo
             }
             // let anchors: { name: string, sectionElm: any }[] = [];
             for (const section of this.sections) {
-                const { image = '', customBackground, backgroundColor = '', margin, maxWidth = 1024, customTextColor, textColor, customTextSize, textSize, padding } = (section === null || section === void 0 ? void 0 : section.config) || {};
-                const { x = 'auto', y = 0 } = margin || {};
-                const pageSection = (this.$render("sc-page-viewer-section", { id: section.id, display: "block", class: "i-page-section", background: { color: "var(--custom-background-color, var(--background-main))" }, font: { color: `var(--custom-text-color, var(--text-primary))` }, containerSize: { width: maxWidth.toString() }, margin: { top: y, bottom: y, left: x, right: x }, width: "100%", 
-                    // maxWidth={maxWidth || '100%'}
-                    // padding={{ top: '1rem', bottom: '1rem', left: '1rem', right: '1rem' }}
-                    mediaQueries: [
-                        {
-                            maxWidth: '767px',
-                            properties: {
-                                padding: { left: '1rem', right: '1rem' }
+                const isSectionExisted = this.pnlSections.querySelector(`[id='${section.id}']`);
+                console.log('------------', isSectionExisted);
+                if (!isSectionExisted) {
+                    console.log('_____________', this.pnlSections);
+                    const { image = '', customBackground, backgroundColor = '', margin, maxWidth = 1024, customTextColor, textColor, customTextSize, textSize, padding } = (section === null || section === void 0 ? void 0 : section.config) || {};
+                    const { x = 'auto', y = 0 } = margin || {};
+                    const pageSection = (this.$render("sc-page-viewer-section", { id: section.id, display: "block", class: "i-page-section", background: { color: "var(--custom-background-color, var(--background-main))" }, font: { color: `var(--custom-text-color, var(--text-primary))` }, containerSize: { width: maxWidth.toString() }, margin: { top: y, bottom: y, left: x, right: x }, width: "100%", 
+                        // maxWidth={maxWidth || '100%'}
+                        // padding={{ top: '1rem', bottom: '1rem', left: '1rem', right: '1rem' }}
+                        mediaQueries: [
+                            {
+                                maxWidth: '767px',
+                                properties: {
+                                    padding: { left: '1rem', right: '1rem' }
+                                }
                             }
+                        ] }));
+                    if (customTextColor && textColor)
+                        pageSection.style.setProperty('--custom-text-color', textColor);
+                    if (customBackground && backgroundColor)
+                        pageSection.style.setProperty('--custom-background-color', backgroundColor);
+                    if (customTextSize && textSize)
+                        pageSection.classList.add(`font-${textSize}`);
+                    if (padding && (padding.top !== undefined || padding.bottom !== undefined || padding.left !== undefined || padding.right !== undefined)) {
+                        if (padding.top !== undefined) {
+                            pageSection.style.setProperty('--custom-padding-top', `${padding.top}px`);
                         }
-                    ] }));
-                if (customTextColor && textColor)
-                    pageSection.style.setProperty('--custom-text-color', textColor);
-                if (customBackground && backgroundColor)
-                    pageSection.style.setProperty('--custom-background-color', backgroundColor);
-                this.pnlSections.append(pageSection);
-                if (customTextSize && textSize)
-                    pageSection.classList.add(`font-${textSize}`);
-                if (padding && (padding.top !== undefined || padding.bottom !== undefined || padding.left !== undefined || padding.right !== undefined)) {
-                    if (padding.top !== undefined) {
-                        pageSection.style.setProperty('--custom-padding-top', `${padding.top}px`);
+                        else {
+                            pageSection.style.setProperty('--custom-padding-top', '0px');
+                        }
+                        if (padding.bottom !== undefined) {
+                            pageSection.style.setProperty('--custom-padding-bottom', `${padding.bottom}px`);
+                        }
+                        else {
+                            pageSection.style.setProperty('--custom-padding-bottom', '0px');
+                        }
+                        if (padding.left !== undefined) {
+                            pageSection.style.setProperty('--custom-padding-left', `${padding.left}px`);
+                        }
+                        else {
+                            pageSection.style.setProperty('--custom-padding-left', '0px');
+                        }
+                        if (padding.right !== undefined) {
+                            pageSection.style.setProperty('--custom-padding-right', `${padding.right}px`);
+                        }
+                        else {
+                            pageSection.style.setProperty('--custom-padding-right', '0px');
+                        }
                     }
-                    else {
-                        pageSection.style.setProperty('--custom-padding-top', '0px');
-                    }
-                    if (padding.bottom !== undefined) {
-                        pageSection.style.setProperty('--custom-padding-bottom', `${padding.bottom}px`);
-                    }
-                    else {
-                        pageSection.style.setProperty('--custom-padding-bottom', '0px');
-                    }
-                    if (padding.left !== undefined) {
-                        pageSection.style.setProperty('--custom-padding-left', `${padding.left}px`);
-                    }
-                    else {
-                        pageSection.style.setProperty('--custom-padding-left', '0px');
-                    }
-                    if (padding.right !== undefined) {
-                        pageSection.style.setProperty('--custom-padding-right', `${padding.right}px`);
-                    }
-                    else {
-                        pageSection.style.setProperty('--custom-padding-right', '0px');
-                    }
+                    this.pnlSections.append(pageSection);
+                    await pageSection.setData(section, this.pageConfig);
+                    // const anchorName = section.anchorName;
+                    // if (anchorName) {
+                    //   anchors.push({
+                    //     name: anchorName,
+                    //     sectionElm: pageSection
+                    //   });
+                    // }
                 }
-                await pageSection.setData(section, this.pageConfig);
-                // const anchorName = section.anchorName;
-                // if (anchorName) {
-                //   anchors.push({
-                //     name: anchorName,
-                //     sectionElm: pageSection
-                //   });
-                // }
             }
-            // this.updateAnchors(anchors);
+            // this.updateAnchors(anchors);  
         }
         // private updateAnchors(anchors: { name: string, sectionElm: any }[]) {
         //   this.archorElm.clearInnerHTML();
