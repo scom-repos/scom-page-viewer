@@ -207,9 +207,7 @@ define("@scom/scom-page-viewer/body.tsx", ["require", "exports", "@ijstech/compo
             // let anchors: { name: string, sectionElm: any }[] = [];
             for (const section of this.sections) {
                 const isSectionExisted = this.pnlSections.querySelector(`[id='${section.id}']`);
-                console.log('------------', isSectionExisted);
                 if (!isSectionExisted) {
-                    console.log('_____________', this.pnlSections);
                     const { image = '', customBackground, backgroundColor = '', margin, maxWidth = 1024, customTextColor, textColor, customTextSize, textSize, padding } = (section === null || section === void 0 ? void 0 : section.config) || {};
                     const { x = 'auto', y = 0 } = margin || {};
                     const pageSection = (this.$render("sc-page-viewer-section", { id: section.id, display: "block", class: "i-page-section", background: { color: "var(--custom-background-color, var(--background-main))" }, font: { color: `var(--custom-text-color, var(--text-primary))` }, containerSize: { width: maxWidth.toString() }, margin: { top: y, bottom: y, left: x, right: x }, width: "100%", 
