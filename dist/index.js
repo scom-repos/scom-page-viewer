@@ -521,6 +521,8 @@ define("@scom/scom-page-viewer/section.tsx", ["require", "exports", "@ijstech/co
             }
         }
         async setData(sectionData, pageConfig) {
+            if (!this.pnlSection)
+                return;
             const { elements = [], config = {} } = sectionData;
             const { customBackdrop, backdropImage, backdropColor, customBackground, backgroundImage, backgroundColor, fullWidth, padding, sectionWidth, border, borderColor } = config;
             this.background.color = 'var(--custom-background-color, var(--background-main))';

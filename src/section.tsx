@@ -60,6 +60,7 @@ export class ViewrSection extends Module {
   }
 
   async setData(sectionData: IPageSection, pageConfig: IPageConfig) {
+    if (!this.pnlSection) return;
     const { elements = [], config = {} as any } = sectionData;
     const { customBackdrop, backdropImage, backdropColor, customBackground, backgroundImage, backgroundColor, fullWidth, padding, sectionWidth, border, borderColor } = config;
     this.background.color = 'var(--custom-background-color, var(--background-main))';
