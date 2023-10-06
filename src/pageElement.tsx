@@ -60,13 +60,26 @@ export class ViewrPageElement extends Module {
       if (!this.pnlElement) return;
       this.pnlElement.clearInnerHTML();
       this.data = pageElement;
-      const { elements, module: moduleData } = this.data;
+      const { elements, tag, module: moduleData } = this.data;
       // this.pnlElement.id = id;
       // const rootDir = getRootDir();
       if (elements?.length) {
         for (const element of elements) {
           const pnlElm = (<sc-page-viewer-page-element id={element.id} display="block"></sc-page-viewer-page-element>);
           this.pnlElement.append(pnlElm);
+          let widgetTag = {};
+          if (tag) {
+            widgetTag = {
+              customWidgetsBackground: tag.customWidgetsBackground,
+              customWidgetsColor: tag.customWidgetsColor,
+              widgetsBackground: tag.widgetsBackground,
+              widgetsColor: tag.widgetsColor
+            }
+            element.tag = {
+              ...element.tag,
+              ...widgetTag
+            }
+          }
           await pnlElm.setData(element);
         }
       } else if (moduleData?.path) {

@@ -135,6 +135,16 @@ export class ViewrSection extends Module {
       pageElement.id = element.id;
       this.updateElementConfig(pageElement, element, i);
       this.pnlSection.append(pageElement);
+      const widgetTag = {
+        customWidgetsBackground: config.customWidgetsBackground,
+        customWidgetsColor: config.customWidgetsColor,
+        widgetsBackground: config.widgetsBackground,
+        widgetsColor: config.widgetsColor
+      }
+      element.tag = {
+        ...element.tag,
+        ...widgetTag
+      }
       await pageElement.setData(element);
     }
     this.updateAlign(config);
