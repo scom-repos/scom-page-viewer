@@ -594,6 +594,13 @@ define("@scom/scom-page-viewer/section.tsx", ["require", "exports", "@ijstech/co
                 pageElement.id = element.id;
                 this.updateElementConfig(pageElement, element, i);
                 this.pnlSection.append(pageElement);
+                const widgetTag = {
+                    customWidgetsBackground: config.customWidgetsBackground,
+                    customWidgetsColor: config.customWidgetsColor,
+                    widgetsBackground: config.widgetsBackground,
+                    widgetsColor: config.widgetsColor
+                };
+                element.tag = Object.assign(Object.assign({}, element.tag), widgetTag);
                 await pageElement.setData(element);
             }
             this.updateAlign(config);
@@ -919,13 +926,23 @@ define("@scom/scom-page-viewer/pageElement.tsx", ["require", "exports", "@ijstec
                 return;
             this.pnlElement.clearInnerHTML();
             this.data = pageElement;
-            const { elements, module: moduleData } = this.data;
+            const { elements, tag, module: moduleData } = this.data;
             // this.pnlElement.id = id;
             // const rootDir = getRootDir();
             if (elements === null || elements === void 0 ? void 0 : elements.length) {
                 for (const element of elements) {
                     const pnlElm = (this.$render("sc-page-viewer-page-element", { id: element.id, display: "block" }));
                     this.pnlElement.append(pnlElm);
+                    let widgetTag = {};
+                    if (tag) {
+                        widgetTag = {
+                            customWidgetsBackground: tag.customWidgetsBackground,
+                            customWidgetsColor: tag.customWidgetsColor,
+                            widgetsBackground: tag.widgetsBackground,
+                            widgetsColor: tag.widgetsColor
+                        };
+                        element.tag = Object.assign(Object.assign({}, element.tag), widgetTag);
+                    }
                     await pnlElm.setData(element);
                 }
             }
