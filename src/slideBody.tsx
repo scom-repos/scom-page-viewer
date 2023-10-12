@@ -83,14 +83,14 @@ export class ViewrSlideBody extends Module {
           containerSize={{width: maxWidth.toString()}}
           width="100%" minHeight="100vh" height="100%"
           margin={{top: y, bottom: y, left: x, right: x}}
-          mediaQueries={[
-            {
-              maxWidth: '767px',
-              properties: {
-                padding: {left: '1rem', right: '1rem'}
-              }
-            }
-          ]}
+          // mediaQueries={[
+          //   {
+          //     maxWidth: '767px',
+          //     properties: {
+          //       padding: {left: '1rem', right: '1rem'}
+          //     }
+          //   }
+          // ]}
         ></sc-page-viewer-section>);
       if (customTextColor && textColor)
         pageSection.style.setProperty('--custom-text-color', textColor);

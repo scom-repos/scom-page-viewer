@@ -71,14 +71,14 @@ export class ViewrBody extends Module {
             width="100%"
             // maxWidth={maxWidth || '100%'}
             // padding={{ top: '1rem', bottom: '1rem', left: '1rem', right: '1rem' }}
-            mediaQueries={[
-              {
-                maxWidth: '767px',
-                properties: {
-                  padding: {left: '1rem', right: '1rem'}
-                }
-              }
-            ]}
+            // mediaQueries={[
+            //   {
+            //     maxWidth: '767px',
+            //     properties: {
+            //       padding: {left: '1rem', right: '1rem'}
+            //     }
+            //   }
+            // ]}
           ></sc-page-viewer-section>);
 
         if (customTextColor && textColor)
