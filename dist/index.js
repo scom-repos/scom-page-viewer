@@ -210,17 +210,7 @@ define("@scom/scom-page-viewer/body.tsx", ["require", "exports", "@ijstech/compo
                 if (!isSectionExisted) {
                     const { image = '', customBackground, backgroundColor = '', margin, maxWidth = 1024, customTextColor, textColor, customTextSize, textSize, padding } = (section === null || section === void 0 ? void 0 : section.config) || {};
                     const { x = 'auto', y = 0 } = margin || {};
-                    const pageSection = (this.$render("sc-page-viewer-section", { id: section.id, display: "block", class: "i-page-section", background: { color: "var(--custom-background-color, var(--background-main))" }, font: { color: `var(--custom-text-color, var(--text-primary))` }, containerSize: { width: maxWidth.toString() }, margin: { top: y, bottom: y, left: x, right: x }, width: "100%", 
-                        // maxWidth={maxWidth || '100%'}
-                        // padding={{ top: '1rem', bottom: '1rem', left: '1rem', right: '1rem' }}
-                        mediaQueries: [
-                            {
-                                maxWidth: '767px',
-                                properties: {
-                                    padding: { left: '1rem', right: '1rem' }
-                                }
-                            }
-                        ] }));
+                    const pageSection = (this.$render("sc-page-viewer-section", { id: section.id, display: "block", class: "i-page-section", background: { color: "var(--custom-background-color, var(--background-main))" }, font: { color: `var(--custom-text-color, var(--text-primary))` }, containerSize: { width: maxWidth.toString() }, margin: { top: y, bottom: y, left: x, right: x }, width: "100%" }));
                     if (customTextColor && textColor)
                         pageSection.style.setProperty('--custom-text-color', textColor);
                     if (customBackground && backgroundColor)
@@ -761,14 +751,7 @@ define("@scom/scom-page-viewer/slideBody.tsx", ["require", "exports", "@ijstech/
                 const section = this.sections[i];
                 const { image = '', backgroundColor = '', margin, maxWidth = 1024, customTextColor, textColor, customBackground } = (section === null || section === void 0 ? void 0 : section.config) || {};
                 const { x = 'auto', y = 0 } = margin || {};
-                const pageSection = (this.$render("sc-page-viewer-section", { id: section.id, display: "block", background: { image, color: `var(--custom-background-color, var(--background-main))` }, font: { color: `var(--custom-text-color, var(--text-primary))` }, containerSize: { width: maxWidth.toString() }, width: "100%", minHeight: "100vh", height: "100%", margin: { top: y, bottom: y, left: x, right: x }, mediaQueries: [
-                        {
-                            maxWidth: '767px',
-                            properties: {
-                                padding: { left: '1rem', right: '1rem' }
-                            }
-                        }
-                    ] }));
+                const pageSection = (this.$render("sc-page-viewer-section", { id: section.id, display: "block", background: { image, color: `var(--custom-background-color, var(--background-main))` }, font: { color: `var(--custom-text-color, var(--text-primary))` }, containerSize: { width: maxWidth.toString() }, width: "100%", minHeight: "100vh", height: "100%", margin: { top: y, bottom: y, left: x, right: x } }));
                 if (customTextColor && textColor)
                     pageSection.style.setProperty('--custom-text-color', textColor);
                 if (customBackground && backgroundColor)
