@@ -208,7 +208,7 @@ define("@scom/scom-page-viewer/body.tsx", ["require", "exports", "@ijstech/compo
             for (const section of this.sections) {
                 const isSectionExisted = this.pnlSections.querySelector(`[id='${section.id}']`);
                 if (!isSectionExisted) {
-                    const { image = '', customBackground, backgroundColor = '', margin, maxWidth = 1024, customTextColor, textColor, customTextSize, textSize, padding } = (section === null || section === void 0 ? void 0 : section.config) || {};
+                    const { image = '', customBackground, backgroundColor = '', margin, maxWidth = 1024, customTextColor, textColor, customTextSize, textSize, padding } = section?.config || {};
                     const { x = 'auto', y = 0 } = margin || {};
                     const pageSection = (this.$render("sc-page-viewer-section", { id: section.id, display: "block", class: "i-page-section", background: { color: "var(--custom-background-color, var(--background-main))" }, font: { color: `var(--custom-text-color, var(--text-primary))` }, containerSize: { width: maxWidth.toString() }, margin: { top: y, bottom: y, left: x, right: x }, width: "100%" }));
                     if (customTextColor && textColor)
@@ -369,12 +369,11 @@ define("@scom/scom-page-viewer/store.ts", ["require", "exports", "@scom/scom-pag
     };
     exports.getRootDir = getRootDir;
     const setMode = (value) => {
-        exports.state.mode = value !== null && value !== void 0 ? value : interface_1.ViewerMode.NORMAL;
+        exports.state.mode = value ?? interface_1.ViewerMode.NORMAL;
     };
     exports.setMode = setMode;
     const getMode = () => {
-        var _a;
-        return (_a = exports.state.mode) !== null && _a !== void 0 ? _a : interface_1.ViewerMode.NORMAL;
+        return exports.state.mode ?? interface_1.ViewerMode.NORMAL;
     };
     exports.getMode = getMode;
     const getDefaultDisplaySettings = () => {
@@ -590,7 +589,10 @@ define("@scom/scom-page-viewer/section.tsx", ["require", "exports", "@ijstech/co
                     widgetsBackground: config.widgetsBackground,
                     widgetsColor: config.widgetsColor
                 };
-                element.tag = Object.assign(Object.assign({}, element.tag), widgetTag);
+                element.tag = {
+                    ...element.tag,
+                    ...widgetTag
+                };
                 await pageElement.setData(element);
             }
             this.updateAlign(config);
@@ -599,7 +601,7 @@ define("@scom/scom-page-viewer/section.tsx", ["require", "exports", "@ijstech/co
             const { column, columnSpan, displaySettings = (0, store_1.getDefaultDisplaySettings)() } = data;
             el.grid = { column, columnSpan };
             el.style.gridRow = '1';
-            if (displaySettings === null || displaySettings === void 0 ? void 0 : displaySettings.length) {
+            if (displaySettings?.length) {
                 let mediaQueries = [];
                 for (let displaySetting of displaySettings) {
                     const { minWidth = 0, maxWidth = 0, properties: grid } = displaySetting;
@@ -665,7 +667,7 @@ define("@scom/scom-page-viewer/section.tsx", ["require", "exports", "@ijstech/co
                         continue;
                     }
                     const sectionData = sectionDatas[i]; // sectionDatas.find(sec => section.id === sec.id);
-                    const columnSpan = (sectionData === null || sectionData === void 0 ? void 0 : sectionData.columnSpan) || 1;
+                    const columnSpan = sectionData?.columnSpan || 1;
                     const widthNumber = columnSpan * gridColWidth + ((columnSpan - 1) * utils_2.GAP_WIDTH);
                     section.style.width = widthNumber ? `${widthNumber}px` : `${columnSpan * unitWidth}%`;
                     section.style.maxWidth = '100%';
@@ -749,7 +751,7 @@ define("@scom/scom-page-viewer/slideBody.tsx", ["require", "exports", "@ijstech/
             }
             for (let i = 0; i < this.sections.length; i++) {
                 const section = this.sections[i];
-                const { image = '', backgroundColor = '', margin, maxWidth = 1024, customTextColor, textColor, customBackground } = (section === null || section === void 0 ? void 0 : section.config) || {};
+                const { image = '', backgroundColor = '', margin, maxWidth = 1024, customTextColor, textColor, customBackground } = section?.config || {};
                 const { x = 'auto', y = 0 } = margin || {};
                 const pageSection = (this.$render("sc-page-viewer-section", { id: section.id, display: "block", background: { image, color: `var(--custom-background-color, var(--background-main))` }, font: { color: `var(--custom-text-color, var(--text-primary))` }, containerSize: { width: maxWidth.toString() }, width: "100%", minHeight: "100vh", height: "100%", margin: { top: y, bottom: y, left: x, right: x } }));
                 if (customTextColor && textColor)
@@ -774,8 +776,7 @@ define("@scom/scom-page-viewer/slideBody.tsx", ["require", "exports", "@ijstech/
             }
         }
         initEventListeners() {
-            var _a;
-            if ((_a = this.sections) === null || _a === void 0 ? void 0 : _a.length) {
+            if (this.sections?.length) {
                 this.pnlWrapper.addEventListener("wheel", this.onScrollHandler);
                 document.addEventListener("keydown", this.onKeyHandler);
             }
@@ -890,7 +891,7 @@ define("@scom/scom-page-viewer/pageElement.tsx", ["require", "exports", "@ijstec
                                 if (builderTarget.setRootParent)
                                     builderTarget.setRootParent(this.closest('sc-page-viewer-section'));
                                 if (tag && builderTarget.setTag) {
-                                    const newTag = Object.assign(Object.assign({}, tag), { width: '100%' });
+                                    const newTag = { ...tag, width: '100%' };
                                     await builderTarget.setTag(newTag);
                                 }
                             }
@@ -912,7 +913,7 @@ define("@scom/scom-page-viewer/pageElement.tsx", ["require", "exports", "@ijstec
             const { elements, tag, module: moduleData } = this.data;
             // this.pnlElement.id = id;
             // const rootDir = getRootDir();
-            if (elements === null || elements === void 0 ? void 0 : elements.length) {
+            if (elements?.length) {
                 for (const element of elements) {
                     const pnlElm = (this.$render("sc-page-viewer-page-element", { id: element.id, display: "block" }));
                     this.pnlElement.append(pnlElm);
@@ -924,12 +925,15 @@ define("@scom/scom-page-viewer/pageElement.tsx", ["require", "exports", "@ijstec
                             widgetsBackground: tag.widgetsBackground,
                             widgetsColor: tag.widgetsColor
                         };
-                        element.tag = Object.assign(Object.assign({}, element.tag), widgetTag);
+                        element.tag = {
+                            ...element.tag,
+                            ...widgetTag
+                        };
                     }
                     await pnlElm.setData(element);
                 }
             }
-            else if (moduleData === null || moduleData === void 0 ? void 0 : moduleData.path) {
+            else if (moduleData?.path) {
                 const { tag } = this.data;
                 // let module: any = await this.getEmbedElement(rootDir, this.data.module.path);
                 let module = await components_11.application.createElement(moduleData.path);
@@ -1032,8 +1036,7 @@ define("@scom/scom-page-viewer/sidebar.tsx", ["require", "exports", "@ijstech/co
             }
         }
         onActiveChange(parent, prevNode) {
-            var _a;
-            const page = (_a = parent.activeItem) === null || _a === void 0 ? void 0 : _a.tag;
+            const page = parent.activeItem?.tag;
             if (this.onTreeViewActiveChange) {
                 this.onTreeViewActiveChange(page);
             }
@@ -1071,16 +1074,14 @@ define("@scom/scom-page-viewer", ["require", "exports", "@ijstech/components", "
             this._mode = interface_2.ViewerMode.NORMAL;
         }
         get theme() {
-            var _a;
-            return (_a = this._theme) !== null && _a !== void 0 ? _a : 'light';
+            return this._theme ?? 'light';
         }
         set theme(value) {
             this._theme = value;
             this.setTheme(this.theme);
         }
         get mode() {
-            var _a;
-            return (_a = this._mode) !== null && _a !== void 0 ? _a : interface_2.ViewerMode.NORMAL;
+            return this._mode ?? interface_2.ViewerMode.NORMAL;
         }
         set mode(value) {
             this._mode = value;
@@ -1090,11 +1091,10 @@ define("@scom/scom-page-viewer", ["require", "exports", "@ijstech/components", "
             }
         }
         async onShow(options) {
-            var _a, _b, _c;
-            if (options === null || options === void 0 ? void 0 : options.theme) {
+            if (options?.theme) {
                 this.setTheme(options.theme);
             }
-            if (options === null || options === void 0 ? void 0 : options.mode) {
+            if (options?.mode) {
                 this._mode = options.mode;
             }
             if (!this.isLoaded) {
@@ -1102,14 +1102,14 @@ define("@scom/scom-page-viewer", ["require", "exports", "@ijstech/components", "
                     this.pnlLoading.visible = true;
                 this.gridMain.visible = false;
                 this.gridMain.templateColumns = ["1fr"];
-                (0, store_3.setRootDir)(options === null || options === void 0 ? void 0 : options.rootDir);
-                await this.setData((_a = options === null || options === void 0 ? void 0 : options._data) !== null && _a !== void 0 ? _a : options);
+                (0, store_3.setRootDir)(options?.rootDir);
+                await this.setData(options?._data ?? options);
                 if (this.pnlLoading)
                     this.pnlLoading.visible = false;
                 this.gridMain.visible = true;
             }
-            else if ((_b = options === null || options === void 0 ? void 0 : options._data) !== null && _b !== void 0 ? _b : options) {
-                await this.renderPage((_c = options === null || options === void 0 ? void 0 : options._data) !== null && _c !== void 0 ? _c : options);
+            else if (options?._data ?? options) {
+                await this.renderPage(options?._data ?? options);
             }
         }
         onHide() {
@@ -1141,25 +1141,24 @@ define("@scom/scom-page-viewer", ["require", "exports", "@ijstech/components", "
             }
         }
         async renderPage(page) {
-            var _a, _b, _c, _d, _e, _f, _g, _h;
             const { header, footer, sections, config } = page;
             this.viewerFooter.data = footer;
             this.viewerFooter.visible = !!header;
-            if ((_a = page.config) === null || _a === void 0 ? void 0 : _a.customBackground)
+            if (page.config?.customBackground)
                 this.style.setProperty('--custom-background-color', page.config.backgroundColor);
             else
                 this.style.removeProperty('--custom-background-color');
-            if ((_b = page.config) === null || _b === void 0 ? void 0 : _b.customTextColor)
+            if (page.config?.customTextColor)
                 this.style.setProperty('--custom-text-color', page.config.textColor);
             else
                 this.style.removeProperty('--custom-text-color');
-            if (((_c = page.config) === null || _c === void 0 ? void 0 : _c.plr) !== undefined) {
-                this.style.setProperty('--custom-padding-left', `${(_d = page.config) === null || _d === void 0 ? void 0 : _d.plr}px`);
-                this.style.setProperty('--custom-padding-right', `${(_e = page.config) === null || _e === void 0 ? void 0 : _e.plr}px`);
+            if (page.config?.plr !== undefined) {
+                this.style.setProperty('--custom-padding-left', `${page.config?.plr}px`);
+                this.style.setProperty('--custom-padding-right', `${page.config?.plr}px`);
             }
-            if (((_f = page.config) === null || _f === void 0 ? void 0 : _f.ptb) !== undefined) {
-                this.style.setProperty('--custom-padding-top', `${(_g = page.config) === null || _g === void 0 ? void 0 : _g.ptb}px`);
-                this.style.setProperty('--custom-padding-bottom', `${(_h = page.config) === null || _h === void 0 ? void 0 : _h.ptb}px`);
+            if (page.config?.ptb !== undefined) {
+                this.style.setProperty('--custom-padding-top', `${page.config?.ptb}px`);
+                this.style.setProperty('--custom-padding-bottom', `${page.config?.ptb}px`);
             }
             this.updateContainer();
             if (this.mode === interface_2.ViewerMode.NORMAL) {
@@ -1180,9 +1179,8 @@ define("@scom/scom-page-viewer", ["require", "exports", "@ijstech/components", "
             return this.theme === 'light' ? lightTheme.text.primary : darkTheme.text.primary;
         }
         updateContainer() {
-            var _a;
             if (this.pnlContainer) {
-                const { customBackground, backgroundColor, backgroundImage, margin, maxWidth, customTextColor, textColor, customTextSize, textSize } = ((_a = this._data) === null || _a === void 0 ? void 0 : _a.config) || {};
+                const { customBackground, backgroundColor, backgroundImage, margin, maxWidth, customTextColor, textColor, customTextSize, textSize } = this._data?.config || {};
                 if (backgroundImage) {
                     const ipfsUrl = 'https://ipfs.scom.dev/ipfs';
                     this.pnlContainer.style.backgroundImage = `url("${ipfsUrl}/${backgroundImage}")`;
